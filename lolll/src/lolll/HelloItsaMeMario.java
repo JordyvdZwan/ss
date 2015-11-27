@@ -6,4 +6,8 @@ public class HelloItsaMeMario {
 		String etset;
 		
 	}
+	
+	void test() {
+		
+	}
 }
