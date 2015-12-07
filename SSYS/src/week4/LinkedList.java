@@ -13,7 +13,7 @@ public class LinkedList<Element> {
     
     private Node find(Element element) {
     	   Node p = first;
-           while (p != element) {
+           while (p.getElement() != element) {
                p = p.next;
            }
            return p;
@@ -34,11 +34,21 @@ public class LinkedList<Element> {
 
     //@ ensures this.size == \old(size) - 1;
     public void remove(Element element) {
-        // TODO: implement, see exercise P-4.18
+        if (findBefore(element) == null && find(element) != null){
+        	first = find(element).next;
+        } else {
+        	findBefore(element).next = find(element).next;
+        }
+        size = size - 1;
     }
 
     public Node findBefore(Element element) {
-    	return null;
+    	Node p = first;
+        while (p.next != null && p.next.getElement() != element) {
+            p = p.next;
+        }
+        if (p.next == null) {p = null;}
+        return p;
     }
 
     //@ requires 0 <= index && index < this.size();
