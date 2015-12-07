@@ -1,4 +1,4 @@
-package week4.own;
+package src.week4.own;
 
 public class Constant implements Function, Integrandable {
 

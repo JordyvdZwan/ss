@@ -20,18 +20,18 @@ public class DoublyLinkedList<Element> {
     //@ ensures this.getNode(index).equals(element);
     public void add(int index, Element element) {
     	Node newNode = new Node(element);
-//    	if (index == 0) {
-//    		newNode.next = head;
-//    		head = newNode;
-//       	} else {
-//       		Node p = getNode(index - 1);
-//       		newNode.next = p.next;
-//       		p.next = newNode;
-//       	}
-    	Node last = head.previous;
-    	newNode.previous = last;
-    	newNode.next = head;
-    	head.previous = newNode;
+    	if (index == 0) {
+    		newNode.next = head.next;
+    		head.next = newNode;
+       	} else {
+       		Node p = getNode(index - 1);
+       		newNode.next = p.next;
+       		p.next = newNode;
+       	}
+//    	Node last = head.previous;
+//  	newNode.previous = last;
+//    	newNode.next = head;
+//   	head.previous = newNode;
     	
     	
     	size = size + 1;

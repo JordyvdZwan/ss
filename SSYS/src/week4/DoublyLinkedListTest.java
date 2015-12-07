@@ -2,7 +2,7 @@ package week4;
 
 import org.junit.Before;
 import org.junit.Test;
-import ss.week4.DoublyLinkedList;
+import week4.DoublyLinkedList;
 
 import static org.junit.Assert.assertEquals;
 
