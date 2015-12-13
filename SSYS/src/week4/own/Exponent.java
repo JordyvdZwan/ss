@@ -13,11 +13,11 @@ public class Exponent implements Function, Integrandable {
 	}
 
 	public Function derivative() {
-		return new LinearProduct( new Constant(n), new Exponent(n-1));
+		return new LinearProduct(new Constant(n), new Exponent(n - 1));
 	}
 
 	public Function integrand() {
-		return new LinearProduct(new Constant(1/(n+1)), new Exponent(n + 1));
+		return new LinearProduct(new Constant(1 / (n + 1)), new Exponent(n + 1));
 	}
 	
 	public String toString(){

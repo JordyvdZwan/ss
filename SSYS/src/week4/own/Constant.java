@@ -1,4 +1,4 @@
-package src.week4.own;
+package week4.own;
 
 public class Constant implements Function, Integrandable {
 
@@ -13,7 +13,7 @@ public class Constant implements Function, Integrandable {
 	}
 
 	public Function derivative() {
-		return null;
+		return new Constant(0);
 	}
 	
 	public String toString() {
@@ -21,7 +21,7 @@ public class Constant implements Function, Integrandable {
 		return y.toString();
 	}
 
-	public Function integrand(Function function) {
+	public Function integrand() {
 		return new LinearProduct(new Constant(x), new Exponent(1));
 	}
 }

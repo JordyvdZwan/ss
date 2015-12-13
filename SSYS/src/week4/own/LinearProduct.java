@@ -21,6 +21,6 @@ public class LinearProduct extends Product implements Function, Integrandable {
 		return result;
 	}
 	public String toString(){
-		return (f1 " + " f2.to)
+		return (f1.toString() + " * " + f2.toString());
 	}
 }

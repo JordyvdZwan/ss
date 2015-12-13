@@ -10,7 +10,7 @@ public class Polynomial implements Function, Integrandable {
 		System.arraycopy(n, 0, this.n, 0, n.length);
 		f = new LinearProduct[n.length];
 		for (int i = 0; i < n.length; i++) {
-			f[i] = new LinearProduct(new Constant(n[i]) , new Exponent(i));
+			f[i] = new LinearProduct(new Constant(n[i]), new Exponent(i));
 		}
 	}
 

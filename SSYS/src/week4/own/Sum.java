@@ -12,7 +12,7 @@ public class Sum implements Function, Integrandable {
 	
 	@Override
 	public double apply(double number) {
-		return f1.apply(number)+f2.apply(number);
+		return f1.apply(number) + f2.apply(number);
 	}
 
 	@Override
@@ -32,6 +32,6 @@ public class Sum implements Function, Integrandable {
 	}
 	
 	public String toString() {
-		
+		return f1.toString() + " + " + f2.toString();
 	}
 }

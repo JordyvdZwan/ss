@@ -17,7 +17,7 @@ public class Exercises {
     		int value1 = ints[i];
     		int value2 = ints[ints.length - i - 1];
     		ints[i] = value2;
-    		ints[ints.length - i] = value1;
+    		ints[ints.length - i - 1] = value1;
         }
     }
 

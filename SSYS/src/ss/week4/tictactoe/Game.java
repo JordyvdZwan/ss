@@ -71,8 +71,11 @@ public class Game {
     public void start() {
         boolean doorgaan = true;
         while (doorgaan) {
+        	System.out.println("--------------------------------------");
             reset();
+            System.out.println("--------------------------------------");
             play();
+            System.out.println("--------------------------------------");
             doorgaan = readBoolean("\n> Play another time? (y/n)?", "y", "n");
         }
     }
@@ -118,7 +121,23 @@ public class Game {
      * the changed game situation is printed.
      */
     private void play() {
-        // TODO: implement, see P-4.20
+        Scanner in = new Scanner(System.in);
+        int nextmove;
+        boolean done = false;
+    	while (!done) {
+    		update();
+    		System.out.println(players[current].getName() + " " + players[current].getMark().toString() + " What is your next move?");
+    		nextmove = in.nextInt();
+    		board.setField(nextmove, players[current].getMark());
+    		if (current == 0) {
+    			current = 1;
+    		} else {
+    			current = 0;
+    		}
+    		if (board.gameOver()) {done = true;}
+        }
+    	printResult();
+    	in.close();
     }
 
     /**

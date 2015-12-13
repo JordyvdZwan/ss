@@ -1,6 +1,6 @@
 package week4.own;
 
-public class Product implements Function, Integrandable {
+public class Product implements Function {
 
 	Function f1;
 	Function f2;
@@ -17,7 +17,7 @@ public class Product implements Function, Integrandable {
 
 	@Override
 	public Function derivative() {
-		return new Sum(new Product(f1 , f2.derivative()), new Product(f1.derivative() , f2));
+		return new Sum(new Product(f1, f2.derivative()), new Product(f1.derivative(), f2));
 	}
 	
 	public String toString() {
