@@ -21,23 +21,23 @@ public class EncodingTest {
         System.out.println(" ");
         System.out.println("Trying to decode Hello Big World (Hex)");
         System.out.println(">> " + new String(byteArray));
-        System.out.println(">> " + Hex.decodeHex(new String(byteArray).toCharArray()));
+        System.out.println(">> " + new String(Hex.decodeHex(new String(byteArray).toCharArray())));
        
         System.out.println(" ");
         System.out.println("trying to encode Hello Worlds (Base64)");
         input = "Hello World";
-        System.out.println(">> " + Base64.encodeBase64(input.getBytes()));
+        System.out.println(">> " + new String(Base64.encodeBase64(input.getBytes())));
         
         System.out.println(" ");
         System.out.println("(Base64) encoding: ");
         input = "010203040506";
         System.out.println(input);
-        System.out.println(">> " + Base64.encodeBase64(Hex.decodeHex(input.toCharArray()).toString().getBytes()));
+        System.out.println(">> " + new String(Base64.encodeBase64(Hex.decodeHex(input.toCharArray()).toString().getBytes())));
     	
         System.out.println(" ");
         System.out.println("testing to decode: U29mdHdhcmUgU3lzdGVtcw==  (Base64)");
         input = "U29mdHdhcmUgU3lzdGVtcw==";
-    	System.out.println(">> " + Base64.decodeBase64(input));
+    	System.out.println(">> " + new String(Base64.decodeBase64(input)));
     	
         System.out.println(" ");
         System.out.println("testing a, aa, aaa, etc. (Base64)");

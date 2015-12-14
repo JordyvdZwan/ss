@@ -1,6 +1,8 @@
 package ss.week5.TicTacToe;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class SmartStrategy implements Strategy {
@@ -42,7 +44,7 @@ public class SmartStrategy implements Strategy {
 			}
 		}
 		if (result == b.DIM * b.DIM) {
-			Set<Integer> emptyFields = new HashSet<Integer>();
+			List<Integer> emptyFields = new ArrayList<Integer>();
 			for (int i = 0; i < b.DIM * b.DIM; i++) {
 				if (b.isEmptyField(i)) {
 					emptyFields.add(i);
@@ -50,7 +52,7 @@ public class SmartStrategy implements Strategy {
 			}
 			Double random = Math.random();
 			Double index = (random * emptyFields.size());
-			result = index.intValue();
+			result = emptyFields.get(index.intValue());
 		}
 		return result;
 	}

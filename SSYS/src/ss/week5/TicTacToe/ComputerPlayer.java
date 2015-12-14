@@ -5,17 +5,25 @@ public class ComputerPlayer extends Player {
 	
 	public ComputerPlayer(Mark mark, Strategy strategy) {
 		super(strategy.getName() + "-" + mark.toString(), mark);
-		this.strategy = strategy;
+		this.setStrategy(strategy);
 	}
 	
 	public ComputerPlayer(Mark mark) {
 		super(new NaiveStrategy().getName() + "-" + mark.toString(), mark);
-		this.strategy = new NaiveStrategy();
+		this.setStrategy(new NaiveStrategy());
 	}
 	
 	@Override
 	public int determineMove(Board board) {
-		return strategy.determineMove(board, getMark());
+		return getStrategy().determineMove(board, getMark());
+	}
+
+	public Strategy getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(Strategy strategy) {
+		this.strategy = strategy;
 	}
 
 }

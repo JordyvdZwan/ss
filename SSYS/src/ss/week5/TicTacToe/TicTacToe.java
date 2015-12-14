@@ -27,7 +27,7 @@ public class TicTacToe {
     			player2 = new HumanPlayer(args[1], Mark.OO);;
     		}
     	} else {
-	        player1 = new ComputerPlayer(Mark.XX, new NaiveStrategy());
+	        player1 = new HumanPlayer("Reinier", Mark.XX);
 	        player2 = new ComputerPlayer(Mark.OO, new SmartStrategy());
     	}
         Game game = new Game(player1, player2);
