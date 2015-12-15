@@ -32,7 +32,7 @@ public class EncodingTest {
         System.out.println("(Base64) encoding: ");
         input = "010203040506";
         System.out.println(input);
-        System.out.println(">> " + new String(Base64.encodeBase64(Hex.decodeHex(input.toCharArray()).toString().getBytes())));
+        System.out.println(">> " + new String(Base64.encodeBase64String(Hex.decodeHex(input.toCharArray()))));
     	
         System.out.println(" ");
         System.out.println("testing to decode: U29mdHdhcmUgU3lzdGVtcw==  (Base64)");

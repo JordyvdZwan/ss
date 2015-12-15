@@ -11,16 +11,14 @@ public class NaiveStrategy implements Strategy {
 	
 	@Override
 	public int determineMove(Board b, Mark m) {
-		Set<Integer> emptyFields = new HashSet<Integer>();
+		int result;
+		List<Integer> emptyFields = new ArrayList<Integer>();
 		for (int i = 0; i < b.DIM * b.DIM; i++) {
 			if (b.isEmptyField(i)) {
 				emptyFields.add(i);
 			}
 		}
-		Double random = Math.random();
-		Double index = (random * 4567) % 9;
-		int result = index.intValue();
-		return result;
+		return emptyFields.get((int)(Math.random() * emptyFields.size()));
 	}
 
 }

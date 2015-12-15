@@ -12,16 +12,16 @@ public class TicTacToe {
     	Player player1;
     	Player player2;
     	if (args.length == 2) {
-    		if (args[0] == "-N") {
+    		if (args[0].equals("-N") ) {
     			player1 = new ComputerPlayer(Mark.XX, new NaiveStrategy());
-    		} else if (args[0] == "-S") {
+    		} else if (args[0].equals("-S")) {
     			player1 = new ComputerPlayer(Mark.XX, new SmartStrategy());
     		} else {
     			player1 = new HumanPlayer(args[0], Mark.XX);
     		}
-    		if (args[0] == "-N") {
+    		if (args[0].equals("-N")) {
     			player2 = new ComputerPlayer(Mark.OO, new NaiveStrategy());
-    		} else if (args[1] == "-S") {
+    		} else if (args[1].equals("-S")) {
     			player2 = new ComputerPlayer(Mark.OO, new SmartStrategy());
     		} else {
     			player2 = new HumanPlayer(args[1], Mark.OO);;
