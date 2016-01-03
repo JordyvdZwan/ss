@@ -1,8 +1,7 @@
-package ss.week6.test;
+package ss.week6.dictionaryattack;
 
 import org.junit.Before;
 import org.junit.Test;
-import ss.week6.dictionaryattack.DictionaryAttack;
 
 import java.io.IOException;
 

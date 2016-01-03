@@ -1,14 +1,9 @@
-package ss.week6.voteMachine.gui;
+package ss.week6.voteMachine;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Scanner;
-
-import ss.week6.voteMachine.PartyList;
-import ss.week6.voteMachine.VoteList;
-import ss.week6.voteMachine.VoteMachine;
-import ss.week6.voteMachine.VoteView;
 
 public class VoteGUIView implements VoteView {
 	private VoteMachine voteMachine;
@@ -67,8 +62,12 @@ public class VoteGUIView implements VoteView {
 		if (argument instanceof String) {
 			if (argument.equals("party")) {
 				this.voteFrame.update(((PartyList) object).getParties());
+				System.out.println("getparties");
 			} else if (argument.equals("vote")) {
 				this.uitslagJFrame.update(((VoteList) object).getVotes());
+				System.out.println("getvotes");
+			} else {
+				System.out.println("fail");
 			}
 		}
 

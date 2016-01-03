@@ -1,4 +1,4 @@
-package ss.week6.voteMachine.gui;
+package ss.week6.voteMachine;
 
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -10,8 +10,6 @@ import java.util.Set;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
-
-import ss.week6.voteMachine.VoteList;
 
 /**
  * P2 prac wk3.
