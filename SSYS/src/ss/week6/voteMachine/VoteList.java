@@ -10,13 +10,13 @@ public class VoteList extends Observable {
 	}
 	
 	public void addVote(String party) {
-		System.out.println("vote"); //TODO
 		if (votes.containsKey(party)) {
 			votes.put(party, votes.get(party) + 1);
-			notifyObservers("vote");
 		} else {
 			votes.put(party, 1);
 		}
+		setChanged();
+		notifyObservers("vote");
 	}
 	
 	public Map<String, Integer> getVotes() {

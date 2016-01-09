@@ -19,7 +19,7 @@ public class Zipper {
     		throw new TooFewArgumentsException("Too few arguments!");
     	}
     	if (s1.length() != s2.length()) {
-    		throw new ArgumentLengthsDifferException("Arguments lengths differ");
+    		throw new ArgumentLengthsDifferException(s1.length(), s2.length());
     	}
     	
     	String result = "";

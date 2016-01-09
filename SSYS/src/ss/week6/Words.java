@@ -13,6 +13,7 @@ public class Words {
 				System.out.println("Word " + (i + 1) + " " + words[i]);
 			}
 		}
+		in.close();
 	}
 
 }

@@ -15,6 +15,7 @@ import java.util.Scanner;
 
 import ss.week6.cards.Card;
 
+// p 6.23 228488 tries on average
 
 public class DictionaryAttack {
 	private Map<String, String> passwordMap;
@@ -54,7 +55,7 @@ public class DictionaryAttack {
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			md.update(password.getBytes());
 			byte[] mdbytes = md.digest();
-
+//-----------------------------------------------------------------------------------------------------
 	        StringBuffer hexString = new StringBuffer();
 	    	for (int i = 0; i < mdbytes.length; i++) {
 	    		String hex = Integer.toHexString(0xff & mdbytes[i]);
@@ -63,26 +64,12 @@ public class DictionaryAttack {
 	   	     	}
 	   	     	hexString.append(hex);
 	    	}			
+//---------------------------------------------------------------------------------------------------------	    	
 			hexCode = hexString.toString();
 		} catch (NoSuchAlgorithmException e) {
 			System.out.println(e.getStackTrace());
 		}
 		return hexCode;
-//		byte[] bytelist = password.getBytes();
-//		MessageDigest md = null;
-//		String hexcode = null;
-//		try {
-//			md = MessageDigest.getInstance(password);    //.getInstance(password);
-//			byte[] mD5hash = md.digest(bytelist);
-//			StringBuilder sb = new StringBuilder(mD5hash.length * 2);
-//			for (byte b : mD5hash) {
-//				sb.append(String.format("%02x", b & 0xff));
-//			}
-//			hexcode = sb.toString();
-//		} catch (NoSuchAlgorithmException e) {
-//			return "spongebob";
-//		}
-//		return hexcode;
 	}
 	/**
 	 * Checks the password for the user the password list. If the user
@@ -108,10 +95,10 @@ public class DictionaryAttack {
 	 */
     public void addToHashDictionary(String filename) throws IOException {
 		try (Scanner sc = new Scanner(new BufferedReader(new FileReader(filename)));) {
-			passwordMap = new HashMap<String, String>(); // <--- The key ---
+			hashDictionary = new HashMap<String, String>(); // <--- The key ---
 			while (sc.hasNext()) {
 				String password = sc.next();
-				passwordMap.put(getPasswordHash(password), password);
+				hashDictionary.put(getPasswordHash(password), password);
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
@@ -120,24 +107,17 @@ public class DictionaryAttack {
     	
     
 	/**
-	 * Do the dictionary attack.
+	 * Do the dictionary attack.split[0]
 	 */
 	public void doDictionaryAttack() {
 		try {
-			hashDictionary = new HashMap<String, String>();
-			passwordMap = new HashMap<String, String>();
-			readPasswords("LeakedPasswords");
-			addToHashDictionary("passwords");
-			for (String user: passwordMap.keySet()) {
-				System.out.printf("\n %s: %s", user, passwordMap.get(user));
-			}
-			for (String hash: hashDictionary.keySet()) {
-				System.out.printf("\n %s: %s", hash, hashDictionary.get(hash));
-
-			}
+			readPasswords("leaks.txt");
+			addToHashDictionary("passwords.txt");
+			System.out.println(passwordMap.size());
+			System.out.println(hashDictionary.size());
 			for (String user: passwordMap.keySet()) {
 				if (hashDictionary.keySet().contains(passwordMap.get(user))) {
-					System.out.printf("\n %s: %s", user, hashDictionary.get(passwordMap.get(user)));
+					System.out.printf(" %s: %s\n", user, hashDictionary.get(passwordMap.get(user)));
 				}
 			}
 		} catch (IOException e) {
@@ -147,7 +127,7 @@ public class DictionaryAttack {
 	
 	public static void main(String[] args) {
 		DictionaryAttack da = new DictionaryAttack();
-		// To implement
+		
 		da.doDictionaryAttack();
 	}
 

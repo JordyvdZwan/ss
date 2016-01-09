@@ -4,24 +4,24 @@ import java.util.*;
 
 public class PartyList extends Observable {
 
-	private List<String> partys;
+	private List<String> parties;
 	
 	public PartyList() {
-		partys = new ArrayList<String>();
+		parties = new ArrayList<String>();
 	}
 	
 	public void addParty(String party) {
-		System.out.println("party"); //TODO
-		partys.add(party);
+		parties.add(party);
+		setChanged();
 		notifyObservers("party");
 	}
 	
 	public List<String> getParties() {
-		return partys;
+		return parties;
 	}
 	
 	public boolean hasParty(String party) {
-		return partys.contains(party);
+		return parties.contains(party);
 	}
 	
 }

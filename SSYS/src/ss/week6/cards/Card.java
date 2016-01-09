@@ -52,7 +52,9 @@ public class Card {
 	}
 	
 	public void write(DataOutputStream printWriter) {
-		try {printWriter.writeUTF(this.toString());
+		try {
+			printWriter.writeChar(this.suit);
+			printWriter.writeChar(this.rank);
 		} catch (Exception e) {System.out.println(e.getStackTrace());}
 	}
 	
@@ -109,7 +111,7 @@ public class Card {
 	public static Card read(BufferedReader in) throws EOFException {
         String[] words = new String[2];
 		Scanner sc2 = new Scanner(in);
-		if (sc2.hasNextLine() == false) {
+		if (in.readLine() == false) {
 			throw new EOFException();
 		}
 		Scanner s2 = new Scanner(sc2.nextLine());
@@ -122,6 +124,8 @@ public class Card {
 		if (isValidSuit(suitString2Char(words[0])) && isValidRank(rankString2Char(words[1]))) {
 			result = new Card(suitString2Char(words[0]), rankString2Char(words[1]));
 		}
+		sc2.close();
+		s2.close();
 		return result;
 	}
 	

@@ -62,12 +62,9 @@ public class VoteGUIView implements VoteView {
 		if (argument instanceof String) {
 			if (argument.equals("party")) {
 				this.voteFrame.update(((PartyList) object).getParties());
-				System.out.println("getparties");
 			} else if (argument.equals("vote")) {
 				this.uitslagJFrame.update(((VoteList) object).getVotes());
-				System.out.println("getvotes");
-			} else {
-				System.out.println("fail");
+				
 			}
 		}
 
