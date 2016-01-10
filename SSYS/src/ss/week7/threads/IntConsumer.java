@@ -14,23 +14,23 @@ public class IntConsumer extends Thread {
 	}
 
 	public void run() {
-		SyncedIntCell cell = (SyncedIntCell) icell;
+		FineGrainedIntCell cell = (FineGrainedIntCell) icell;
 		int val;
 		do {
-			// sleep for a random interval
-			synchronized (cell) {
-				while (!cell.isAvailable()) {
-					try {
-						//Thread.sleep((int) (Math.random() * 3000));
-						cell.wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-				cell.notifyAll();
-				val = cell.getValue();
-				System.out.println(getName() + ": " + val + " read");
-			}
+//			synchronized (cell.lock) {
+//				while (!cell.isAvailable()) {
+//					try {
+//						Thread.sleep((int) (Math.random() * 3000));
+//						cell.wait();
+//						cell.notEmpty.await();
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//					}
+//				}
+				
+			val = cell.getValue();
+			System.out.println(getName() + ": " + val + " read");
+//			}
 		} while (val != -1);
 
 		System.out.println(getName() + ": end");

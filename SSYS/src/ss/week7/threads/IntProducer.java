@@ -1,6 +1,6 @@
 package ss.week7.threads;
 
-import ss.week7.threads.SyncedIntCell;
+import ss.week7.threads.*;
 import java.util.concurrent.locks.*;
 /**
  * ProduceInteger class for Producer/Consumer program.
@@ -19,22 +19,23 @@ public class IntProducer extends Thread {
 	}
 
 	public void run() {
-		SyncedIntCell cell = (SyncedIntCell) icell;
+		FineGrainedIntCell cell = (FineGrainedIntCell) icell;
 		for (int i = 0; i < 10; i++) {
-			synchronized (cell) {
-				while (cell.isAvailable()) {
-					try {
-		//				Thread.sleep((int) (Math.random() * 3000));
-						cell.wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-				cell.notifyAll();
+//			synchronized (cell.lock) {
+//				while (cell.isAvailable()) {
+//					try {
+////						Thread.sleep((int) (Math.random() * 3000));
+////						cell.wait();
+//						cell.notFull.await();
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//					}
+//				}
+				
 				int val = 10 * nr + i;
 				System.out.println(getName() + ": " + val + " written");
 				cell.setValue(val);
-			}
+//			}
 		}
 		System.out.println(getName() + ": end");
 	}
