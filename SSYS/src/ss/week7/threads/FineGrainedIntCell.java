@@ -8,25 +8,46 @@ public class FineGrainedIntCell implements IntCell {
 
 	private int value = 0;
 	private boolean available = false;
-	final Lock lock = new ReentrantLock();
-	final Condition notFull = lock.newCondition();
-	final Condition notEmpty = lock.newCondition();
+	public final Lock lock = new ReentrantLock();
+	public final Condition notFull = lock.newCondition();
+	public final Condition notEmpty = lock.newCondition();
 	
-	
+	//NOTE volgorde klopt niet...?
 	public void setValue(int valueArg) {
-		
-		this.value = valueArg;
-		
-		available = true;
-		
+		lock.lock();
+		try {
+			while (isAvailable()) {
+				try {
+					notEmpty.await();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			this.value = valueArg;
+			available = true;
+			notFull.signal();
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public int getValue() {
-		
-		available = false;
-		
-		return value;
-		
+		lock.lock();
+		try {
+			while (!isAvailable()) {
+				try {
+					notFull.await();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			available = false;
+			notEmpty.signal();
+			return value;
+		} finally {
+			lock.unlock();
+			
+		}
 	}
 	
 	public boolean isAvailable() {
