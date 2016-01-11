@@ -5,6 +5,7 @@ import java.util.*;
 public class Board {
 	private Block[][] blocks;
 	private List<Block> stack;
+	private final static int DIM = 185;
 	
 	public static final int boardSize = (93*2)+1;
 	
@@ -108,9 +109,57 @@ public class Board {
 		blocks[x][y] = block;
 	}
 	
+    public Block getField(int x, int y) {
+        return blocks[x][y];
+    }
+    
+    public Boolean isEmptyField(int x, int y) {
+    	return getField(x, y) == null;
+    }
+    
+    public int countStack() { //TODO fix it
+    	return 0;
+    }
+    
+    public int moveScore(PlayMove move) {
+		int counter = 1;
+		int scorex = 0;
+		int scorey = 0;
+		while (blocks[move.x + counter][move.y] != null) {
+			scorex++;
+			counter++;
+		}
+		counter = 1;
+		while (blocks[move.x - counter][move.y] != null) {
+			scorex++;
+			counter++;
+		}
+		if (scorex == 5) {
+			scorex = scorex + 6;
+		}
+		counter = 1;
+		while (blocks[move.x][move.y + counter] != null) {
+			scorey++;
+			counter++;
+		}
+		counter = 1;
+		while (blocks[move.x][move.y - counter] != null) {
+			scorey++;
+			counter++;
+		}
+		if (scorey == 5) {
+			scorey = scorey + 6;
+		}
+    	return scorex + scorey + 1;
+    }
 	
-	
-	
-	
+    public int index(int x, int y) {
+    	return (x * DIM) + y;
+    }
+    
+    public boolean isField(int x, int y) {
+    	return 0 < x && x < DIM && 0 < y && y < DIM;
+    	
+    }
 
 }

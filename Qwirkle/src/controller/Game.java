@@ -7,11 +7,11 @@ public class Game {
 	private Board board;
 	private Player[] players;
 	private int turn;
-	public static final int MAXPLAYERS = 8;
+	public static final int MAXPLAYERS = 4;
 	
 	
 	public Game() {
-		players = new Player[8];
+		players = new Player[4];
 		Board board = new Board();
 		
 		

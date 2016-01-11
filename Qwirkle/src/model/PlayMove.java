@@ -1,6 +1,6 @@
 package model;
 
-public class PlayMove implements Move{
+public class PlayMove implements Move {
 	public Block block;
 	public int x;
 	public int y;
