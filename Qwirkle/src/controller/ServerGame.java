@@ -18,41 +18,40 @@ public class ServerGame {
 		start();
 	}
 	
+	public static void main(String[] args) {
+		ServerGame server = new ServerGame();
+		server.start();
+	}
+	
 	public void start() {
-		int port = ui.getPort();
-		StartListening(port);
-	}
-	
-	
-	
-	
-	
-	
-	public void StartListening(int port) {
-    	ServerSocket serverSocket = null;
-    	try {
-    		serverSocket = new ServerSocket(port);
-    		while (true) {
-    			Socket sock = serverSocket.accept();
-    			Connection cHandler = new Connection(this, sock);
-				cHandler.start();
-				addHandler(cHandler);
-				cHandler.announce();
-    		}
-    	} catch (IOException e) {
-    		System.out.println(e.getMessage());
-    	} finally {
-    		try {
-    			serverSocket.close();
-    		} catch (IOException e) {
-    			System.out.println(e.getMessage());
-    		}
-    	}
-	}
-	
-	public void StopListening () {
+//		int port = ui.getPort();
+		StartListening(25565);
 		
+		Scanner in = new Scanner(System.in);
+		in.next();
+		
+		StopListening();
+	}
+		
+	public void StartListening(int port) {
+    	Connector connector = new Connector(this, port);
+    	connector.start();
 	}
 	
-
+	public void StopListening() {
+		listening = false;
+		System.out.println("Server has stopped to listen.");
+	}
+	
+	boolean listening = true;
+	
+	public void addConnection(Connection conn) {
+		if (listening) {
+			connection.add(conn);
+		} else {
+			conn.suspend();
+		}
+	}
+	
+	
 }

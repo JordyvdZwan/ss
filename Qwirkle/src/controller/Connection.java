@@ -1,8 +1,10 @@
 package controller;
 
+import java.net.Socket;
+
 public class Connection extends Thread{
 
-	public Connection() {
+	public Connection(ServerGame server, Socket sock) {
 		// TODO Auto-generated constructor stub
 	}
 
