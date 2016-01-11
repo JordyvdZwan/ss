@@ -5,7 +5,7 @@ import java.util.*;
 public class Board {
 	private Block[][] blocks;
 	private List<Block> stack;
-	private final static int DIM = 185;
+	private final static int DIM = 183;
 	
 	public static final int boardSize = (93*2)+1;
 	
@@ -117,11 +117,32 @@ public class Board {
     	return getField(x, y) == null;
     }
     
-    public int countStack() { //TODO fix it
-    	return 0;
+    public int countStack() { //TODO fix it numberofplayers en TilesInHand moet variabel worden.
+    	int NumberOfStones = 0;
+    	int NumberOfPlayers = 4;
+    	int TilesInHand = 6;
+    	int stack = 108;
+    	for(int i = 0; i <= DIM; i++) {
+    		for(int j = 0; j <= DIM; j++) {
+    			if(!isEmptyField(i,j)) {
+    				NumberOfStones++;
+    			}
+    		}
+    		
+    	}
+    	stack = stack - NumberOfStones - (TilesInHand * NumberOfPlayers);
+    	return NumberOfStones;
     }
     
-    public int moveScore(PlayMove move) {
+    public boolean emptyStack() {
+    	if(countStack() == 0) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+    
+    public int moveScore(PlayMove move) { 
 		int counter = 1;
 		int scorex = 0;
 		int scorey = 0;
@@ -161,5 +182,12 @@ public class Board {
     	return 0 < x && x < DIM && 0 < y && y < DIM;
     	
     }
-
+    
+    public boolean gameOver() { //TODO fix it mensen kunnen nog steeds zetten zetten
+    	if (emptyStack()) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }	
 }
