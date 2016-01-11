@@ -3,6 +3,7 @@ package model;
 import java.util.*;
 
 public class Board {
+	private List<Block> hand;
 	private Block[][] blocks;
 	private List<Block> stack;
 	private final static int DIM = 183;
@@ -12,6 +13,7 @@ public class Board {
 	public Board() {
 		blocks = new Block[boardSize][boardSize];
 		stack = new ArrayList<Block>();
+		hand = new ArrayList<Block>();
 	}
 	
 	public Board(Block[][] blocks, List<Block> stack) {
@@ -117,10 +119,9 @@ public class Board {
     	return getField(x, y) == null;
     }
     
-    public int countStack() { //TODO fix it numberofplayers en TilesInHand moet variabel worden.
+    public int countStack() { //TODO fix it numberofplayers moet variabel worden tijdens kick moet worden geüpdate.
     	int NumberOfStones = 0;
     	int NumberOfPlayers = 4;
-    	int TilesInHand = 6;
     	int stack = 108;
     	for(int i = 0; i <= DIM; i++) {
     		for(int j = 0; j <= DIM; j++) {
@@ -130,12 +131,15 @@ public class Board {
     		}
     		
     	}
-    	stack = stack - NumberOfStones - (TilesInHand * NumberOfPlayers);
-    	return NumberOfStones;
+    	stack = stack - NumberOfStones - (6 * NumberOfPlayers);
+    	if (stack < 0) {
+    		stack = 0;
+    	}
+    	return stack;
     }
     
     public boolean emptyStack() {
-    	if(countStack() == 0) {
+    	if(countStack() <= 0) {
     		return true;
     	} else {
     		return false;
@@ -171,6 +175,9 @@ public class Board {
 		if (scorey == 5) {
 			scorey = scorey + 6;
 		}
+		if (scorex > 0 && scorey > 0) {
+			scorex++;
+		}
     	return scorex + scorey + 1;
     }
 	
@@ -183,11 +190,27 @@ public class Board {
     	
     }
     
-    public boolean gameOver() { //TODO fix it mensen kunnen nog steeds zetten zetten
-    	if (emptyStack()) {
+    public boolean gameOver() { 
+    	if (emptyStack() && noValidMoves()) {
     		return true;
     	} else {
     		return false;
     	}
     }	
+    
+    public boolean noValidMoves() { 
+    	boolean illegal = true;
+    	for(int i = 0; i < hand.size(); i++) {
+    		for(int j = 0; j < DIM; j++) {
+    			for(int k = 0; k < DIM; k++) {
+    				PlayMove move = new PlayMove(hand.get(i), j, k);
+    				if (isLegalMove(move)) {
+    					illegal = false;
+    					break;
+    				}
+    			}
+    		}
+    	}
+    	return illegal;
+    }
 }
