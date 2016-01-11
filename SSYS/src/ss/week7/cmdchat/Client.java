@@ -69,7 +69,9 @@ public class Client extends Thread{
 	 * Constructs a Client-object and tries to make a socket connection
 	 */
 	public Client(String name, InetAddress host, int port) throws IOException {
-		// TODO insert body
+		sock = new Socket(host, port);
+		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+    	out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 	}
 
 	/**
@@ -77,18 +79,34 @@ public class Client extends Thread{
 	 * be forwarded to the MessageUI
 	 */
 	public void run() {
-		// TODO insert body
+		while (true) {
+    		try {
+    			String line;
+    			while ((line = in.readLine()) != null) {
+    				print(line);
+    			}
+    		} catch (IOException e) {
+    			System.out.println(e.getMessage());
+    		}
+    	}
 	}
 
 	/** send a message to a ClientHandler. */
-	public void sendMessage(String msg) {
-		// TODO insert body
+	public void sendMessage(String msg) throws IOException {
+		out.write("[" + clientName + "] " + msg + "\n");
+		out.flush();
 	}
 
 	/** close the socket connection. */
 	public void shutdown() {
 		print("Closing socket connection...");
-		// TODO insert body
+		try {
+			in.close();
+			out.close();
+			sock.close();
+		} catch (IOException e) {
+			System.out.print(e.getMessage());
+		}
 	}
 
 	/** returns the client name */
