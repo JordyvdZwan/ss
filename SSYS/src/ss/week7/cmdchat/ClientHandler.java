@@ -54,7 +54,7 @@ public class ClientHandler extends Thread {
 	    	try {
 	    		String line;
 	    		if ((line = in.readLine()) != null) {
-	    			server.broadcast(line);
+	    			server.broadcast("[" + clientName + "] " + line);
 	    		}
 	        } catch (IOException e) {
 	        	shutdown();
@@ -70,7 +70,7 @@ public class ClientHandler extends Thread {
      */
     public void sendMessage(String msg) {
     	try {
-        	out.write("[" + clientName + "] " + msg + "\n");
+        	out.write(msg + "\n");
         	out.flush();
         } catch (IOException e) {
         	shutdown();

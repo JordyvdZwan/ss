@@ -92,9 +92,13 @@ public class Client extends Thread{
 	}
 
 	/** send a message to a ClientHandler. */
-	public void sendMessage(String msg) throws IOException {
-		out.write("[" + clientName + "] " + msg + "\n");
-		out.flush();
+	public void sendMessage(String msg) {
+    	try {
+        	out.write(msg + "\n");
+        	out.flush();
+        } catch (IOException e) {
+        	shutdown();
+        }
 	}
 
 	/** close the socket connection. */

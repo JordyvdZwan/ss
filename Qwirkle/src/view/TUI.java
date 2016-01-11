@@ -1,6 +1,6 @@
 package view;
 
-public class TUI {
+public class TUI implements UI{
 
 	public TUI() {
 		// TODO Auto-generated constructor stub

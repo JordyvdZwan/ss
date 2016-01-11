@@ -54,6 +54,7 @@ public class Server {
     			ClientHandler cHandler = new ClientHandler(this, sock);
 				cHandler.start();
 				addHandler(cHandler);
+				cHandler.announce();
     		}
     	} catch (IOException e) {
     		System.out.println(e.getMessage());
