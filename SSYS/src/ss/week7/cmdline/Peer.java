@@ -2,6 +2,8 @@ package ss.week7.cmdline;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -29,8 +31,11 @@ public class Peer implements Runnable {
      * @param   nameArg name of the Peer-proces
      * @param   sockArg Socket of the Peer-proces
      */
-    public Peer(String nameArg, Socket sockArg) throws IOException
-    {
+    public Peer(String nameArg, Socket sockArg) throws IOException {
+    	name = nameArg;
+    	sock = sockArg;
+    	in = new BufferedReader(new InputStreamReader(sockArg.getInputStream()));
+    	out = new BufferedWriter(new OutputStreamWriter(sockArg.getOutputStream()));
     }
 
     /**
@@ -38,6 +43,16 @@ public class Peer implements Runnable {
      * writes the characters to the default output.
      */
     public void run() {
+    	while (true) {
+    		try {
+    			String line;
+    			while ((line = in.readLine()) != null) {
+    				System.out.println(line);
+    			}
+    		} catch (IOException e) {
+    			System.out.println(e.getMessage());
+    		}
+    	}
     }
 
 
@@ -47,12 +62,28 @@ public class Peer implements Runnable {
      * On Peer.EXIT the method ends
      */
     public void handleTerminalInput() {
+    	boolean doorgaan = true;
+    	while (doorgaan) {
+	    	try {
+	    		String input = readString("> ");
+	    		if (input.equals(EXIT)) {
+	    			doorgaan = false;
+	    		} else {
+	    			out.write(input + "\n");
+	    		}
+	    	} catch (IOException e) {
+	    		System.out.println(e.getMessage());
+	    	}
+    	}
     }
 
     /**
      * Closes the connection, the sockets will be terminated
      */
-    public void shutDown() {
+    public void shutDown() throws IOException {
+    	in.close();
+    	out.close();
+    	sock.close();
     }
 
     /**  returns name of the peer object*/

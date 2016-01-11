@@ -68,8 +68,7 @@ public class Client extends Thread{
 	/**
 	 * Constructs a Client-object and tries to make a socket connection
 	 */
-	public Client(String name, InetAddress host, int port)
-			throws IOException {
+	public Client(String name, InetAddress host, int port) throws IOException {
 		// TODO insert body
 	}
 

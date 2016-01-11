@@ -1,20 +1,20 @@
 package ss.week7.account;
 
-public class MyThread extends Thread {
-	double theAmount;
-	int theFrequency;
-	Account theAccount;	
+public class MyThread implements Runnable {
+	private double theAmount;
+	private int theFrequency;
+	private Account theAccount;	
 	
 	public MyThread(double amount, int frequency, Account account) {
-		this.theAmount = amount;
-		this.theFrequency = frequency;
-		this.theAccount = account;
+		theAmount = amount;
+		theFrequency = frequency;
+		theAccount = account;
 	}
 	
+	@Override
 	public void run() {
-		while (theFrequency > 0) {
+		for (int i = 0; i < theFrequency; i++) {
 			theAccount.transaction(theAmount);
-			theFrequency--;
 		}
 	}
 
