@@ -88,4 +88,9 @@ public class BoardTest {
 		assertEquals(board.countStack(), 83);
 	}
 	
+	@Test
+	public void TestIsLonely() {
+		PlayMove move = new PlayMove( (new Block(Color.GREEN, Shape.CLOVER)), 34, 65);
+		assertTrue(board.isLonelyStone(move));
+	}
 }
