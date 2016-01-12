@@ -11,10 +11,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.List;
+import java.util.ArrayList;
+
 public class BoardTest {
     private Board board;
 
-	@Before
+    @Before
 	public void Setup() {
 		board = new Board();
 	}
@@ -25,6 +28,8 @@ public class BoardTest {
 		board.setField(3,4,block);
 		assertEquals(board.getField(3, 4), block);
 		assertEquals(board.getField(4, 5), null);
+		board.emptyField(3, 4);
+		assertEquals(board.getField(3, 4), null);
 	}
 	
 	@Test
@@ -59,6 +64,22 @@ public class BoardTest {
 	}
 	
 	@Test
+	public void TestMultipeScore() {
+		ArrayList<PlayMove> multipleMove = new ArrayList<PlayMove>();
+		PlayMove move = new PlayMove(new Block(Color.PURPLE, Shape.STAR), 34, 69);
+		PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 34, 65);
+		PlayMove move2 = new PlayMove(new Block(Color.YELLOW, Shape.CIRCLE), 34 ,66);
+		PlayMove move3 = new PlayMove(new Block(Color.GREEN, Shape.DIAMOND), 34, 67);
+		PlayMove move4 = new PlayMove(new Block(Color.BLUE, Shape.DIAMOND), 34, 68);
+		multipleMove.add(move);
+		multipleMove.add(move1);
+		multipleMove.add(move2);
+		multipleMove.add(move3);
+		multipleMove.add(move4);
+		assertEquals(5, board.legitMoveScore(multipleMove));
+	}
+	
+	@Test
 	public void TestLegally() {
 		PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 34, 65);
 		PlayMove move2 = new PlayMove(new Block(Color.YELLOW, Shape.CIRCLE), 34 ,66);
@@ -84,6 +105,8 @@ public class BoardTest {
 		assertFalse(board.isField(3, 190));
 		assertFalse(board.isField(-42, 30));
 		assertFalse(board.isField(666, 420));
+		assertFalse(board.isField(66, -420));
+		assertFalse(board.isField(666, 5));
 	}
 	
 	@Test
