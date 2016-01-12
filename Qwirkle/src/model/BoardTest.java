@@ -43,6 +43,22 @@ public class BoardTest {
 	}
 	
 	@Test
+	public void TestMaxScore() {
+		PlayMove move = new PlayMove(new Block(Color.PURPLE, Shape.STAR), 42, 69);
+		board.setField(42, 70, new Block(Color.PURPLE, Shape.CIRCLE));
+		board.setField(42, 71, new Block(Color.PURPLE, Shape.CLOVER));
+		board.setField(42, 68, new Block(Color.PURPLE, Shape.CROSS));
+		board.setField(42, 67, new Block(Color.PURPLE, Shape.DIAMOND));
+		board.setField(42, 66, new Block(Color.PURPLE, Shape.SQUARE));
+		board.setField(41, 69, new Block(Color.BLUE, Shape.STAR));
+		board.setField(40, 69, new Block(Color.GREEN, Shape.STAR));
+		board.setField(43, 69, new Block(Color.ORANGE, Shape.STAR));
+		board.setField(44, 69, new Block(Color.RED, Shape.STAR));
+		board.setField(39, 69, new Block(Color.YELLOW, Shape.STAR));
+		assertEquals(board.moveScore(move), 24);
+	}
+	
+	@Test
 	public void TestLegally() {
 		PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 34, 65);
 		PlayMove move2 = new PlayMove(new Block(Color.YELLOW, Shape.CIRCLE), 34 ,66);
@@ -54,8 +70,8 @@ public class BoardTest {
 	@Test
 	public void TestIndex() {
 		assertEquals(board.index(0, 1), 1);
-		assertEquals(board.index(27, 32), 5027);
-		assertEquals(board.index(185, 185), 34410);
+		assertEquals(board.index(27, 32), 4973);
+		assertEquals(board.index(185, 185), 34040);
 	}
 	
 	@Test
@@ -64,5 +80,17 @@ public class BoardTest {
 		assertFalse(board.isField(3, 190));
 		assertFalse(board.isField(-42, 30));
 		assertFalse(board.isField(666, 420));
+	}
+	
+	@Test
+	public void TestStack() {
+		board.setField(34, 65, (new Block(Color.GREEN, Shape.CLOVER)));
+		assertEquals(board.countStack(), 83);
+	}
+	
+	@Test
+	public void TestIsLonely() {
+		PlayMove move = new PlayMove( (new Block(Color.GREEN, Shape.CLOVER)), 34, 65);
+		assertTrue(board.isLonelyStone(move));
 	}
 }
