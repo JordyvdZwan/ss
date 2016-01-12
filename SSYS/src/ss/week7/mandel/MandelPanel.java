@@ -15,8 +15,7 @@ class MandelPanel extends JPanel implements Runnable {
 	
 	public void draw() {
 //		(new MandelThread(this)).start();
-		Thread thread = new Thread(this);
-		thread.start();
+		(new Thread(this)).start();
 	}
 	
 	public void run() {

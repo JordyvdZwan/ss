@@ -9,17 +9,41 @@ public class SyncedIntCell implements IntCell {
 	private boolean available = false;
 	
 	public void setValue(int valueArg) {
-		this.value = valueArg;
-		available = true;
+		synchronized (this) {
+			while (isAvailable()) {
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			this.value = valueArg;
+			available = true;
+			notifyAll();
+			
+		}
 	}
-
+	
 	public int getValue() {
-		available = false;
-		return value;
+		synchronized (this) {
+			while (!isAvailable()) {
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			available = false;
+			notifyAll();
+			return value;
+		}
 	}
 	
 	public boolean isAvailable() {
 		return available;
 	}
-}
+	
+} 
+	
+
 

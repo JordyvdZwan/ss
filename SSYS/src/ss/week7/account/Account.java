@@ -19,7 +19,7 @@ public class Account {
 			while (balance + amount < -1000) {
 				decrementPossible.await();
 			}
-			if (amount > 0) {
+			if (balance > -1000) {
 				decrementPossible.signal();
 			}
 			balance = balance + amount;

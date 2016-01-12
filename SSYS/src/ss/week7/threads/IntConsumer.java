@@ -6,31 +6,18 @@ package ss.week7.threads;
  * @version january 2002
  */
 public class IntConsumer extends Thread {
-	private IntCell icell;
+	private IntCell cell;
 
 	public IntConsumer(int nr, IntCell cellArg) {
 		super("Consumer " + nr);
-		this.icell = cellArg;
+		this.cell = cellArg;
 	}
 
 	public void run() {
-		FineGrainedIntCell cell = (FineGrainedIntCell) icell;
 		int val;
 		do {
-//			synchronized (cell.lock) {
-//				while (!cell.isAvailable()) {
-//					try {
-//						Thread.sleep((int) (Math.random() * 3000));
-//						cell.wait();
-//						cell.notEmpty.await();
-//					} catch (InterruptedException e) {
-//						e.printStackTrace();
-//					}
-//				}
-				
 			val = cell.getValue();
 			System.out.println(getName() + ": " + val + " read");
-//			}
 		} while (val != -1);
 
 		System.out.println(getName() + ": end");

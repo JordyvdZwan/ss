@@ -10,32 +10,19 @@ import java.util.concurrent.locks.*;
 
 public class IntProducer extends Thread {
 	private int nr;
-	private IntCell icell; //TODO
+	private IntCell cell; //TODO
 
 	public IntProducer(int nrArg, IntCell cellArg) {
 		super("Producer " + nrArg);
 		this.nr = nrArg;
-		this.icell = cellArg;
+		this.cell = cellArg;
 	}
 
 	public void run() {
-		FineGrainedIntCell cell = (FineGrainedIntCell) icell;
 		for (int i = 0; i < 10; i++) {
-//			synchronized (cell.lock) {
-//				while (cell.isAvailable()) {
-//					try {
-////						Thread.sleep((int) (Math.random() * 3000));
-////						cell.wait();
-//						cell.notFull.await();
-//					} catch (InterruptedException e) {
-//						e.printStackTrace();
-//					}
-//				}
-				
 				int val = 10 * nr + i;
 				System.out.println(getName() + ": " + val + " written");
 				cell.setValue(val);
-//			}
 		}
 		System.out.println(getName() + ": end");
 	}

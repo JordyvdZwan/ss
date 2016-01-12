@@ -11,7 +11,7 @@ public class IntCell {
     }
 
     public static void main(String[] args) {
-        IntCell cell = new IntCell();
+    	IntCell cell = new IntCell();
         Adder a1 = new Adder(cell, 1);
         Adder a2 = new Adder(cell, 2);
         a1.start();
