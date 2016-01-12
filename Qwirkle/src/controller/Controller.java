@@ -3,14 +3,14 @@ package controller;
 import model.*;
 import view.*;
 
-public class Game {
+public class Controller {
 	private Board board;
 	private Player[] players;
 	private int turn;
 	public static final int MAXPLAYERS = 4;
 	
 	
-	public Game() {
+	public Controller() {
 		players = new Player[4];
 		Board board = new Board();
 		

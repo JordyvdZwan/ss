@@ -1,8 +1,8 @@
 package controller;
 
-public class ClientGame {
+public class Client {
 
-	public ClientGame() {
+	public Client() {
 		// TODO Auto-generated constructor stub
 	}
 

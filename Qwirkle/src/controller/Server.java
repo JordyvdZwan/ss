@@ -8,18 +8,18 @@ import java.net.Socket;
 import java.util.*;
 
 
-public class ServerGame {
+public class Server extends Thread{
 	private List<Connection> connection;
 	private UI ui;
 	
-	public ServerGame() {
+	public Server() {
 		connection = new ArrayList<Connection>();
 		
 		start();
 	}
 	
 	public static void main(String[] args) {
-		ServerGame server = new ServerGame();
+		Server server = new Server();
 		server.start();
 	}
 	

@@ -6,10 +6,10 @@ import java.net.Socket;
 
 public class Connector extends Thread {
 
-	ServerGame server;
+	Server server;
 	int port;
 	
-	public Connector(ServerGame serverArg, int portArg) {
+	public Connector(Server serverArg, int portArg) {
 		server = serverArg;
 		port = portArg;
 	}
@@ -28,5 +28,8 @@ public class Connector extends Thread {
     		//TODO catch IOException
     	}
 	}
-
+	
+	public void nextGame() {
+		server = new Server();
+	}
 }
