@@ -62,9 +62,11 @@ public class BoardTest {
 	public void TestLegally() {
 		PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 34, 65);
 		PlayMove move2 = new PlayMove(new Block(Color.YELLOW, Shape.CIRCLE), 34 ,66);
-		assertTrue(board.isLegalMove(move1));
+		PlayMove move3 = new PlayMove(new Block(Color.GREEN, Shape.DIAMOND), 34, 66);
+		assertFalse(board.isLegalMove(move1));
 		board.setField(34, 65, (new Block(Color.GREEN, Shape.CLOVER)));
 		assertFalse(board.isLegalMove(move2));
+		assertTrue(board.isLegalMove(move3));
 	}
 	
 	@Test
@@ -92,5 +94,13 @@ public class BoardTest {
 	public void TestIsLonely() {
 		PlayMove move = new PlayMove( (new Block(Color.GREEN, Shape.CLOVER)), 34, 65);
 		assertTrue(board.isLonelyStone(move));
+		board.setField(34, 66, new Block(Color.GREEN, Shape.CLOVER));
+		assertFalse(board.isLonelyStone(move));
+	}
+	
+	@Test
+	public void TestNoValidMoves() {
+		board.addToHand(new Block(Color.GREEN, Shape.CLOVER));
+		assertTrue(board.noValidMoves());
 	}
 }
