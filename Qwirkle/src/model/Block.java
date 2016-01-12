@@ -8,4 +8,5 @@ public class Block {
 		this.color = color;
 		this.shape = shape;
 	}
+	
 }
