@@ -62,9 +62,13 @@ public class BoardTest {
 	public void TestLegally() {
 		PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 34, 65);
 		PlayMove move2 = new PlayMove(new Block(Color.YELLOW, Shape.CIRCLE), 34 ,66);
-		assertTrue(board.isLegalMove(move1));
+		PlayMove move3 = new PlayMove(new Block(Color.GREEN, Shape.DIAMOND), 34, 66);
+		PlayMove move4 = new PlayMove(new Block(Color.BLUE, Shape.DIAMOND), 33, 65);
+		assertFalse(board.isLegalMove(move1));
 		board.setField(34, 65, (new Block(Color.GREEN, Shape.CLOVER)));
 		assertFalse(board.isLegalMove(move2));
+		assertTrue(board.isLegalMove(move3));
+		assertFalse(board.isLegalMove(move4));
 	}
 	
 	@Test
@@ -92,5 +96,22 @@ public class BoardTest {
 	public void TestIsLonely() {
 		PlayMove move = new PlayMove( (new Block(Color.GREEN, Shape.CLOVER)), 34, 65);
 		assertTrue(board.isLonelyStone(move));
+		board.setField(34, 66, new Block(Color.GREEN, Shape.CLOVER));
+		assertFalse(board.isLonelyStone(move));
+	}
+	
+	@Test
+	public void TestNoValidMoves() {
+		board.addToHand(new Block(Color.GREEN, Shape.CLOVER));
+		assertTrue(board.noValidMoves());
+	}
+	
+	@Test
+	public void TestEmptyRow() {
+		assertTrue(board.emptyXRow(42));
+		assertTrue(board.emptyYRow(90));
+		board.setField(50, 46, new Block(Color.PURPLE, Shape.SQUARE));
+		assertFalse(board.emptyXRow(50));
+		assertFalse(board.emptyYRow(46));
 	}
 }
