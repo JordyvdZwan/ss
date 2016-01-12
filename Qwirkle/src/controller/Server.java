@@ -8,50 +8,31 @@ import java.net.Socket;
 import java.util.*;
 
 
-public class Server extends Thread{
-	private List<Connection> connection;
-	private UI ui;
+public class Server extends Thread {
 	
-	public Server() {
-		connection = new ArrayList<Connection>();
-		
-		start();
-	}
+	private List<Connection> connections;
+	private ServerController controller;
+	Connector connector;
 	
-	public static void main(String[] args) {
-		Server server = new Server();
-		server.start();
+	public Server(ServerController controllerArg) {
+		connections = new ArrayList<Connection>();
+		controller = controllerArg;
 	}
-	
-	public void start() {
-//		int port = ui.getPort();
-		StartListening(25565);
-		
-		Scanner in = new Scanner(System.in);
-		in.next();
-		
-		StopListening();
-	}
-		
-	public void StartListening(int port) {
-    	Connector connector = new Connector(this, port);
-    	connector.start();
-	}
-	
-	public void StopListening() {
-		listening = false;
-		System.out.println("Server has stopped to listen.");
-	}
-	
-	boolean listening = true;
 	
 	public void addConnection(Connection conn) {
-		if (listening) {
-			connection.add(conn);
-		} else {
-			conn.suspend();
+		connections.add(conn);
+		if (connections.size() == Controller.MAX_PLAYERS) {
+			controller.nextGame();
+			this.start();
 		}
 	}
 	
+	public void run() { //TODO starts the game
+		
+	}
 	
+	public void getMessage(Connection conn, String msg) {
+		
+	}
+
 }

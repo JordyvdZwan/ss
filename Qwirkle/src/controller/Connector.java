@@ -25,11 +25,15 @@ public class Connector extends Thread {
 				server.addConnection(connection);
     		}
     	} catch (IOException e) {
-    		//TODO catch IOException
+    		lossOfConnection();
     	}
 	}
 	
-	public void nextGame() {
-		server = new Server();
+	public void newServer(Server serverArg) {
+		server = serverArg;
+	}
+	
+	public void lossOfConnection() {
+		//TODO implement
 	}
 }
