@@ -263,10 +263,10 @@ public class Board {
     }
     
     //keeps track of the score of the players
-    public int playerScore(PlayMove move) { 
-    	score = score + moveScore(move);
-    	return score;
-    }
+//    public int playerScore(PlayMove move) { 
+//    	score = score + moveScore(move);
+//    	return score;
+//    }
     
     //checks if Xrow is empty
     public boolean emptyXRow(int x) {
