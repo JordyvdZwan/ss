@@ -6,6 +6,7 @@ import model.Board;
 import model.Block;
 import model.PlayMove;
 import model.Move;
+import view.TUI;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -53,7 +54,7 @@ public class BoardTest {
 		board.setField(42, 70, new Block(Color.PURPLE, Shape.CIRCLE));
 		board.setField(42, 71, new Block(Color.PURPLE, Shape.CLOVER));
 		board.setField(42, 68, new Block(Color.PURPLE, Shape.CROSS));
-		board.setField(42, 67, new Block(Color.PURPLE, Shape.DIAMOND));
+		board.setField(42, 67, new Block(Color.GREEN, Shape.DIAMOND));
 		board.setField(42, 66, new Block(Color.PURPLE, Shape.SQUARE));
 		board.setField(41, 69, new Block(Color.BLUE, Shape.STAR));
 		board.setField(40, 69, new Block(Color.GREEN, Shape.STAR));
@@ -66,17 +67,24 @@ public class BoardTest {
 	@Test
 	public void TestMultipeScore() {
 		ArrayList<PlayMove> multipleMove = new ArrayList<PlayMove>();
+		ArrayList<PlayMove> singleMove = new ArrayList<PlayMove>();
 		PlayMove move = new PlayMove(new Block(Color.PURPLE, Shape.STAR), 34, 69);
 		PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 34, 65);
 		PlayMove move2 = new PlayMove(new Block(Color.YELLOW, Shape.CIRCLE), 34 ,66);
 		PlayMove move3 = new PlayMove(new Block(Color.GREEN, Shape.DIAMOND), 34, 67);
-		PlayMove move4 = new PlayMove(new Block(Color.BLUE, Shape.DIAMOND), 34, 68);
+		PlayMove move4 = new PlayMove(new Block(Color.BLUE, Shape.CROSS), 34, 68);
+		singleMove.add(move1);
 		multipleMove.add(move);
 		multipleMove.add(move1);
 		multipleMove.add(move2);
 		multipleMove.add(move3);
 		multipleMove.add(move4);
 		assertEquals(5, board.legitMoveScore(multipleMove));
+		assertEquals(1, board.legitMoveScore(singleMove));
+		board.setField(35, 66, new Block(Color.BLUE, Shape.CROSS));
+		board.setField(35, 65, new Block(Color.BLUE, Shape.DIAMOND));
+		assertEquals(9, board.legitMoveScore(multipleMove));
+		assertEquals(2, board.legitMoveScore(singleMove));
 	}
 	
 	@Test
@@ -118,8 +126,13 @@ public class BoardTest {
 	@Test
 	public void TestIsLonely() {
 		PlayMove move = new PlayMove( (new Block(Color.GREEN, Shape.CLOVER)), 34, 65);
+		PlayMove move1 = new PlayMove((new Block(Color.GREEN, Shape.CIRCLE)), 0, 0);
+		PlayMove move2 = new PlayMove((new Block(Color.GREEN, Shape.CIRCLE)), 183, 183);
 		assertTrue(board.isLonelyStone(move));
-		board.setField(34, 66, new Block(Color.GREEN, Shape.CLOVER));
+		assertTrue(board.isLonelyStone(move1));
+		assertTrue(board.isLonelyStone(move2));
+//		board.setField(34, 66, new Block(Color.GREEN, Shape.CLOVER));
+		board.setField(33, 65, new Block(Color.PURPLE, Shape.CLOVER));
 		assertFalse(board.isLonelyStone(move));
 	}
 	
@@ -136,5 +149,21 @@ public class BoardTest {
 		board.setField(50, 46, new Block(Color.PURPLE, Shape.SQUARE));
 		assertFalse(board.emptyXRow(50));
 		assertFalse(board.emptyYRow(46));
+	}
+	
+	@Test
+	public void TestToString() {
+		Block block1 = new Block(Color.RED, Shape.SQUARE);
+		Block block2 = new Block(Color.BLUE, Shape.CIRCLE);
+		Block block3 = new Block(Color.GREEN, Shape.CLOVER);
+		Block block4 = new Block(Color.ORANGE, Shape.CROSS);
+		Block block5 = new Block(Color.PURPLE, Shape.DIAMOND);
+		Block block6 = new Block(Color.YELLOW, Shape.STAR);
+		assertEquals(TUI.blockToString(block1), "Rs");
+		assertEquals(TUI.blockToString(block2), "Bo");
+		assertEquals(TUI.blockToString(block3), "Gc");
+		assertEquals(TUI.blockToString(block4), "Ox");
+		assertEquals(TUI.blockToString(block5), "Pd");
+		assertEquals(TUI.blockToString(block6), "Y*");
 	}
 }

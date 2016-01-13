@@ -173,9 +173,18 @@ public class Board {
     
     //calculates the score of 1 move
     public int moveScore(PlayMove move) { 
-		int counter = 1;
-		int scorex = 0;
-		int scorey = 0;
+    	int score = 0;
+    	score = xScore(move) + yScore(move);
+    	if (score == 0) {
+    		score++;
+    	}
+    	return score;
+
+    }
+    
+    public int xScore(PlayMove move) {
+    	int scorex = 0;
+    	int counter = 1;
 		while (blocks[move.x + counter][move.y] != null) {
 			scorex++;
 			counter++;
@@ -188,7 +197,15 @@ public class Board {
 		if (scorex == 5) {
 			scorex = scorex + 6;
 		}
-		counter = 1;
+		if (scorex > 0) {
+			scorex++;
+		}
+		return scorex;
+    }
+    
+    public int yScore(PlayMove move) {
+    	int counter = 1;
+    	int scorey = 0;
 		while (blocks[move.x][move.y + counter] != null) {
 			scorey++;
 			counter++;
@@ -201,20 +218,39 @@ public class Board {
 		if (scorey == 5) {
 			scorey = scorey + 6;
 		}
-		if (scorex > 0 && scorey > 0) {
-			scorex++;
+		if (scorey > 0) {
+			scorey++;
 		}
-    	return scorex + scorey + 1;
+		return scorey;
     }
     
     public int legitMoveScore(List<PlayMove> move) {
-    	for (int i = 0; i < move.size() - 1; i++) {
-    		setField(move.get(i).x, move.get(i).y, move.get(i).block);
+    	int result = 0;
+    	if (move.size() > 1) {
+    		if (move.get(0).x == move.get(1).x) {
+    			for (int i = 0; i < move.size() - 1; i++) {
+    				setField(move.get(i).x, move.get(i).y, move.get(i).block);
+    			}
+    			result = moveScore(move.get(move.size() - 1));
+    			for (int k = 0; k < move.size() - 1; k++) {
+    				result = result + xScore(move.get(k));
+    			}
+    		}
+    		if (move.get(0).y == move.get(1).y) {
+    			for (int i = 0; i < move.size() - 1; i++) {
+    				setField(move.get(i).x, move.get(i).y, move.get(i).block);
+    			}
+    			result = moveScore(move.get(move.size() - 1));
+    			for (int k = 0; k < move.size() - 1; k++) {
+    				result = result + yScore(move.get(k));
+    			}
+    		}
+    		for (int j = 0; j < move.size() - 1; j++) {
+    			emptyField(move.get(j).x, move.get(j).y);
+    		}	
+    	} else {
+    		result = moveScore(move.get(0));
     	}
-    	int result = moveScore(move.get(move.size() - 1));
-    	for (int j = 0; j < move.size() - 1; j++) {
-    	    emptyField(move.get(j).x, move.get(j).y);
-    	}		
     	return result;
 
     } 
@@ -296,9 +332,9 @@ public class Board {
     public void makeMove(List<PlayMove> move) { //TODO
     	for (int i = 0; i < move.size(); i ++) {
     		if (isLegalMove(move.get(i))) {
+    			legitMoveScore(move);
     			setField(move.get(i).x, move.get(i).y, move.get(i).block);
     			removeFromHand(move.get(i).block);
-    			legitMoveScore(move);
     		}
     	} 
     }
