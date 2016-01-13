@@ -11,6 +11,7 @@ public interface UI {
 	public String getHost();
 	public int getPort();
 	public String getUserName();
+	public String getChoiceServerClient();
 	
 	
 	

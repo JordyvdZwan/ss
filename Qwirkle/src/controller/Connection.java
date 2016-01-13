@@ -11,6 +11,7 @@ public class Connection extends Thread {
 	
 	private int playerNumber;
 	
+	
 	private BufferedReader in;
 	private BufferedWriter out;
 	
@@ -19,15 +20,7 @@ public class Connection extends Thread {
 		sock = sockArg;
 		openCommunication();
 	}
-	
-	public void setPlayerNumber(int playerNumberArg) {
-		playerNumber = playerNumberArg;
-	}
-	
-	public int getPlayterNumber() {
-		return playerNumber;
-	}
-	
+
 	public Connection(Client clientArg, Socket sockArg) {
 		client = clientArg;
 		sock = sockArg;
@@ -76,5 +69,13 @@ public class Connection extends Thread {
 	
 	public void lossOfConnection() {
 		//TODO implement
+	}
+	
+	public void setPlayerNumber(int playerNumberArg) {
+		playerNumber = playerNumberArg;
+	}
+	
+	public int getPlayterNumber() {
+		return playerNumber;
 	}
 }
