@@ -31,8 +31,19 @@ public class Server extends Thread {
 		
 	}
 	
-	public void getMessage(Connection conn, String msg) {
-		
+	public void processMessage(Connection conn, String msg) {
+		int playerNumber = conn.getPlayterNumber();
+		Scanner reader = new Scanner(msg);
+		String command = reader.next();
+		if (command.equals("")) {
+			
+		} else if (command.equals("")) {
+			
+		}
+	}
+	
+	public void sendMessage(Connection conn, String msg) {
+		conn.sendString(msg);
 	}
 
 }

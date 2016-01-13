@@ -9,6 +9,8 @@ public class Connection extends Thread {
 	private Socket sock;
 	private boolean active = true;
 	
+	private int playerNumber;
+	
 	private BufferedReader in;
 	private BufferedWriter out;
 	
@@ -16,6 +18,14 @@ public class Connection extends Thread {
 		server = serverArg;
 		sock = sockArg;
 		openCommunication();
+	}
+	
+	public void setPlayerNumber(int playerNumberArg) {
+		playerNumber = playerNumberArg;
+	}
+	
+	public int getPlayterNumber() {
+		return playerNumber;
 	}
 	
 	public Connection(Client clientArg, Socket sockArg) {
@@ -45,9 +55,9 @@ public class Connection extends Thread {
 	
 	public void sendStringToParent(String msg) {
 		if (server != null) {
-			server.getMessage(this, msg);
+			server.processMessage(this, msg);
 		} else {
-			client.getMessage(this, msg);
+			client.processMessage(this, msg);
 		}
 	}
 	

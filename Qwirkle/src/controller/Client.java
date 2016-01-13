@@ -7,7 +7,7 @@ public class Client {
 	}
 
 	
-	public void getMessage(Connection conn, String msg) {
+	public void processMessage(Connection conn, String msg) {
 		
 	}
 }
