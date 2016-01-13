@@ -14,12 +14,94 @@ public class Server extends Thread {
 	private ServerController controller;
 	Connector connector;
 	
+	private int turn;
+	private boolean notOver = true;
+	private int numberOfPlayers;
+	
 	public Server(ServerController controllerArg) {
 		connections = new ArrayList<Connection>();
 		controller = controllerArg;
-		this.start(); //TODO
 	}
 	
+	public void run() { 
+		createGameEnviroment();
+		broadcastNames();
+		giveOutStones();
+		determineFirstMove();
+		while (notOver) {
+			giveNextMove();
+			waitForNextMove();
+			handleNextMove();
+			broadcastMove();
+		}
+		broadcastWinner();
+		cleanUpGame();
+		stopServer();
+	}
+	
+	Board board;
+	Stack stack;
+	
+	private void createGameEnviroment() {
+		numberOfPlayers = connections.size();
+		for (int i = 0; i < connections.size(); i++) {
+			connections.get(i).setPlayerNumber(i);
+		}
+		
+	}
+	
+	private void cleanUpGame() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void stopServer() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void broadcastWinner() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void broadcastMove() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void handleNextMove() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void waitForNextMove() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void giveNextMove() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void determineFirstMove() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void giveOutStones() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	private void broadcastNames() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public void addConnection(Connection conn) {
 		connections.add(conn);
 		if (connections.size() == Controller.MAX_PLAYERS) {
@@ -27,23 +109,12 @@ public class Server extends Thread {
 		}
 	}
 	
-	public void run() { //TODO starts the game
-		try {
-			this.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("[SERVER]: Sending Message"); //TODO
-		sendMessage(connections.get(0), "WELCOME");
-	}
-	
 	public void processMessage(Connection conn, String msg) {
 		int playerNumber = conn.getPlayterNumber();
 		Scanner reader = new Scanner(msg);
 		String command = reader.next();
 		if (command.equals("HELLO")) {
-			System.out.println("HELLO"); //TODO
+			sendMessage(conn, "WELCOME");
 		} else if (command.equals("MOVE")) {
 			System.out.println("MOVE"); //TODO
 		} else if (command.equals("SWAP")) {
@@ -52,7 +123,7 @@ public class Server extends Thread {
 	}
 	
 	public void sendMessage(Connection conn, String msg) {
-		System.out.println("[SERVER]: Sending Message (2)"); //TODO
+		System.out.println("[SERVER]: Sending message: \"" + msg + "\"");
 		conn.sendString(msg);
 	}
 

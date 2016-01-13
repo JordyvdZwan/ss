@@ -39,10 +39,8 @@ public class Connection extends Thread {
 	
 	public void sendString(String msg) {
 		try {
-			System.out.println("[SERVER]: Sending Message (3)"); //TODO
 			out.write(msg + "\n");
 			out.flush();
-			System.out.println("[SERVER]: Sending Message (3)"); //TODO
 		} catch (IOException e) {
 			lossOfConnection();
 		}
@@ -72,7 +70,15 @@ public class Connection extends Thread {
 	}
 	
 	public void lossOfConnection() {
-		//TODO implement
+		try {
+			active = false;
+			in.close();
+			out.close();
+			sock.close();
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+		//TODO need to notify parent
 	}
 	
 	public void setPlayerNumber(int playerNumberArg) {

@@ -1,5 +1,6 @@
 package view;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 
 import model.*;
@@ -34,7 +35,7 @@ public class TUI implements UI {
 		return null;
 	}
 	
-	public String getHost() {
+	public InetAddress getHost() {
 		// TODO
 		return null;
 	}

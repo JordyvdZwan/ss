@@ -35,6 +35,6 @@ public class Connector extends Thread {
 	}
 	
 	public void lossOfConnection(Exception e) {
-		System.out.println(e.getMessage());
+		System.out.println(e.getMessage()); //TODO
 	}
 }
