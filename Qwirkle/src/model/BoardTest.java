@@ -2,10 +2,7 @@ package model;
 
 import org.junit.Before;
 import org.junit.Test;
-import model.Board;
-import model.Block;
-import model.PlayMove;
-import model.Move;
+import model.*;
 import view.TUI;
 
 import static org.junit.Assert.assertEquals;
@@ -68,12 +65,16 @@ public class BoardTest {
 	public void TestMultipeScore() {
 		ArrayList<PlayMove> multipleMove = new ArrayList<PlayMove>();
 		ArrayList<PlayMove> singleMove = new ArrayList<PlayMove>();
+		ArrayList<PlayMove> ymove = new ArrayList<PlayMove>();
 		PlayMove move = new PlayMove(new Block(Color.PURPLE, Shape.STAR), 34, 69);
 		PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 34, 65);
 		PlayMove move2 = new PlayMove(new Block(Color.YELLOW, Shape.CIRCLE), 34 ,66);
 		PlayMove move3 = new PlayMove(new Block(Color.GREEN, Shape.DIAMOND), 34, 67);
 		PlayMove move4 = new PlayMove(new Block(Color.BLUE, Shape.CROSS), 34, 68);
+		PlayMove move5 = new PlayMove(new Block(Color.RED, Shape.CROSS), 33, 66);
 		singleMove.add(move1);
+		ymove.add(move5);
+		ymove.add(move2);
 		multipleMove.add(move);
 		multipleMove.add(move1);
 		multipleMove.add(move2);
@@ -81,6 +82,7 @@ public class BoardTest {
 		multipleMove.add(move4);
 		assertEquals(5, board.legitMoveScore(multipleMove));
 		assertEquals(1, board.legitMoveScore(singleMove));
+		assertEquals(2, board.legitMoveScore(ymove));
 		board.setField(35, 66, new Block(Color.BLUE, Shape.CROSS));
 		board.setField(35, 65, new Block(Color.BLUE, Shape.DIAMOND));
 		assertEquals(9, board.legitMoveScore(multipleMove));

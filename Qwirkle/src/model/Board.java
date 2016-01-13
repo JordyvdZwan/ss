@@ -6,7 +6,6 @@ public class Board {
 	private List<Block> hand;
 	private Block[][] blocks;
 	private final static int DIM = 183;
-	private int score = 0;
 	
 	public static final int boardSize = (93*2)+1;
 	
@@ -21,7 +20,7 @@ public class Board {
 	
 	// A move is not legal if the block is placed next to a line it does not belong to.
 	public boolean isLegalMove(PlayMove move) {
-		return isLegalXRow(move) && isLegalYRow(move) && !isLonelyStone(move);
+		return isLegalXRow(move) && isLegalYRow(move) && !isLonelyStone(move) && isEmptyField(move.x, move.y);
 	}
 	
 	

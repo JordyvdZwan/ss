@@ -11,6 +11,16 @@ public class TUI implements UI {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public String getCommand() {
+		// TODO
+		return null;
+	}
+	
+	public String getChoiceServerClient() {
+		// TODO
+		return null;
+	}
+	
 	public void displayBoard(Board board) {
 		// TODO
 	} 
