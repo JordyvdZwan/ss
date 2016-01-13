@@ -95,11 +95,16 @@ public class BoardTest {
 		PlayMove move2 = new PlayMove(new Block(Color.YELLOW, Shape.CIRCLE), 34 ,66);
 		PlayMove move3 = new PlayMove(new Block(Color.GREEN, Shape.DIAMOND), 34, 66);
 		PlayMove move4 = new PlayMove(new Block(Color.BLUE, Shape.DIAMOND), 33, 65);
+		PlayMove move5 = new PlayMove(new Block(Color.PURPLE, Shape.CROSS), 35, 65);
+		PlayMove move6 = new PlayMove(new Block(Color.YELLOW, Shape.SQUARE), 34,64);
 		assertFalse(board.isLegalMove(move1));
 		board.setField(34, 65, (new Block(Color.GREEN, Shape.CLOVER)));
+		assertFalse(board.isLegalMove(move1));
 		assertFalse(board.isLegalMove(move2));
 		assertTrue(board.isLegalMove(move3));
 		assertFalse(board.isLegalMove(move4));
+		assertFalse(board.isLegalMove(move5));
+		assertFalse(board.isLegalMove(move6));
 	}
 	
 	@Test
