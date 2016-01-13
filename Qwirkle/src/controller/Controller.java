@@ -37,7 +37,7 @@ public class Controller extends Thread{
 		try {
 			Socket sock;
 			InetAddress address;
-			address = InetAddress.getByName("127.0.0.1");
+			address = InetAddress.getByName("192.168.2.10");
 			int port = 2727;
 			sock = new Socket(address, port);
 			System.out.println("creating client");
