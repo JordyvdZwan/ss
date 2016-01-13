@@ -128,6 +128,10 @@ public class Board {
 		blocks[x][y] = block;
 	}
 	
+	public void emptyField(int x, int y) {
+		blocks[x][y] = null;
+	}
+	
 	//shows the stone on the board
     public Block getField(int x, int y) {
         return blocks[x][y];
@@ -202,6 +206,18 @@ public class Board {
 		}
     	return scorex + scorey + 1;
     }
+    
+    public int legitMoveScore(List<PlayMove> move) {
+    	for (int i = 0; i < move.size() - 1; i++) {
+    		setField(move.get(i).x, move.get(i).y, move.get(i).block);
+    	}
+    	int result = moveScore(move.get(move.size() - 1));
+    	for (int j = 0; j < move.size() - 1; j++) {
+    	    emptyField(move.get(j).x, move.get(j).y);
+    	}		
+    	return result;
+
+    } 
 	
     public int index(int x, int y) {
     	return (x * DIM) + y;
@@ -247,10 +263,10 @@ public class Board {
     }
     
     //keeps track of the score of the players
-    public int playerScore(PlayMove move) { 
-    	score = score + moveScore(move);
-    	return score;
-    }
+//    public int playerScore(PlayMove move) { 
+//    	score = score + moveScore(move);
+//    	return score;
+//    }
     
     //checks if Xrow is empty
     public boolean emptyXRow(int x) {
@@ -277,12 +293,20 @@ public class Board {
     }
     
     //sets the move on the board, gives the player points and returns the point for this particular move 
-    public void makeMove(PlayMove move[]) {
-    	for (int i = 0; i < move.length; i ++) {
-    		if (isLegalMove(move[i])) {
-    			setField(move[i].x, move[i].y, move[i].block);
-    			removeFromHand(move[i].block);
+    public void makeMove(List<PlayMove> move) { //TODO
+    	for (int i = 0; i < move.size(); i ++) {
+    		if (isLegalMove(move.get(i))) {
+    			setField(move.get(i).x, move.get(i).y, move.get(i).block);
+    			removeFromHand(move.get(i).block);
+    			legitMoveScore(move);
     		}
+    	} 
+    }
+    
+    public void makeSwap(List<PlayMove> move) {
+    	// TODO
+    	for (int i = 0; i < move.size(); i ++) {
+    		removeFromHand(move.get(i).block);
     	}
     }
     
