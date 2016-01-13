@@ -12,6 +12,7 @@ public interface UI {
 	public int getPort();
 	public String getUserName();
 	public String getChoiceServerClient();
+	public String getCommand();
 	
 	
 	

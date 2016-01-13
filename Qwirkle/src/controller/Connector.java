@@ -12,20 +12,21 @@ public class Connector extends Thread {
 	public Connector(Server serverArg, int portArg) {
 		server = serverArg;
 		port = portArg;
+		this.start();
 	}
 	
 	public void run() {
     	ServerSocket serverSocket = null;
     	try {
+    		System.out.println("[SERVER]: starting server socket"); //TODO
     		serverSocket = new ServerSocket(port);
     		while (true) {
     			Socket sock = serverSocket.accept();
     			Connection connection = new Connection(server, sock);
-    			connection.start();
 				server.addConnection(connection);
     		}
     	} catch (IOException e) {
-    		lossOfConnection();
+    		lossOfConnection(e);
     	}
 	}
 	
@@ -33,7 +34,7 @@ public class Connector extends Thread {
 		server = serverArg;
 	}
 	
-	public void lossOfConnection() {
-		//TODO implement
+	public void lossOfConnection(Exception e) {
+		System.out.println(e.getMessage());
 	}
 }

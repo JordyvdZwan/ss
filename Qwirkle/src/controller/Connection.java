@@ -39,8 +39,10 @@ public class Connection extends Thread {
 	
 	public void sendString(String msg) {
 		try {
+			System.out.println("[SERVER]: Sending Message (3)"); //TODO
 			out.write(msg);
 			out.flush();
+			System.out.println("[SERVER]: Sending Message (3)"); //TODO
 		} catch (IOException e) {
 			lossOfConnection();
 		}
@@ -57,8 +59,10 @@ public class Connection extends Thread {
 	public void run() {
 		while (active) {
 			try {
-				String command = in.readLine();
-				if (command != null) {
+				System.out.println("Listening"); //TODO
+				String command;
+				while ((command= in.readLine()) != null) {
+					System.out.println("Heard"); //TODO
 					sendStringToParent(command);
 				}
 			} catch (IOException e) {
