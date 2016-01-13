@@ -40,7 +40,7 @@ public class Connection extends Thread {
 	public void sendString(String msg) {
 		try {
 			System.out.println("[SERVER]: Sending Message (3)"); //TODO
-			out.write(msg);
+			out.write(msg + "\n");
 			out.flush();
 			System.out.println("[SERVER]: Sending Message (3)"); //TODO
 		} catch (IOException e) {
@@ -61,7 +61,7 @@ public class Connection extends Thread {
 			try {
 				System.out.println("Listening"); //TODO
 				String command;
-				while ((command= in.readLine()) != null) {
+				while ((command = in.readLine()) != null) {
 					System.out.println("Heard"); //TODO
 					sendStringToParent(command);
 				}

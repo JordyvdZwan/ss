@@ -43,11 +43,11 @@ public class Server extends Thread {
 		Scanner reader = new Scanner(msg);
 		String command = reader.next();
 		if (command.equals("HELLO")) {
-			
+			System.out.println("HELLO"); //TODO
 		} else if (command.equals("MOVE")) {
-			
+			System.out.println("MOVE"); //TODO
 		} else if (command.equals("SWAP")) {
-			
+			System.out.println("SWAP"); //TODO
 		} 
 	}
 	

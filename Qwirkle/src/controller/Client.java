@@ -17,6 +17,7 @@ public class Client {
 		conn = new Connection(this, sockArg);
 		System.out.println("[CLIENT]: connection created");
 		
+		conn.sendString("HELLO");
 	}
 	
 	public void processMessage(Connection conn, String msg) {
