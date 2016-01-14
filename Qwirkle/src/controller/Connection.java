@@ -3,19 +3,22 @@ package controller;
 import java.io.*;
 import java.net.*;
 
+import model.NetworkPlayer;
+
 public class Connection extends Thread {
 	private Server server;
 	private Client client;
 	private Socket sock;
 	private boolean active = true;
 	
-	private int playerNumber;
+	private NetworkPlayer player;
 	
 	
 	private BufferedReader in;
 	private BufferedWriter out;
 	
-	public Connection(Server serverArg, Socket sockArg) {
+	public Connection(Server serverArg, Socket sockArg, NetworkPlayer playerArg) {
+		player = playerArg;
 		server = serverArg;
 		sock = sockArg;
 		openCommunication();
@@ -39,13 +42,22 @@ public class Connection extends Thread {
 	
 	public void sendString(String msg) {
 		try {
-			System.out.println("[SERVER]: Sending Message (3)"); //TODO
-			out.write(msg);
+			displayStringToConsole(msg); //TODO needs to be removed
+			out.write(msg + "\n");
 			out.flush();
-			System.out.println("[SERVER]: Sending Message (3)"); //TODO
 		} catch (IOException e) {
 			lossOfConnection();
 		}
+	}
+	
+	private void displayStringToConsole(String msg) {
+		String prefix = "";
+		if (player != null) {
+			prefix = "[" + player.getName() + "]: ";
+		} else {
+			prefix = "[SERVER]: ";
+		}
+		System.out.println(prefix + msg);
 	}
 	
 	public void sendStringToParent(String msg) {
@@ -61,7 +73,7 @@ public class Connection extends Thread {
 			try {
 				System.out.println("Listening"); //TODO
 				String command;
-				while ((command= in.readLine()) != null) {
+				while ((command = in.readLine()) != null) {
 					System.out.println("Heard"); //TODO
 					sendStringToParent(command);
 				}
@@ -72,14 +84,19 @@ public class Connection extends Thread {
 	}
 	
 	public void lossOfConnection() {
-		//TODO implement
+		try {
+			active = false;
+			in.close();
+			out.close();
+			sock.close();
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+		//TODO need to notify parent
 	}
 	
-	public void setPlayerNumber(int playerNumberArg) {
-		playerNumber = playerNumberArg;
+	public NetworkPlayer getPlayer() {
+		return player;
 	}
 	
-	public int getPlayterNumber() {
-		return playerNumber;
-	}
 }

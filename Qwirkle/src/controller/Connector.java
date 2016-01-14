@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import model.NetworkPlayer;
+
 public class Connector extends Thread {
 
 	Server server;
@@ -22,7 +24,7 @@ public class Connector extends Thread {
     		serverSocket = new ServerSocket(port);
     		while (true) {
     			Socket sock = serverSocket.accept();
-    			Connection connection = new Connection(server, sock);
+    			Connection connection = new Connection(server, sock, new NetworkPlayer());
 				server.addConnection(connection);
     		}
     	} catch (IOException e) {
@@ -35,6 +37,6 @@ public class Connector extends Thread {
 	}
 	
 	public void lossOfConnection(Exception e) {
-		System.out.println(e.getMessage());
+		System.out.println(e.getMessage()); //TODO
 	}
 }

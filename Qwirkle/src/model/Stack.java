@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -7,7 +8,8 @@ public class Stack {
 	private List<Block> stack;
 	Board board = new Board();
 	
-	public List<Block> Stack() {
+	public Stack() {
+		stack = new ArrayList<Block>();
 		Block block1 = new Block(Color.RED, Shape.CIRCLE);
 		Block block2 = new Block(Color.RED, Shape.CLOVER);
 		Block block3 = new Block(Color.RED, Shape.SQUARE);
@@ -83,20 +85,25 @@ public class Stack {
 			stack.add(block1);
 		}
 		shuffleStack();
-		return stack;
 	}
-	
 	
 	public void shuffleStack() {
 		Collections.shuffle(stack);
 	}
 	
+	public void giveBack(List<Block> blocks) {
+		for(int i = 0; i < blocks.size(); i++) {
+			stack.add(blocks.get(i));
+		}
+	}
+	
 	public List<Block> give(int x) {
+		List<Block> hand = new ArrayList<Block>();
 		for(int i = 0; i < x; i++) {
-			board.addToHand(stack.get(i));
+			hand.add(stack.get(i));
 			stack.remove(i);
 		}
-		return stack;
+		return hand;
 	}
 
 }

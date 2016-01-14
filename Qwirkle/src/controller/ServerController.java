@@ -8,11 +8,13 @@ public class ServerController {
 	Connector connector;
 	List<Server> serverList;
 	UI ui;
+	int aiThinkTime;
 	
-	public ServerController(int portArg, UI uiArg) {
+	public ServerController(int portArg, UI uiArg, int aiThinkTimeArg) {
 		ui = uiArg;
+		aiThinkTime = aiThinkTimeArg;
 		serverList = new ArrayList<Server>();
-		Server server = new Server(this);
+		Server server = new Server(this, aiThinkTime);
 		serverList.add(server);
 		
 		connector = new Connector(server, portArg);
@@ -22,7 +24,7 @@ public class ServerController {
 	
 	public void nextGame() {
 		(serverList.get(serverList.size() - 1)).start();
-		Server server = new Server(this);
+		Server server = new Server(this, aiThinkTime);
 		connector.newServer(server);
 		serverList.add(server);
 	}

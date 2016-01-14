@@ -9,6 +9,7 @@ public class Block {
 		this.shape = shape;
 	}
 	
+
 	 //prints out a block
     public String toString() {
     	char color = 'E';
@@ -52,5 +53,61 @@ public class Block {
     	return color + "" + shape;
     }
 
+	public static boolean isValidBlockString(String blockString) {
+		boolean result = true;
+		char[] chars = blockString.toCharArray();
+		if (chars.length == 2) {
+			if (!(chars[0] == 'R' || 
+					chars[0] == 'O' ||
+						chars[0] == 'B' ||
+							chars[0] == 'Y' ||
+								chars[0] == 'G' ||
+									chars[0] == 'P')) {
+				result = false;
+			} else {
+				if (!(chars[1] == 'o' || 
+						chars[1] == 'd' ||
+							chars[1] == 's' ||
+								chars[1] == 'c' ||
+									chars[1] == 'x' ||
+										chars[1] == '*')) {
+					result = false;
+				}
+			}
+		} else {
+			result = false;
+		}
+		return result;
+	}
+	
+	public Block(char color, char shape) {
+		if (color == 'R') {
+			this.color = Color.RED;
+		} else if (color == 'O') {
+			this.color = Color.ORANGE;
+		} else if (color == 'B') {
+			this.color = Color.BLUE;
+		} else if (color == 'Y') {
+			this.color = Color.YELLOW;
+		} else if (color == 'G') {
+			this.color = Color.GREEN;
+		} else if (color == 'P') {
+			this.color = Color.PURPLE;
+		}
+		
+		if (shape == 'o') {
+			this.shape = Shape.CIRCLE;
+		} else if (shape == 'd') {
+			this.shape = Shape.DIAMOND;
+		} else if (shape == 's') {
+			this.shape = Shape.SQUARE;
+		} else if (shape == 'c') {
+			this.shape = Shape.CLOVER;
+		} else if (shape == 'x') {
+			this.shape = Shape.CROSS;
+		} else if (shape == '*') {
+			this.shape = Shape.STAR;
+		}
+	}
 	
 }

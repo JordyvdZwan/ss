@@ -1,5 +1,6 @@
 package view;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 
 import model.*;
@@ -14,6 +15,15 @@ public class TUI implements UI {
 	public String getCommand() {
 		// TODO
 		return null;
+	}
+	
+	public int getAIThinkTime() {
+		// TODO
+		return 0;
+	}
+	
+	public void errorOccured(String msg) {
+		// TODO
 	}
 	
 	public String getChoiceServerClient() {
@@ -34,7 +44,7 @@ public class TUI implements UI {
 		return null;
 	}
 	
-	public String getHost() {
+	public InetAddress getHost() {
 		// TODO
 		return null;
 	}
