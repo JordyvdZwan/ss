@@ -23,6 +23,25 @@ public class Board {
 		return isLegalXRow(move) && isLegalYRow(move) && !isLonelyStone(move) && isEmptyField(move.x, move.y);
 	}
 	
+	public boolean isLegalMoveList(List<PlayMove> moves) {
+		Board board = deepCopy(this);
+		int j = 0;
+		boolean legal = true;
+		while(moves.size() > 0) {
+			for(int i = 0; i < moves.size(); i++) {
+				if(isLegalMove(moves.get(i))) {
+					board.setField(moves.get(i).x, moves.get(i).y, moves.get(i).block);
+					j++;
+				}
+				if(j == 0) {
+					legal = false;
+					break;
+				}
+			}
+		}
+		return legal;
+	}
+	
 	
 	//Checks for each block in the x row if the color of shape of the blocks match the moveblock !!!!!! not final
 	public boolean isLegalXRow(PlayMove move) {
