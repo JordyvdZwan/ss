@@ -25,8 +25,9 @@ public class Controller extends Thread{
 	
 	@SuppressWarnings("unused")
 	public static void startServer() {
+		int aiThinkTime = ui.getAIThinkTime();
 		int port = ui.getPort();
-		ServerController serverController = new ServerController(port, ui);
+		ServerController serverController = new ServerController(port, ui, aiThinkTime);
 	}
 	
 	@SuppressWarnings("unused")
@@ -37,9 +38,10 @@ public class Controller extends Thread{
 			
 			address = ui.getHost();
 			int port = ui.getPort();
+			String userName = ui.getUserName();
 			
 			sock = new Socket(address, port);
-			Client client = new Client(ui, sock);
+			Client client = new Client(ui, sock, userName);
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
 		}

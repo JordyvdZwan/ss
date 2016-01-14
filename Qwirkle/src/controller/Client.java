@@ -11,11 +11,9 @@ public class Client {
 	private UI ui;
 	private Connection conn;
 	
-	public Client(UI uiArg, Socket sockArg) {
-		System.out.println("[CLIENT]: creating connection");
+	public Client(UI uiArg, Socket sockArg, String userNameArg) {
 		ui = uiArg;
 		conn = new Connection(this, sockArg);
-		System.out.println("[CLIENT]: connection created");
 		
 		conn.sendString("HELLO");
 	}

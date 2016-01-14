@@ -278,7 +278,7 @@ public class Board {
     	for(int i = 0; i < hand.size(); i++) {
     		for(int j = 0; j < DIM; j++) {
     			for(int k = 0; k < DIM; k++) {
-    				PlayMove move = new PlayMove(hand.get(i), j, k);
+    				PlayMove move = new PlayMove(hand.get(i), j, k, new NetworkPlayer()); //TODO ?
     				if (isLegalMove(move)) {
     					illegal = false;
     					break;

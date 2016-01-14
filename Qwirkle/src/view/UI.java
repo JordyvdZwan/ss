@@ -16,6 +16,7 @@ public interface UI {
 	public String getUserName();
 	public String getChoiceServerClient();
 	public String getCommand();
+	public int getAIThinkTime();
 	public void errorOccured(String msg);
 	
 	
