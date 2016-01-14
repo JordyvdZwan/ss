@@ -2,14 +2,10 @@ package model;
 
 import org.junit.Before;
 import org.junit.Test;
-import model.*;
-import view.TUI;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.List;
 import java.util.ArrayList;
 
 public class BoardTest {
@@ -108,6 +104,26 @@ public class BoardTest {
 	}
 	
 	@Test
+	public void TestLegallyMoves() {
+		ArrayList<PlayMove> multipleMove = new ArrayList<PlayMove>();
+		PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 34, 65, new NetworkPlayer());
+		PlayMove move2 = new PlayMove(new Block(Color.YELLOW, Shape.CLOVER), 34 ,66, new NetworkPlayer());
+		PlayMove move3 = new PlayMove(new Block(Color.RED, Shape.CLOVER), 34, 67, new NetworkPlayer());
+		PlayMove move4 = new PlayMove(new Block(Color.BLUE, Shape.CLOVER), 35, 68, new NetworkPlayer());
+		PlayMove move5 = new PlayMove(new Block(Color.PURPLE, Shape.CLOVER), 34, 63, new NetworkPlayer());
+		PlayMove move6 = new PlayMove(new Block(Color.ORANGE, Shape.CLOVER), 34,64, new NetworkPlayer());
+		multipleMove.add(move5);
+		multipleMove.add(move1);
+		multipleMove.add(move2);
+		multipleMove.add(move3);
+		multipleMove.add(move4);
+		multipleMove.add(move6);
+		assertFalse(board.isLegalMoveList(multipleMove));
+		board.setField(33, 66, new Block(Color.YELLOW, Shape.DIAMOND));
+		assertFalse(board.isLegalMoveList(multipleMove));
+	}
+	
+	@Test
 	public void TestIndex() {
 		assertEquals(board.index(0, 1), 1);
 		assertEquals(board.index(27, 32), 4973);
@@ -159,7 +175,7 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void TestToString() {
+	public void TestBlockToString() {
 		Block block1 = new Block(Color.RED, Shape.SQUARE);
 		Block block2 = new Block(Color.BLUE, Shape.CIRCLE);
 		Block block3 = new Block(Color.GREEN, Shape.CLOVER);

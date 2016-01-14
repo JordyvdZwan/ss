@@ -7,9 +7,15 @@ import model.*;
 
 public class TUI implements UI {
 	private static final int DIM = 182;
+	private int thinkTime;
+	private Board board;
+	private Player player;
+	private int Port;
 
-	public TUI() {
-		// TODO Auto-generated constructor stub
+	public TUI(Board board, int thinktime, int Port) {
+		this.thinkTime = thinktime;
+		this.board = board;
+		this.Port = Port;
 	}
 	
 	public String getCommand() {
@@ -18,12 +24,11 @@ public class TUI implements UI {
 	}
 	
 	public int getAIThinkTime() {
-		// TODO
-		return 0;
+		return thinkTime;
 	}
 	
 	public void errorOccured(String msg) {
-		// TODO
+		System.out.println(msg);
 	}
 	
 	public String getChoiceServerClient() {
@@ -31,12 +36,12 @@ public class TUI implements UI {
 		return null;
 	}
 	
-	public void displayBoard(Board board) {
-		// TODO
+	public void displayBoard(Board board) { // TODO
+		board.toString();
 	} 
 	
 	public void displayScore() {
-		// TODO
+		System.out.println(player.getScore());
 	}
 	
 	public Move getMove() {
@@ -50,36 +55,14 @@ public class TUI implements UI {
 	}
 	
 	public int getPort() {
-		// TODO
-		return 0;
+		return Port;
 		
 	}
 	
 	public String getUserName() {
-		// TODO
-		return null;
+		return player.getName();
 	}
 	
-    //prints out the board
-    public String toString(Board board) {
-    	// TODO
-    	String row = "";
-    	String colum = "";
-    	String index = "";
-    	for (int i = 0; i < DIM; i++) {
-    		index = index + i;
-    	}
-    	for (int i = 0; i < DIM; i++) {
-    		for (int j = 0; j < DIM; j++) {
-    		if(board.getField(i,j) != null) {
-    			row = row + (board.getField(i,j).toString());
-    			}
-    		}
-    		colum = i + row + "/n";
-    	}
-    	return index + colum;
-    }
-    
     public ArrayList<String> handToString(ArrayList<Block> hand) {
     	ArrayList<String> handstring = null;
     	for (int i = 0; i < hand.size(); i++) {
@@ -87,7 +70,4 @@ public class TUI implements UI {
     	}
     	return handstring;
     }
-    
-   	
-
 }

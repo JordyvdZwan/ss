@@ -6,6 +6,7 @@ public class Board {
 	private List<Block> hand;
 	private Block[][] blocks;
 	private final static int DIM = 183;
+	private final static int MID = 92;
 	
 	public static final int boardSize = (93*2)+1;
 	
@@ -23,20 +24,22 @@ public class Board {
 		return isLegalXRow(move) && isLegalYRow(move) && !isLonelyStone(move) && isEmptyField(move.x, move.y);
 	}
 	
-	public boolean isLegalMoveList(List<PlayMove> moves) {
+	public boolean isLegalMoveList(List<PlayMove> moveslist) {
 		Board board = deepCopy(this);
-		int j = 0;
+		List<PlayMove> moves = moveslist;
 		boolean legal = true;
 		while(moves.size() > 0) {
+			int j = 0;
 			for(int i = 0; i < moves.size(); i++) {
 				if(isLegalMove(moves.get(i))) {
 					board.setField(moves.get(i).x, moves.get(i).y, moves.get(i).block);
-					j++;
+					j = 1;
+					moves.remove(i);
+					}
 				}
-				if(j == 0) {
-					legal = false;
-					break;
-				}
+			if(j == 0) {
+				legal = false;
+				break;
 			}
 		}
 		return legal;
@@ -316,12 +319,6 @@ public class Board {
     	hand.remove(block);
     }
     
-    //keeps track of the score of the players
-//    public int playerScore(PlayMove move) { 
-//    	score = score + moveScore(move);
-//    	return score;
-//    }
-    
     //checks if Xrow is empty
     public boolean emptyXRow(int x) {
     	boolean empty = true;
@@ -347,7 +344,7 @@ public class Board {
     }
     
     //sets the move on the board, gives the player points and returns the point for this particular move 
-    public void makeMove(List<PlayMove> move) { //TODO
+    public void makeMove(List<PlayMove> move) { 
     	for (int i = 0; i < move.size(); i ++) {
     		if (isLegalMove(move.get(i))) {
     			legitMoveScore(move);
@@ -358,10 +355,30 @@ public class Board {
     }
     
     public void makeSwap(List<PlayMove> move) {
-    	// TODO
     	for (int i = 0; i < move.size(); i ++) {
     		removeFromHand(move.get(i).block);
     	}
+    }
+    
+    //prints out the board
+    public String toString(Board board) {
+    	String row = "";
+    	String colum = "";
+    	String index = "";
+    	for (int i = 0; i < DIM; i++) {
+    		index = index + " " + i;
+    	}
+    	for (int i = 0; i < DIM; i++) {
+    		for (int j = 0; j < DIM; j++) {
+    			if(board.getField(i,j) != null) {
+    				row = row + (board.getField(i,j).toString());
+    			} else {
+        			row = row + "_";
+    			} 
+    		}
+    		colum = i + " " + row + "/n";
+    	}
+    	return index + colum;
     }
     
 }
