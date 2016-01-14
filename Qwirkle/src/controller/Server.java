@@ -112,10 +112,23 @@ public class Server extends Thread {
 	private void swapStones(Connection conn, List<Move> moves, int amount) {
 		List<Block> blocks = stack.give(amount);
 		conn.getPlayer().swapHand(moves, blocks);
+		String blockString = "";
+		for (Block block : blocks) {
+			blockString.concat(" " + block.toString());
+		}
+		sendMessage(conn, "NEW" + blocks);
 	}
 	
 	private void broadcastPlayMove(List<PlayMove> playMoves) {
-		
+		String moves = "";
+		for (PlayMove move : playMoves) {
+			moves.concat(" " + move.getBlock().toString() + " " + move.y + " " + move.x);
+		}
+		broadcastMessage("TURN " + playMoves.get(0) + moves);
+	}
+	
+	private void broadcastSwapMove(List<SwapMove> swapMoves) {
+		broadcastMessage("TURN " + swapMoves.get(0) + " empty");
 	}
 	
 	private void handleNextMove(List<Move> moves) {
@@ -130,9 +143,12 @@ public class Server extends Thread {
 				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command!");
 			}
 		} else {
-			
-			
-			
+			List<SwapMove> swapMoves = toSwapMove(moves);
+			if (stack.isValidSwap(swapMoves)) {
+				
+			} else {
+				
+			}
 		}
 	}
 
