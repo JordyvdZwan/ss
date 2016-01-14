@@ -16,6 +16,16 @@ public class NetworkPlayer implements Player{
 		hand = new ArrayList<Block>();
 	}
 	
+	public void swapHand(List<Move> moves, List<Block> blocks) {
+		for (Move move : moves) {
+			hand.remove(move.getBlock());
+		}
+		for (Block block : blocks) {
+			hand.add(block);
+		}
+		
+	}
+	
 	@Override
 	public int getScore() {
 		return score;

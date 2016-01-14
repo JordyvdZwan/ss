@@ -87,6 +87,12 @@ public class Stack {
 		shuffleStack();
 	}
 	
+	public void isValidSwap(List<SwapMove> swaps) {
+		if (swaps.size() <= stack.size()) {
+			
+		}
+	}
+	
 	public void shuffleStack() {
 		Collections.shuffle(stack);
 	}

@@ -13,6 +13,10 @@ public class PlayMove implements Move {
 		this.setPlayer(player);
 	}
 
+	public Block getBlock() {
+		return block;
+	}
+	
 	public Player getPlayer() {
 		return player;
 	}
@@ -21,4 +25,11 @@ public class PlayMove implements Move {
 		this.player = player;
 	}
 
+	public String toString() {
+		String result = "";
+		result.concat(block.toString());
+		result.concat(" " + y);
+		result.concat(" " + x);
+		return result;
+	}
 }

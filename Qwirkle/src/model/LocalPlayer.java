@@ -81,4 +81,10 @@ public class LocalPlayer implements Player {
 		
 	}
 
+	@Override
+	public void swapHand(List<Move> moves, List<Block> blocks) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

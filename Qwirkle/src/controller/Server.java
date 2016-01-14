@@ -82,17 +82,58 @@ public class Server extends Thread {
 		broadcastMessage("WINNER " + win);
 	}
 
+	public boolean isInstanceOfPlaymoves(List<Move> moves) {
+		boolean result = true;
+		for (Move move : moves) {
+			if (!(move instanceof PlayMove)) {
+				result = false;
+				break;
+			}
+		}
+		return result;
+	}
+	
+	public List<PlayMove> toPlayMove(List<Move> moves) {
+		List<PlayMove> result = new ArrayList<PlayMove>();
+		for (Move move : moves) {
+			result.add((PlayMove) move);
+		}
+		return result;
+	}
+	
+	public List<SwapMove> toSwapMove(List<Move> moves) {
+		List<SwapMove> result = new ArrayList<SwapMove>();
+		for (Move move : moves) {
+			result.add((SwapMove) move);
+		}
+		return result;
+	}
+	
+	private void swapStones(Connection conn, List<Move> moves, int amount) {
+		List<Block> blocks = stack.give(amount);
+		conn.getPlayer().swapHand(moves, blocks);
+	}
+	
+	private void broadcastPlayMove(List<PlayMove> playMoves) {
+		
+	}
+	
 	private void handleNextMove(List<Move> moves) {
-		board.is
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		if (isInstanceOfPlaymoves(moves)) {
+			List<PlayMove> playMoves = toPlayMove(moves);
+			if (board.isLegalMoveList(playMoves)) {
+				board.makeMove(playMoves);
+				swapStones(playMoves.get(0).getPlayer().getConnection(), moves, playMoves.size());
+				broadcastPlayMove(playMoves);
+			} else {
+				Connection conn = moves.get(0).getPlayer().getConnection();
+				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command!");
+			}
+		} else {
+			
+			
+			
+		}
 	}
 
 	private List<Move> waitForNextMove() {
@@ -221,7 +262,7 @@ public class Server extends Thread {
 		numberOfPlayers--;
 		broadcastMessage("KICK " + playerNumber + " " + blocks.size() + " " + reason);
 		if (numberOfPlayers == 1) {
-			playerWins(connections.get(0));
+			playerWins(connections.get(0).getPlayer().getNumber());
 		}
 	}
 	
