@@ -166,11 +166,11 @@ public class BoardTest {
 		Block block4 = new Block(Color.ORANGE, Shape.CROSS);
 		Block block5 = new Block(Color.PURPLE, Shape.DIAMOND);
 		Block block6 = new Block(Color.YELLOW, Shape.STAR);
-		assertEquals(TUI.blockToString(block1), "Rs");
-		assertEquals(TUI.blockToString(block2), "Bo");
-		assertEquals(TUI.blockToString(block3), "Gc");
-		assertEquals(TUI.blockToString(block4), "Ox");
-		assertEquals(TUI.blockToString(block5), "Pd");
-		assertEquals(TUI.blockToString(block6), "Y*");
+		assertEquals(block1.toString(), "Rs");
+		assertEquals(block2.toString(), "Bo");
+		assertEquals(block3.toString(), "Gc");
+		assertEquals(block4.toString(), "Ox");
+		assertEquals(block5.toString(), "Pd");
+		assertEquals(block6.toString(), "Y*");
 	}
 }
