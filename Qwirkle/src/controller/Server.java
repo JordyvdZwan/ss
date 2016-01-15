@@ -5,6 +5,9 @@ import model.Stack;
 import view.*;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CountDownLatch;
+
+import org.hamcrest.Condition;
 
 
 public class Server extends Thread {
@@ -22,7 +25,9 @@ public class Server extends Thread {
 	private int aiThinkTime;
 	private int winner;
 	
-	private boolean nextMoveAvailable = false;
+	private CountDownLatch nextMoveAvailable = new CountDownLatch(1);
+	
+	private boolean moveAvailable = false;
 	private Queue<List<Move>> nextMove = new ArrayBlockingQueue<List<Move>>(1);
 	
 	public Server(ServerController controllerArg, int aiThinkTimeArg) {
@@ -69,6 +74,9 @@ public class Server extends Thread {
 	}
 
 	private void stopServer() {
+		for (Connection conn : connections) {
+			conn.lossOfConnection();
+		}
 		this.interrupt();
 	}
 
@@ -145,21 +153,24 @@ public class Server extends Thread {
 		} else {
 			List<SwapMove> swapMoves = toSwapMove(moves);
 			if (stack.isValidSwap(swapMoves)) {
-				
+				swapStones(swapMoves.get(0).getPlayer().getConnection(), moves, swapMoves.size());
+				broadcastSwapMove(swapMoves);
 			} else {
-				
+				Connection conn = moves.get(0).getPlayer().getConnection();
+				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid swap command!");
 			}
 		}
 	}
 
 	private List<Move> waitForNextMove() {
-		while (!nextMoveAvailable) {
+		while (!moveAvailable) {
 			try {
-				this.sleep(100);
+				nextMoveAvailable.await();
 			} catch (InterruptedException e) {
-				//TOD
+				//TODO
 			}
 		}
+		
 		return nextMove.poll();
 	}
 
@@ -301,8 +312,8 @@ public class Server extends Thread {
 				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid userName");
 			}
 		} else if (command.equals("MOVE")) {
-			if (!nextMoveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
-				nextMoveAvailable = true;
+			if (!moveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
+				
 				boolean cycleDone = false;				
 				List<Move> moves = new ArrayList<Move>();
 				while (reader.hasNext()) {
@@ -328,6 +339,8 @@ public class Server extends Thread {
 				}
 				if (cycleDone && !moves.isEmpty()) {
 					nextMove.add(moves);
+					moveAvailable = true;
+					nextMoveAvailable.countDown();
 				} else {
 					kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command!");
 				}
@@ -335,8 +348,8 @@ public class Server extends Thread {
 				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command, not your turn or one has already been send!");
 			}
 		} else if (command.equals("SWAP")) {
-			if (!nextMoveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
-				nextMoveAvailable = true;
+			if (!moveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
+				
 				
 				List<Move> moves = new ArrayList<Move>();
 				while (reader.hasNext()) {
@@ -349,6 +362,8 @@ public class Server extends Thread {
 				}
 				if (!moves.isEmpty()) {
 					nextMove.add(moves);
+					moveAvailable = true;
+					nextMoveAvailable.countDown();
 				} else {
 					kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid swap command!");
 				}
