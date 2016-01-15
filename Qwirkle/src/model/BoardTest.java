@@ -96,6 +96,10 @@ public class BoardTest {
 		PlayMove move4 = new PlayMove(new Block(Color.BLUE, Shape.DIAMOND), 33, 65, new NetworkPlayer());
 		PlayMove move5 = new PlayMove(new Block(Color.PURPLE, Shape.CROSS), 35, 65, new NetworkPlayer());
 		PlayMove move6 = new PlayMove(new Block(Color.YELLOW, Shape.SQUARE), 34,64, new NetworkPlayer());
+		PlayMove move7 = new PlayMove(new Block(Color.GREEN, Shape.CIRCLE), 34, 64, new NetworkPlayer());
+		PlayMove move8 = new PlayMove(new Block(Color.BLUE, Shape.CLOVER), 34, 66, new NetworkPlayer());
+		PlayMove move9 = new PlayMove(new Block(Color.BLUE, Shape.CLOVER), 34, 64, new NetworkPlayer());
+		PlayMove move10 = new PlayMove(new Block(Color.GREEN, Shape.DIAMOND), 33, 65, new NetworkPlayer());
 		assertFalse(board.isLegalMove(move1));
 		board.setField(34, 65, (new Block(Color.GREEN, Shape.CLOVER)));
 		assertFalse(board.isLegalMove(move1));
@@ -104,6 +108,10 @@ public class BoardTest {
 		assertFalse(board.isLegalMove(move4));
 		assertFalse(board.isLegalMove(move5));
 		assertFalse(board.isLegalMove(move6));
+		assertTrue(board.isLegalMove(move7));
+		assertTrue(board.isLegalMove(move8));
+		assertTrue(board.isLegalMove(move9));
+		assertTrue(board.isLegalMove(move10));
 	}
 	
 	@Test
@@ -126,6 +134,7 @@ public class BoardTest {
 		board.setField(33, 66, new Block(Color.YELLOW, Shape.DIAMOND));
 		assertFalse(board.isLegalMoveList(multipleMove));
 		multipleMove.add(move4);
+		multipleMove.remove(move5);
 		assertFalse(board.isLegalMoveList(multipleMove));
 		multipleMove.remove(move7);
 		assertTrue(board.isLegalMoveList(multipleMove));
@@ -180,6 +189,24 @@ public class BoardTest {
 		board.setField(50, 46, new Block(Color.PURPLE, Shape.SQUARE));
 		assertFalse(board.emptyXRow(50));
 		assertFalse(board.emptyYRow(46));
+	}
+	
+	@Test
+	public void TestBoard() {
+		board.setField(92, 92, new Block(Color.PURPLE, Shape.CIRCLE));
+		board.setField(92, 93, new Block(Color.PURPLE, Shape.CLOVER));
+		board.setField(92, 94, new Block(Color.PURPLE, Shape.CROSS));
+		board.setField(92, 91, new Block(Color.GREEN, Shape.DIAMOND));
+		board.setField(92, 95, new Block(Color.PURPLE, Shape.SQUARE));
+		board.setField(91, 95, new Block(Color.BLUE, Shape.STAR));
+		board.setField(90, 95, new Block(Color.GREEN, Shape.STAR));
+		board.setField(93, 91, new Block(Color.ORANGE, Shape.STAR));
+		board.setField(94, 91, new Block(Color.RED, Shape.STAR));
+		board.setField(94, 90, new Block(Color.YELLOW, Shape.STAR));
+		assertEquals(board.maxX(), 95);
+		assertEquals(board.maxY(), 96);
+		assertEquals(board.minX(), 89);
+		assertEquals(board.minY(), 89);
 	}
 	
 	@Test

@@ -3,6 +3,7 @@ package view;
 import model.*;
 
 import java.net.InetAddress;
+import java.util.List;
 
 import controller.*;
 
@@ -10,7 +11,7 @@ public interface UI {
 	public void displayBoard(Board board);
 	public void displayScore();
 	
-	public Move getMove();
+	public List<Move> getMove();
 	public InetAddress getHost();
 	public int getPort();
 	public String getUserName();

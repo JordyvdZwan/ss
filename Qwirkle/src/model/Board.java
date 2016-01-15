@@ -22,11 +22,25 @@ public class Board {
 	}
 	
 	public boolean isOnlyX(List<PlayMove> move) {
-		boolean onlyX = false;
-		if (move.size() == 1) {
-			onlyX = true;
-		} else if ()
+		boolean onlyX = true;
+		int x = move.get(0).x;
+			for (PlayMove moves: move) {
+				if (moves.x != x) {
+					onlyX = false;
+				}
+			}
 		return onlyX;
+	}
+	
+	public boolean isOnlyY(List<PlayMove> move) {
+		boolean onlyY = true;
+		int y = move.get(0).y;
+			for (PlayMove moves: move) {
+				if (moves.y != y) {
+					onlyY = false;
+				}
+			}
+		return onlyY;
 	}
 	
 	// A move is not legal if the block is placed next to a line it does not belong to.
@@ -35,22 +49,26 @@ public class Board {
 	}
 	
 	public boolean isLegalMoveList(List<PlayMove> moveslist) {
-		Board board = deepCopy(this);
-		List<PlayMove> moves = moveslist;
 		boolean legal = true;
-		while(moves.size() > 0) {
-			int j = 0;
-			for(int i = 0; i < moves.size(); i++) {
-				if(isLegalMove(moves.get(i))) {
-					board.setField(moves.get(i).x, moves.get(i).y, moves.get(i).block);
-					j = 1;
-					moves.remove(i);
+		if (isOnlyX(moveslist) || isOnlyY(moveslist)) {
+			Board board = deepCopy(this);
+			List<PlayMove> moves = moveslist;
+			while(moves.size() > 0) {
+				int j = 0;
+				for(int i = 0; i < moves.size(); i++) {
+					if(isLegalMove(moves.get(i))) {
+						board.setField(moves.get(i).x, moves.get(i).y, moves.get(i).block);
+						j = 1;
+						moves.remove(i);
+						}
 					}
+				if(j == 0) {
+					legal = false;
+					break;
 				}
-			if(j == 0) {
-				legal = false;
-				break;
 			}
+		} else {
+			legal = false;
 		}
 		return legal;
 	}
@@ -310,7 +328,7 @@ public class Board {
     	for(int i = 0; i < hand.size(); i++) {
     		for(int j = 0; j < DIM; j++) {
     			for(int k = 0; k < DIM; k++) {
-    				PlayMove move = new PlayMove(hand.get(i), j, k, new NetworkPlayer()); //TODO ?
+    				PlayMove move = new PlayMove(hand.get(i), j, k, new NetworkPlayer());
     				if (isLegalMove(move)) {
     					illegal = false;
     					break;
@@ -389,6 +407,51 @@ public class Board {
     		colum = i + " " + row + "/n";
     	}
     	return index + colum;
+    }
+    
+    public int maxX() {
+    	int maxX = 0;
+    	for (int i = 1; i < MID; i++) {
+    		if (emptyXRow(MID + i)) {
+    			maxX = MID + i;
+    			break;
+    		}
+    	}
+    	return maxX;
+    }
+    	
+    public int minX() {
+        int minX = 0;
+        for (int i = 1; i < MID; i++) {
+        	if (emptyXRow(MID - i)) {
+        		minX = MID - i;
+        		break;
+        	}
+        }
+        return minX;
+    }
+
+    	
+    public int maxY() {
+    	int maxY = 0;
+    	for (int i = 1; i < MID; i++) {
+    		if (emptyYRow(MID + i)) {
+    			maxY = MID + i;
+    			break;
+    		}
+    	}
+    	return maxY;
+    }
+
+    public int minY() {
+    	int minY = 0;
+    	for (int i = 1; i < MID; i++) {
+    		if (emptyYRow(MID - i)) {
+    			minY = MID - i;
+    			break;
+    		}
+    	}
+    	return minY;
     }
     
 }
