@@ -1,8 +1,10 @@
-package model;
+package player;
 
 import java.util.List;
 
 import controller.Connection;
+import model.Block;
+import model.Move;
 
 public interface Player {
 	public List<Move> determineMove();

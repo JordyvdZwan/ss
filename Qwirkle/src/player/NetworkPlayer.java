@@ -1,9 +1,11 @@
-package model;
+package player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import controller.Connection;
+import model.Block;
+import model.Move;
 
 public class NetworkPlayer implements Player{
 	private int score;

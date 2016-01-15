@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 
 import model.*;
+import player.Player;
 
 public class TUI implements UI {
 	private static final int DIM = 182;

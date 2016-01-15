@@ -1,5 +1,7 @@
 package model;
 
+import player.Player;
+
 public class PlayMove implements Move {
 	public Block block;
 	public int x;

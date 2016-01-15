@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import model.NetworkPlayer;
+import player.NetworkPlayer;
 
 public class Connector extends Thread {
 

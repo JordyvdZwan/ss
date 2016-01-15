@@ -2,6 +2,8 @@ package controller;
 
 import model.*;
 import model.Stack;
+import player.NetworkPlayer;
+import player.Player;
 import view.*;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;

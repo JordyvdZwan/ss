@@ -2,6 +2,8 @@ package model;
 
 import java.util.*;
 
+import player.NetworkPlayer;
+
 public class Board {
 	private List<Block> hand;
 	private Block[][] blocks;

@@ -3,7 +3,7 @@ package controller;
 import java.io.*;
 import java.net.*;
 
-import model.NetworkPlayer;
+import player.NetworkPlayer;
 
 public class Connection extends Thread {
 	private Server server;
