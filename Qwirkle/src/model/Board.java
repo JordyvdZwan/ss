@@ -19,6 +19,14 @@ public class Board {
 		this.blocks = blocks;
 	}
 	
+	public boolean isOnlyX(List<PlayMove> move) {
+		boolean onlyX = false;
+		if (move.size() == 1) {
+			onlyX = true;
+		} else if ()
+		return onlyX;
+	}
+	
 	// A move is not legal if the block is placed next to a line it does not belong to.
 	public boolean isLegalMove(PlayMove move) {
 		return isLegalXRow(move) && isLegalYRow(move) && !isLonelyStone(move) && isEmptyField(move.x, move.y);
