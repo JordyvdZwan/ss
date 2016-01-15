@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.List;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
@@ -44,7 +45,7 @@ public class TUI implements UI {
 		System.out.println(player.getScore());
 	}
 	
-	public Move getMove() {
+	public List<Move> getMove() {
 		// TODO
 		return null;
 	}
