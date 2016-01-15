@@ -15,7 +15,7 @@ public class Client {
 		ui = uiArg;
 		conn = new Connection(this, sockArg);
 		
-		conn.sendString("HELLO");
+		conn.sendString("HELLO " + userNameArg);
 	}
 	
 	public void processMessage(Connection conn, String msg) {

@@ -12,10 +12,9 @@ public class TUI implements UI {
 	private Player player;
 	private int Port;
 
-	public TUI(Board board, int thinktime, int Port) {
-		this.thinkTime = thinktime;
-		this.board = board;
-		this.Port = Port;
+	public TUI() {
+		//TODO things not stored in view
+		
 	}
 	
 	public String getCommand() {
