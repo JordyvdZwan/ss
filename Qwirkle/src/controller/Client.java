@@ -1,15 +1,23 @@
 package controller;
 
 import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import model.*;
+import player.*;
 import view.*;
 
 public class Client {
 
 	private UI ui;
 	private Connection conn;
+	
+	private Player player;
+	private List<Player> opponents = new ArrayList<Player>();
+	
+	private Board board;
 	
 	public Client(UI uiArg, Socket sockArg, String userNameArg) {
 		ui = uiArg;
@@ -23,21 +31,91 @@ public class Client {
 		Scanner reader = new Scanner(msg);
 		String command = reader.next();
 		if (command.equals("WELCOME")) {
-			System.out.println("WELCOME"); //TODO
+			handleWelcome(msg);
 		} else if (command.equals("NAMES")) {
-			System.out.println("NAMES"); //TODO
+			handleNames(msg);
 		} else if (command.equals("NEXT")) {
-			System.out.println("NEXT"); //TODO
+			handleNext(msg);
 		} else if (command.equals("NEW")) {
-			System.out.println("NEW"); //TODO
+			handleNew(msg);
 		} else if (command.equals("TURN")) {
-			System.out.println("TURN"); //TODO
+			handleTurn(msg);
 		} else if (command.equals("KICK")) {
-			System.out.println("KICK"); //TODO
+			handleKick(msg);
 		} else if (command.equals("WINNER")) {
-			System.out.println("WINNER"); //TODO
+			handleWinner(msg);
 		} else {
-			System.out.println("wrong argument");
+			//TODO throw Exception
 		}
+		reader.close();
+	}
+	
+	private void error(String msg) {
+		
+	}
+	
+	private void fatalError(String msg) {
+		System.out.println("[FATAL ERROR]: " + msg);
+		System.exit(0);
+	}
+	
+	private void handleWelcome(String msg) {
+		Scanner reader = new Scanner(msg);
+		reader.next();
+		String playerName = reader.next();
+		int playerNumber = Integer.getInteger(reader.next());
+		player = new HumanPlayer(playerName, playerNumber);
+		reader.close();
+	}
+	
+	private void handleNames(String msg) { //TODO errors catchen
+		Scanner reader = new Scanner(msg);
+		reader.next();
+			while (reader.hasNext()) {
+				String playerName = reader.next();
+				if (!reader.hasNext()) {fatalError("names command invalid!");}
+				int playerNumber = Integer.getInteger(reader.next());
+				opponents.add(new NetworkPlayer(playerName, playerNumber));
+			}
+		reader.close();
+	}
+	
+	private void handleNext(String msg) {
+		Scanner reader = new Scanner(msg);
+		reader.next();
+			//TODO do something with it.
+		reader.close();
+	}
+	
+	private void handleNew(String msg) {
+		Scanner reader = new Scanner(msg);
+		reader.next();
+			//TODO do something with it.
+		reader.close();
+	}
+	
+	private void handleTurn(String msg) {
+		Scanner reader = new Scanner(msg);
+		reader.next();
+			//TODO do something with it.
+		reader.close();
+	}
+	
+	private void handleKick(String msg) {
+		Scanner reader = new Scanner(msg);
+		reader.next();
+			//TODO do something with it.
+		reader.close();
+	}
+	
+	private void handleWinner(String msg) {
+		Scanner reader = new Scanner(msg);
+		reader.next();
+			//TODO do something with it.
+		reader.close();
+	}
+	
+	private void shutdown() {
+		
 	}
 }
