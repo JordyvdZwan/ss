@@ -196,18 +196,20 @@ public class BoardTest {
 		board.setField(92, 92, new Block(Color.PURPLE, Shape.CIRCLE));
 		board.setField(92, 93, new Block(Color.PURPLE, Shape.CLOVER));
 		board.setField(92, 94, new Block(Color.PURPLE, Shape.CROSS));
-		board.setField(92, 91, new Block(Color.GREEN, Shape.DIAMOND));
+		board.setField(92, 91, new Block(Color.PURPLE, Shape.DIAMOND));
 		board.setField(92, 95, new Block(Color.PURPLE, Shape.SQUARE));
-		board.setField(91, 95, new Block(Color.BLUE, Shape.STAR));
-		board.setField(90, 95, new Block(Color.GREEN, Shape.STAR));
-		board.setField(93, 91, new Block(Color.ORANGE, Shape.STAR));
-		board.setField(94, 91, new Block(Color.RED, Shape.STAR));
-		board.setField(94, 90, new Block(Color.YELLOW, Shape.STAR));
+		board.setField(91, 95, new Block(Color.BLUE, Shape.SQUARE));
+		board.setField(90, 95, new Block(Color.GREEN, Shape.SQUARE));
+		board.setField(93, 91, new Block(Color.ORANGE, Shape.DIAMOND));
+		board.setField(94, 91, new Block(Color.RED, Shape.DIAMOND));
+		board.setField(94, 90, new Block(Color.RED, Shape.STAR));
 		assertEquals(board.maxX(), 95);
 		assertEquals(board.maxY(), 96);
 		assertEquals(board.minX(), 89);
 		assertEquals(board.minY(), 89);
+		System.out.print(board.toString());
 	}
+	
 	
 	@Test
 	public void TestBlockToString() {
