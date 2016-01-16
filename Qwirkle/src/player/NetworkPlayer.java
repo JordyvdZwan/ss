@@ -18,6 +18,11 @@ public class NetworkPlayer implements Player{
 		hand = new ArrayList<Block>();
 	}
 	
+	public NetworkPlayer(String name, int number) {
+		this.number = number;
+		this.name = name;
+	}
+	
 	public void swapHand(List<Move> moves, List<Block> blocks) {
 		for (Move move : moves) {
 			hand.remove(move.getBlock());

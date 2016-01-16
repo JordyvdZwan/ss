@@ -8,7 +8,7 @@ import model.Move;
 
 public class HumanPlayer implements Player {
 
-	public HumanPlayer() {
+	public HumanPlayer(String name, int number) {
 		// TODO Auto-generated constructor stub
 	}
 
