@@ -168,6 +168,7 @@ public class TUI implements UI {
 	}
 	
 	public String getUserName() {
+		System.out.println("Please enter a valid username (a-z, A-Z (max 16 characters))");
 		String name = in.nextLine();
 		if (!isValidName(name)) {
 			System.out.println("Invalid username, please try again.");
