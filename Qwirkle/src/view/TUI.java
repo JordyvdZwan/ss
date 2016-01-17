@@ -38,7 +38,7 @@ public class TUI implements UI {
 	}
 	
 	public void displayBoard(Board board) { // TODO
-		System.out.println(board.toString());
+		System.out.print(board.toString());
 	} 
 	
 	public void displayScore() {
