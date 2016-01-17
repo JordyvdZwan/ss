@@ -183,7 +183,7 @@ public class Server extends Thread {
 		if (getPlayer(turn) == null) {
 			nextTurn();
 		}
-		sendMessage(getPlayer(turn).getConnection(), "TURN " + getPlayer(turn).getNumber());
+		sendMessage(getPlayer(turn).getConnection(), "NEXT " + getPlayer(turn).getNumber());
 	}
 
 	private NetworkPlayer getPlayer(int playerNumber) {
