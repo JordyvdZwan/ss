@@ -48,10 +48,10 @@ public class Client extends Thread{
 			client.sendMessage(args[0]);
 			client.start();
 			
-			do{
+			do {
 				String input = readString("");
 				client.sendMessage(input);
-			}while(true);
+			} while (true);
 			
 		} catch (IOException e) {
 			print("ERROR: couldn't construct a client object!");

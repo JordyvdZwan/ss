@@ -85,6 +85,8 @@ public class Connection extends Thread {
 	
 	public void lossOfConnection() {
 		try {
+			//TODO 
+			System.out.println("ERROR loss of connection");
 			active = false;
 			in.close();
 			out.close();

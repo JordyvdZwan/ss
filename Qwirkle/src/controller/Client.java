@@ -73,7 +73,6 @@ public class Client {
 	}
 	
 	private void handleWelcome(String msg) {
-		System.out.println(msg);
 		Scanner reader = new Scanner(msg);
 		reader.next();
 		String playerName = reader.next();
