@@ -12,6 +12,9 @@ public class ServerController {
 	
 	public ServerController(int portArg, UI uiArg, int aiThinkTimeArg) {
 		ui = uiArg;
+		ui.setServerController(this);
+		Thread uiThread = new Thread(ui);
+		uiThread.start();
 		aiThinkTime = aiThinkTimeArg;
 		serverList = new ArrayList<Server>();
 		Server server = new Server(this, aiThinkTime);
@@ -35,8 +38,9 @@ public class ServerController {
 	}
 	
 	public void handleInput(String command) {
-		if (command.equals("Start Game")) {
-			
+		
+		if (command.equals("start")) {
+			nextGame();
 		} else if (command.equals("")) {
 			
 		}

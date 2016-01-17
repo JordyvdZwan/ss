@@ -66,7 +66,7 @@ public class Server extends Thread {
 	private void broadcastNames() {
 		String names = "";
 		for (Connection conn: connections) {
-			names.concat(" " + conn.getPlayer().getName() + " " + conn.getPlayer().getNumber());
+			names = names.concat(" " + conn.getPlayer().getName() + " " + conn.getPlayer().getNumber());
 		}
 		broadcastMessage("NAMES" + names + " " + aiThinkTime);
 	}	
@@ -132,7 +132,7 @@ public class Server extends Thread {
 	private void broadcastPlayMove(List<PlayMove> playMoves) {
 		String moves = "";
 		for (PlayMove move : playMoves) {
-			moves.concat(" " + move.getBlock().toString() + " " + move.y + " " + move.x);
+			moves = moves.concat(" " + move.getBlock().toString() + " " + move.y + " " + move.x);
 		}
 		broadcastMessage("TURN " + playMoves.get(0) + moves);
 	}
@@ -249,7 +249,7 @@ public class Server extends Thread {
 			player.setHand(stack.give(6));
 			String stones = "";
 			for (Block block : player.getHand()) {
-				stones.concat(" " + block.toString());
+				stones = stones.concat(" " + block.toString());
 			}
 			sendMessage(player.getConnection(), "NEW" + stones);
 		}

@@ -127,14 +127,14 @@ public class Client {
 		if (isInstanceOfPlayMoves(moves)) {
 			List<PlayMove> playMoves = toPlayMove(moves);
 			for (PlayMove playMove : playMoves) {
-				move.concat(" " + playMove.getBlock().toString() + " " + playMove.y + " " + playMove.x);
+				move = move.concat(" " + playMove.getBlock().toString() + " " + playMove.y + " " + playMove.x);
 			}
 			conn.sendString("MOVE" + move);			
 		} else {
 			List<SwapMove> swapMoves = toSwapMove(moves);
 			tempHand = new ArrayList<Block>();
 			for (SwapMove swapMove : swapMoves) {
-				move.concat(" " + swapMove.getBlock().toString());
+				move = move.concat(" " + swapMove.getBlock().toString());
 				tempHand.add(swapMove.getBlock());
 				hand.remove(swapMove.getBlock());
 			}

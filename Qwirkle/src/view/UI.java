@@ -8,9 +8,10 @@ import java.util.List;
 
 import controller.*;
 
-public interface UI {
+public interface UI extends Runnable{
 	public void displayBoard(Board board);
 	public void displayScore();
+	public void setServerController(ServerController control);
 	
 	public List<Move> getMove();
 	public InetAddress getHost();
@@ -24,4 +25,5 @@ public interface UI {
 	public boolean newGame();
 	public void displayWinner(Player player);
 	public void setClient(Client client);
+	public void run();
 }
