@@ -103,12 +103,12 @@ public class TUI implements UI {
 					if (!reader.hasNext()) break;
 					String yString = reader.next();
 					if (!yString.matches("^-?\\d+$")) break;
-					int y = Integer.getInteger(yString);
+					int y = Integer.parseInt(yString); //TODO cahtceh
 					
 					if (!reader.hasNext()) break;
 					String xString = reader.next();
 					if (!xString.matches("^-?\\d+$")) break;
-					int x = Integer.getInteger(xString);
+					int x = Integer.parseInt(xString); //TODO catchen
 					
 					PlayMove move = new PlayMove(block, x, y, client.getPlayer());
 					moves.add(move);

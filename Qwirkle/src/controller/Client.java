@@ -87,7 +87,7 @@ public class Client {
 			while (reader.hasNext()) {
 				String playerName = reader.next();
 				if (!reader.hasNext()) {fatalError("names command invalid!");}
-				int playerNumber = Integer.getInteger(reader.next());
+				int playerNumber = Integer.parseInt(reader.next()); //TODO catch
 				opponents.add(new NetworkPlayer(playerName, playerNumber));
 			}
 			stackSize = 108 - (6 * (opponents.size() + 1));
@@ -176,7 +176,7 @@ public class Client {
 	private void handleTurn(String msg) {
 		Scanner reader = new Scanner(msg);
 		reader.next();
-		Player player = getPlayer(Integer.getInteger(reader.next()));
+		Player player = getPlayer(Integer.parseInt(reader.next())); //TODO catchen
 		List<PlayMove> moves = new ArrayList<PlayMove>();
 		String word = "";
 		while (reader.hasNext()) {
@@ -186,8 +186,8 @@ public class Client {
 			}
 			char[] chars = word.toCharArray();
 			Block block = new Block(chars[0], chars[1]);
-			int y = Integer.getInteger(reader.next());
-			int x = Integer.getInteger(reader.next());
+			int y = Integer.parseInt(reader.next()); //TODO catchen
+			int x = Integer.parseInt(reader.next()); //TODO catchen
 			moves.add(new PlayMove(block, x, y, player));
 		}
 		if (!word.equals("empty")) {
@@ -201,8 +201,8 @@ public class Client {
 	private void handleKick(String msg) {
 		Scanner reader = new Scanner(msg);
 		reader.next();
-		Player player = getPlayer(Integer.getInteger(reader.next()));
-		int tilesBack = Integer.getInteger(reader.next());
+		Player player = getPlayer(Integer.parseInt(reader.next())); //TODO catchen
+		int tilesBack = Integer.parseInt(reader.next()); //TODO catchen
 		String reason = reader.nextLine();
 		if (player == this.player) {
 			ui.displayKick(player, reason);
@@ -217,7 +217,7 @@ public class Client {
 	private void handleWinner(String msg) {
 		Scanner reader = new Scanner(msg);
 		reader.next();
-		int winner = Integer.getInteger(reader.next());
+		int winner = Integer.parseInt(reader.next()); //TODO catchen
 		ui.displayWinner(getPlayer(winner));
 		if (ui.newGame()) {
 			Controller.startClient();
