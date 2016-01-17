@@ -146,6 +146,8 @@ public class Server extends Thread {
 			List<PlayMove> playMoves = toPlayMove(moves);
 			if (board.isLegalMoveList(playMoves)) {
 				board.makeMove(playMoves);
+				Player player = playMoves.get(0).getPlayer();
+				player.setScore(player.getScore() + board.legitMoveScore(playMoves));
 				swapStones(playMoves.get(0).getPlayer().getConnection(), moves, playMoves.size());
 				broadcastPlayMove(playMoves);
 			} else {
