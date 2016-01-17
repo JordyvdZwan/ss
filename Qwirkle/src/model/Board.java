@@ -389,24 +389,32 @@ public class Board {
     }
     
     //prints out the board
-    public String toString(Board board) {
-    	String row = "";
+    public String toString() {
+    	int maxX = maxX();
+    	int minX = minX();
+    	int maxY = maxY();
+    	int minY = minY();
     	String colum = "";
-    	String index = "";
-    	for (int i = 0; i < DIM; i++) {
-    		index = index + " " + i;
+    	String index = "\\ x";
+    	String swag = "y\\ ";
+    	for (int i = minX; i <= maxX; i++) {
+    		index = index + " " + i + "|";
     	}
-    	for (int i = 0; i < DIM; i++) {
-    		for (int j = 0; j < DIM; j++) {
-    			if(board.getField(i,j) != null) {
-    				row = row + (board.getField(i,j).toString());
+    	for (int i = minX; i <= maxX; i++) {
+    		swag = swag + "___" + "|";
+    	}
+    	for (int i = minY; i <= maxY; i++) {
+        	String row = "";
+    		for (int j = minX; j <= maxX; j++) {
+    			if (getField(j, i) != null) {
+    				row = row + " " + getField(j, i).toString() + "|";
     			} else {
-        			row = row + "_";
-    			} 
+    				row = row + "  " + "_" + "|";
+    			}
     		}
-    		colum = i + " " + row + "/n";
+    		colum = colum + i + "|" + row + "\n";
     	}
-    	return index + colum;
+    	return index + "\n" + swag + "\n" + colum;
     }
     
     public int maxX() {
