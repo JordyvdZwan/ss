@@ -11,6 +11,8 @@ import view.*;
 
 public class Client {
 
+	private int aiThinkTime;
+	
 	private UI ui;
 	private Connection conn;
 	
@@ -86,7 +88,10 @@ public class Client {
 		reader.next();
 			while (reader.hasNext()) {
 				String playerName = reader.next();
-				if (!reader.hasNext()) {fatalError("names command invalid!");}
+				if (!reader.hasNext()) {
+					aiThinkTime = Integer.parseInt(playerName);
+					break;
+				}
 				int playerNumber = Integer.parseInt(reader.next()); //TODO catch
 				opponents.add(new NetworkPlayer(playerName, playerNumber));
 			}
