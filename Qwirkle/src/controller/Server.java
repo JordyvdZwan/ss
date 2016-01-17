@@ -14,7 +14,8 @@ import org.hamcrest.Condition;
 
 public class Server extends Thread {
 	
-	
+	//TODO kick when conection is lost
+	//TODO win when 1 person is left
 	
 	private List<Connection> connections;
 	private List<NetworkPlayer> players;
