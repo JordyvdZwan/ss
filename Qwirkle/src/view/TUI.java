@@ -86,6 +86,7 @@ public class TUI implements UI {
 	}
 	
 	public List<Move> getMove() {
+		System.out.println("Please enter a move (in a protocol manner [TILE ROW COLLUM]");
 		String msg = in.nextLine();	
 		Scanner reader = new Scanner(msg);
 		String command = reader.next();

@@ -26,6 +26,7 @@ public class Client {
 	private int stackSize;
 	
 	public Client(UI uiArg, Socket sockArg, String userNameArg) {
+		board = new Board();
 		ui = uiArg;
 		ui.setClient(this);
 		conn = new Connection(this, sockArg);
@@ -127,6 +128,7 @@ public class Client {
 	}
 	
 	private void handleNext(String msg) {
+		ui.displayBoard(board);
 		List<Move> moves = ui.getMove();
 		String move = "";
 		if (isInstanceOfPlayMoves(moves)) {
