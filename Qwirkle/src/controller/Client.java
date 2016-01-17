@@ -89,7 +89,7 @@ public class Client {
 			while (reader.hasNext()) {
 				String playerName = reader.next();
 				if (!reader.hasNext()) {
-					aiThinkTime = Integer.parseInt(playerName);
+					aiThinkTime = Integer.parseInt(playerName); //TODO catch
 					break;
 				}
 				int playerNumber = Integer.parseInt(reader.next()); //TODO catch
