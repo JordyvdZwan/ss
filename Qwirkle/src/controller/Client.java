@@ -73,10 +73,11 @@ public class Client {
 	}
 	
 	private void handleWelcome(String msg) {
+		System.out.println(msg);
 		Scanner reader = new Scanner(msg);
 		reader.next();
 		String playerName = reader.next();
-		int playerNumber = Integer.getInteger(reader.next());
+		int playerNumber = Integer.parseInt(reader.next()); //TODO catch error
 		player = new HumanPlayer(playerName, playerNumber);
 		reader.close();
 	}
