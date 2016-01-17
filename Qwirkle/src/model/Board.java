@@ -372,19 +372,21 @@ public class Board {
     }
     
     //sets the move on the board, gives the player points and returns the point for this particular move 
-    public void makeMove(List<PlayMove> move) { 
-    	for (int i = 0; i < move.size(); i ++) {
-    		if (isLegalMove(move.get(i))) {
-    			legitMoveScore(move);
+    public int makeMove(List<PlayMove> move) { 
+    	int score = 0;
+		if (isLegalMoveList(move)) {
+			score = legitMoveScore(move);
+			for (int i = 0; i < move.size(); i ++) {
     			setField(move.get(i).x, move.get(i).y, move.get(i).block);
     			removeFromHand(move.get(i).block);
     		}
     	} 
+    	return score;
     }
     
-    public void makeSwap(List<PlayMove> move) {
+    public void makeSwap(List<SwapMove> move) {
     	for (int i = 0; i < move.size(); i ++) {
-    		removeFromHand(move.get(i).block);
+    		removeFromHand(move.get(i).getBlock());
     	}
     }
     

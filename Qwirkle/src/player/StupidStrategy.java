@@ -7,14 +7,19 @@ public class StupidStrategy {
 	private Board board;
 	private Player player;
 	
-	public List<Move> stupidStrategy() {
-		List<Move> move = null;
+	public int stupidStrategy() {
+		int score = 0;
+		List<PlayMove> playmove = null;
+		List<SwapMove> swapmove = null;
 		if (stupidStrategyPlay().size() == 0) {
-			move = stupidStrategySwap();
+			swapmove = stupidStrategySwap();
+			board.makeSwap(swapmove);
 		} else {
-			move = stupidStrategyPlay();
+			playmove = stupidStrategyPlay();
+//			board.makeMove(playmove);
+			score = board.makeMove(playmove);
 		}
-		return move;
+		return score;
 	}
 	
 	public List<PlayMove> stupidStrategyPlay() {
@@ -32,6 +37,8 @@ public class StupidStrategy {
 						if (!moveboard.isLegalMoveList(moves)) {
 							moves.remove(move);
 							hand.add(block);
+						} else if (moveboard.isLegalMoveList(moves)) {
+							moveboard.setField(i, j, block);
 						}
 					}
 					
