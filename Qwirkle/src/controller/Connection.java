@@ -52,7 +52,7 @@ public class Connection extends Thread {
 	
 	private void displayStringToConsole(String msg) {
 		String prefix = "";
-		if (player != null) {
+		if (server != null) {
 			prefix = "[" + player.getName() + "]: ";
 		} else {
 			prefix = "[SERVER]: ";

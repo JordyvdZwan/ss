@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import controller.Client;
+import controller.Server;
+import controller.ServerController;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -17,6 +19,7 @@ public class TUI implements UI {
 	private Player player;
 	private int Port;
 	private Client client;
+	private ServerController servercontroller;
 	
 	public void setClient(Client client) {
 		this.client = client;
@@ -26,6 +29,19 @@ public class TUI implements UI {
 	
 	public TUI() {
 		
+	}
+	
+	public void setServerController(ServerController control) {
+		servercontroller = control;
+	}
+	
+	public void run() { //TODO
+		while (true) {
+			String txt = in.nextLine();
+			if (txt.equals("start")) {
+				servercontroller.handleInput(txt);
+			}
+		}
 	}
 	
 	public String getCommand() {
