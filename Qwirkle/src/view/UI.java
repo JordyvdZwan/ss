@@ -13,6 +13,7 @@ public interface UI extends Runnable{
 	public void displayScore();
 	public void setServerController(ServerController control);
 	
+	public void displayHand(List<Block> hand);
 	public List<Move> getMove();
 	public InetAddress getHost();
 	public int getPort();

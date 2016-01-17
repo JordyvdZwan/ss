@@ -129,6 +129,7 @@ public class Client {
 	
 	private void handleNext(String msg) {
 		ui.displayBoard(board);
+		ui.displayHand(hand);
 		List<Move> moves = ui.getMove();
 		String move = "";
 		if (isInstanceOfPlayMoves(moves)) {

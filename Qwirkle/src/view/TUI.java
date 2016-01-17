@@ -49,8 +49,7 @@ public class TUI implements UI {
 		return null;
 	}
 	
-	public void displayHand() {
-		List<Block> hand = client.getHand();
+	public void displayHand(List<Block> hand) {
 		String handString = "Your hand is:";
 		for (Block block : hand) {
 			handString.concat(" " + block.toString());
