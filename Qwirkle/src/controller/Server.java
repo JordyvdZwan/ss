@@ -139,7 +139,7 @@ public class Server extends Thread {
 	}
 	
 	private void broadcastSwapMove(List<SwapMove> swapMoves) {
-		broadcastMessage("TURN " + swapMoves.get(0) + " empty"); //TODO klopt geen donder van...
+		broadcastMessage("TURN empty");
 	}
 	
 	private void handleNextMove(List<Move> moves) {
