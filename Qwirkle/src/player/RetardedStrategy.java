@@ -6,10 +6,8 @@ import model.*;
 
 public class RetardedStrategy {
 	private Player player;
-	//private Board board;
 	
-	public RetardedStrategy(Board board, Player player) {
-		//this.board = board;
+	public RetardedStrategy(Player player) {
 		this.player = player;
 	}
 	
@@ -49,9 +47,9 @@ public class RetardedStrategy {
 			moveboard.setField(92, 92, movehand.get(0));
 			movehand.remove(0);
 		}
-		for (int i = moveboard.minX(); i <= moveboard.maxX(); i++) {
-			for (int j = moveboard.minY(); j <= moveboard.maxY(); j++) {
-					for (Block block : movehand) {
+		for (Block block : movehand) {
+			for (int i = moveboard.minX(); i <= moveboard.maxX(); i++) {
+				for (int j = moveboard.minY(); j <= moveboard.maxY(); j++) {
 					move = new PlayMove(block, i, j, player);
 					if (moveboard.isLegalMove(move)) {
 						moves.add(move);

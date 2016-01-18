@@ -54,7 +54,7 @@ public class Board {
 			legal = false;
 		} else {
 			if (isOnlyX(moveslist) || isOnlyY(moveslist)) {
-				Board board = deepCopy(this);
+				Board board = deepCopy();
 				List<PlayMove> moves = new ArrayList<PlayMove>();
 				moves.addAll(moveslist);
 				while(moves.size() > 0) {

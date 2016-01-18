@@ -16,7 +16,7 @@ public class AITest {
 	private Board board = new Board();
 	private LocalPlayer player = new LocalPlayer("retard");
 	private Stack stack;
-	RetardedStrategy retard = new RetardedStrategy(board, player);
+	RetardedStrategy retard = new RetardedStrategy(player);
 	
 	@Before
 	public void SetUp() {
@@ -30,7 +30,6 @@ public class AITest {
 		System.out.print(board.toString());
 		System.out.println(player.getHand().toString());
 		System.out.println(retard.determineMove(board).toString());
-		System.out.println(player.getHand().toString());
 	}
 	
 	@Test
@@ -39,6 +38,5 @@ public class AITest {
 		System.out.print(board.toString());
 		System.out.println(player.getHand().toString());
 		System.out.println(retard.determineMove(board).toString());
-		System.out.println(player.getHand().toString());
 	}
 }
