@@ -26,6 +26,11 @@ public class RetardedStrategy {
 		List<Block> hand = player.getHand();
 		List<PlayMove> moves = null;
 		PlayMove move = null;
+		if (moveboard.isEmptyField(92, 92)) {
+			move = new PlayMove(hand.get(0), 92, 92, player);
+			moves.add(move);
+			hand.remove(hand.get(0));
+		}
 		for (Block block : hand) {
 			for (int i = moveboard.minX(); i <= moveboard.maxX(); i++) {
 				for (int j = moveboard.minY(); j <= moveboard.maxY(); j++) {
