@@ -101,7 +101,9 @@ public class BoardTest {
 		PlayMove move8 = new PlayMove(new Block(Color.BLUE, Shape.CLOVER), 34, 66, new NetworkPlayer());
 		PlayMove move9 = new PlayMove(new Block(Color.BLUE, Shape.CLOVER), 34, 64, new NetworkPlayer());
 		PlayMove move10 = new PlayMove(new Block(Color.GREEN, Shape.DIAMOND), 33, 65, new NetworkPlayer());
+		PlayMove move11 = new PlayMove(new Block(Color.GREEN, Shape.DIAMOND), 92, 92, new NetworkPlayer());
 		assertFalse(board.isLegalMove(move1));
+		assertTrue(board.isLegalMove(move11));
 		board.setField(34, 65, (new Block(Color.GREEN, Shape.CLOVER)));
 		assertFalse(board.isLegalMove(move1));
 		assertFalse(board.isLegalMove(move2));
@@ -179,6 +181,7 @@ public class BoardTest {
 	
 	@Test
 	public void TestNoValidMoves() {
+		board.setField(92, 92, new Block(Color.BLUE, Shape.DIAMOND));
 		board.addToHand(new Block(Color.GREEN, Shape.CLOVER));
 		assertTrue(board.noValidMoves());
 	}
