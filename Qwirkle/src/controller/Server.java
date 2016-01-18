@@ -138,8 +138,8 @@ public class Server extends Thread {
 		broadcastMessage("TURN " + nr + moves);
 	}
 	
-	private void broadcastSwapMove(List<SwapMove> swapMoves) {
-		broadcastMessage("TURN " + swapMoves.get(0) + " empty"); //TODO klopt geen donder van...
+	private void broadcastSwapMove(List<SwapMove> swapMoves, int nr) {
+		broadcastMessage("TURN " + nr + " empty");
 	}
 	
 	private void handleNextMove(List<Move> moves) {
@@ -159,7 +159,7 @@ public class Server extends Thread {
 			List<SwapMove> swapMoves = toSwapMove(moves);
 			if (stack.isValidSwap(swapMoves)) {
 				swapStones(swapMoves.get(0).getPlayer().getConnection(), moves, swapMoves.size());
-				broadcastSwapMove(swapMoves);
+				broadcastSwapMove(swapMoves, swapMoves.get(0).getPlayer().getNumber());
 			} else {
 				Connection conn = moves.get(0).getPlayer().getConnection();
 				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid swap command! (HandleNext)");
@@ -183,11 +183,17 @@ public class Server extends Thread {
 	}
 
 	private void nextTurn() { //TODO if 1 player is left he wins, if next player is same player he wins
-		turn = (turn + 1) % players.size();
-		if (getPlayer(turn) == null) {
-			nextTurn();
+		if (players.size() == 1) {
+			playerWins(players.get(0).getNumber());
+		} else if (players.size() == 0) {
+			//TODO game stops
+		} else {
+			turn = (turn + 1) % players.size();
+			if (getPlayer(turn) == null) {
+				nextTurn();
+			}
+			sendMessage(getPlayer(turn).getConnection(), "NEXT " + getPlayer(turn).getNumber());
 		}
-		sendMessage(getPlayer(turn).getConnection(), "NEXT " + getPlayer(turn).getNumber());
 	}
 
 	private NetworkPlayer getPlayer(int playerNumber) {

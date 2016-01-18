@@ -89,7 +89,7 @@ public class Stack {
 	
 	public boolean isValidSwap(List<SwapMove> swaps) {
 		boolean result = true;
-		if (swaps.size() <= stack.size()) {
+		if (swaps.size() > stack.size()) {
 			result = false;
 		}
 		return result;

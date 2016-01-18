@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import controller.Client;
-import controller.Server;
 import controller.ServerController;
 
 import java.net.InetAddress;
@@ -15,9 +14,6 @@ import model.*;
 import player.Player;
 
 public class TUI implements UI {
-	private static final int DIM = 182;
-	private Player player;
-	private int Port;
 	private Client client;
 	private ServerController servercontroller;
 	
@@ -159,6 +155,7 @@ public class TUI implements UI {
 		} else {
 			result = invalidMove(b);
 		}
+		reader.close();
 		return result;
 	}
 	
@@ -242,7 +239,7 @@ public class TUI implements UI {
 	}
 
 	@Override
-	public int getAIThinkTime() { //TODO 
+	public int getAIThinkTime() { //TODO catch parse
 		System.out.println("Please enter a valid AI think time.");
 		int port = 0;
 		try {
@@ -252,5 +249,10 @@ public class TUI implements UI {
 			port = getPort();
 		}
 		return port;
+	}
+
+	@Override
+	public void displayFatalError(String msg) {
+		System.out.println("[FATAL ERROR]: " + msg);
 	}
 }

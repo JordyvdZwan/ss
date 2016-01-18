@@ -135,6 +135,8 @@ public class Client {
 			List<PlayMove> playMoves = toPlayMove(moves);
 			for (PlayMove playMove : playMoves) {
 				move = move.concat(" " + playMove.getBlock().toString() + " " + playMove.y + " " + playMove.x);
+				tempHand.add(playMove.getBlock());
+				hand.remove(playMove.getBlock());
 			}
 			conn.sendString("MOVE" + move);			
 		} else {

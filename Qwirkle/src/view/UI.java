@@ -11,20 +11,23 @@ import controller.*;
 public interface UI extends Runnable{
 	public void displayBoard(Board board);
 	public void displayScore();
-	public void setServerController(ServerController control);
-	
+	public void displayFatalError(String msg);
 	public void displayHand(List<Block> hand);
-	public List<Move> getMove(Board b);
-	public InetAddress getHost();
-	public int getPort();
+	public void displayKick(Player player, String reason);
+	public void displayWinner(Player player);
+	
 	public String getUserName();
 	public String getChoiceServerClient();
-	public String getCommand();
-	public int getAIThinkTime();
-	public void errorOccured(String msg);
-	public void displayKick(Player player, String reason);
-	public boolean newGame();
-	public void displayWinner(Player player);
-	public void setClient(Client client);
+	public String getCommand();	
+	public List<Move> getMove(Board b);
+	public InetAddress getHost();	
+	public int getPort();
+	public int getAIThinkTime();	
+	
 	public void run();
+	public void errorOccured(String msg);
+	public boolean newGame();
+	
+	public void setServerController(ServerController control);
+	public void setClient(Client client);
 }
