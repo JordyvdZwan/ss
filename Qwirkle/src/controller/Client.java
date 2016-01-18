@@ -47,8 +47,8 @@ public class Client {
 		Scanner reader = new Scanner(msg);
 		String command = reader.next();
 		if (command.equals("WELCOME")) {
-			handleWelcome(msg);
-		} else if (command.equals("NAMES")) {
+			handleWelcome(reader.nextLine());
+		} else if (command.equals("NAMES")) { //TODO change msg to reader.nextLine()
 			handleNames(msg);
 		} else if (command.equals("NEXT")) {
 			handleNext(msg);
@@ -77,7 +77,6 @@ public class Client {
 	
 	private void handleWelcome(String msg) {
 		Scanner reader = new Scanner(msg);
-		reader.next();
 		String playerName = reader.next();
 		int playerNumber = Integer.parseInt(reader.next()); //TODO catch error
 		player = new HumanPlayer(playerName, playerNumber);
@@ -130,7 +129,7 @@ public class Client {
 	private void handleNext(String msg) {
 		ui.displayBoard(board);
 		ui.displayHand(hand);
-		List<Move> moves = ui.getMove();
+		List<Move> moves = ui.getMove(board);
 		String move = "";
 		if (isInstanceOfPlayMoves(moves)) {
 			List<PlayMove> playMoves = toPlayMove(moves);

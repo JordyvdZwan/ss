@@ -69,6 +69,7 @@ public class Client extends Thread{
 	 * Constructs a Client-object and tries to make a socket connection
 	 */
 	public Client(String name, InetAddress host, int port) throws IOException {
+		clientName = name;
 		sock = new Socket(host, port);
 		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
     	out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
