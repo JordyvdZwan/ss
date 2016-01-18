@@ -29,7 +29,7 @@ public class AITest {
 	public void TestRetardedAIFirstMove() {
 		System.out.print(board.toString());
 		System.out.println(player.getHand().toString());
-		System.out.println(retard.determineMove().toString());
+		System.out.println(retard.determineMove(board).toString());
 		System.out.println(player.getHand().toString());
 	}
 	
@@ -38,7 +38,7 @@ public class AITest {
 		board.setField(92, 92, new Block(Color.BLUE, Shape.CLOVER));
 		System.out.print(board.toString());
 		System.out.println(player.getHand().toString());
-		System.out.println(retard.determineMove().toString());
+		System.out.println(retard.determineMove(board).toString());
 		System.out.println(player.getHand().toString());
 	}
 }

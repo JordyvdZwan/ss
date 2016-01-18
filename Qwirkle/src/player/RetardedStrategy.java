@@ -6,10 +6,10 @@ import model.*;
 
 public class RetardedStrategy {
 	private Player player;
-	private Board board;
+	//private Board board;
 	
 	public RetardedStrategy(Board board, Player player) {
-		this.board = board;
+		//this.board = board;
 		this.player = player;
 	}
 	
@@ -23,23 +23,22 @@ public class RetardedStrategy {
 //		return move;
 //	}
 	
-	public String determineMove() {
+	public String determineMove(Board board) {
 		List<PlayMove> playmove = new ArrayList<PlayMove>();
 		List<SwapMove> swapmove = new ArrayList<SwapMove>();
 		String result = "";
-		if (retardedStrategyPlay().size() == 0) {
+		if (retardedStrategyPlay(board).size() == 0) {
 			swapmove = retardedStrategySwap();
 			result = "SWAP" + swapmove.toString();
 		} else {
-			playmove = retardedStrategyPlay();
+			playmove = retardedStrategyPlay(board);
 			result = "MOVE" + playmove.toString();
 		}
 		return result;	
 	}
 	
-	public List<PlayMove> retardedStrategyPlay() {
+	public List<PlayMove> retardedStrategyPlay(Board board) {
 		Board moveboard = board.deepCopy();
-		System.out.print(moveboard.toString());
 		List<Block> movehand = new ArrayList<Block>();
 		movehand.addAll(player.getHand());
 		List<PlayMove> moves = new ArrayList<PlayMove>();
@@ -49,7 +48,6 @@ public class RetardedStrategy {
 			moves.add(move);
 			moveboard.setField(92, 92, movehand.get(0));
 			movehand.remove(0);
-			System.out.print(moveboard.toString());
 		}
 		for (int i = moveboard.minX(); i <= moveboard.maxX(); i++) {
 			for (int j = moveboard.minY(); j <= moveboard.maxY(); j++) {
@@ -67,7 +65,6 @@ public class RetardedStrategy {
 				}
 			}
 		}
-		System.out.print(moveboard.toString());
 		return moves;
 	}
 	
