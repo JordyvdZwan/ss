@@ -175,8 +175,14 @@ public class Board {
 		return new Board(b.blocks);
 	}
 	
-	public Board deepCopy() {
-		return new Board(blocks);
+	public Board deepCopy() { 
+		Board board = new Board();
+		for (int i = 0; i < DIM; i++) {
+			for (int j = 0; j < DIM; j++) {
+				board.setField(i, j, (blocks[i][j]));
+			}
+		}
+		return board;
 	}
 	
 	//puts a stone on the board
@@ -379,15 +385,13 @@ public class Board {
     }
     
     //sets the move on the board, gives the player points and returns the point for this particular move 
-    public int makeMove(List<PlayMove> move) { 
-    	int score = 0;
+    public void makeMove(List<PlayMove> move) { 
 		if (isLegalMoveList(move)) {
 			for (int i = 0; i < move.size(); i ++) {
     			setField(move.get(i).x, move.get(i).y, move.get(i).block);
     			removeFromHand(move.get(i).block);
     		}
     	} 
-    	return score;
     }
     
     public void makeSwap(List<SwapMove> move) {

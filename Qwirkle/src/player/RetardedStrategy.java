@@ -13,30 +13,47 @@ public class RetardedStrategy {
 		this.player = player;
 	}
 	
-	public List<Move> determineMove() {
-		List<Move> move = new ArrayList<Move>();
+//	public List<Move> determineMove() {
+//		List<Move> move = new ArrayList<Move>();
+//		if (retardedStrategyPlay().size() == 0) {
+//			move.addAll(retardedStrategySwap());
+//		} else {
+//			move.addAll(retardedStrategyPlay());
+//		}
+//		return move;
+//	}
+	
+	public String determineMove() {
+		List<PlayMove> playmove = new ArrayList<PlayMove>();
+		List<SwapMove> swapmove = new ArrayList<SwapMove>();
+		String result = "";
 		if (retardedStrategyPlay().size() == 0) {
-			move.addAll(retardedStrategySwap());
+			swapmove = retardedStrategySwap();
+			result = "SWAP" + swapmove.toString();
 		} else {
-			move.addAll(retardedStrategyPlay());
+			playmove = retardedStrategyPlay();
+			result = "MOVE" + playmove.toString();
 		}
-		return move;
+		return result;	
 	}
 	
 	public List<PlayMove> retardedStrategyPlay() {
 		Board moveboard = board.deepCopy();
-		List<Block> hand = player.getHand();
+		System.out.print(moveboard.toString());
+		List<Block> movehand = new ArrayList<Block>();
+		movehand.addAll(player.getHand());
 		List<PlayMove> moves = new ArrayList<PlayMove>();
 		PlayMove move = null;
 		if (moveboard.isEmptyField(92, 92)) {
-			move = new PlayMove(hand.get(0), 92, 92, player);
+			move = new PlayMove(movehand.get(0), 92, 92, player);
 			moves.add(move);
-			moveboard.setField(92, 92, hand.get(0));
-			hand.remove(0);
+			moveboard.setField(92, 92, movehand.get(0));
+			movehand.remove(0);
+			System.out.print(moveboard.toString());
 		}
-		for (Block block : hand) {
-			for (int i = moveboard.minX(); i <= moveboard.maxX(); i++) {
-				for (int j = moveboard.minY(); j <= moveboard.maxY(); j++) {
+		for (int i = moveboard.minX(); i <= moveboard.maxX(); i++) {
+			for (int j = moveboard.minY(); j <= moveboard.maxY(); j++) {
+					for (Block block : movehand) {
 					move = new PlayMove(block, i, j, player);
 					if (moveboard.isLegalMove(move)) {
 						moves.add(move);
@@ -44,12 +61,13 @@ public class RetardedStrategy {
 							moves.remove(move);
 						} else if (moveboard.isLegalMoveList(moves)) {
 							moveboard.setField(i, j, block);
-							hand.remove(block);
+							movehand.remove(block);
 						}
 					}
 				}
 			}
 		}
+		System.out.print(moveboard.toString());
 		return moves;
 	}
 	
