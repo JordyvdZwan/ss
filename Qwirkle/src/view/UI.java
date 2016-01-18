@@ -14,7 +14,7 @@ public interface UI extends Runnable{
 	public void setServerController(ServerController control);
 	
 	public void displayHand(List<Block> hand);
-	public List<Move> getMove();
+	public List<Move> getMove(Board b);
 	public InetAddress getHost();
 	public int getPort();
 	public String getUserName();

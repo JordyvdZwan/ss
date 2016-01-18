@@ -42,22 +42,11 @@ public class Connection extends Thread {
 	
 	public void sendString(String msg) {
 		try {
-			displayStringToConsole(msg); //TODO needs to be removed
 			out.write(msg + "\n");
 			out.flush();
 		} catch (IOException e) {
 			lossOfConnection();
 		}
-	}
-	
-	private void displayStringToConsole(String msg) {
-		String prefix = "";
-		if (server != null) {
-			prefix = "[" + player.getName() + "]: ";
-		} else {
-			prefix = "[SERVER]: ";
-		}
-		System.out.println(prefix + msg);
 	}
 	
 	public void sendStringToParent(String msg) {
@@ -71,10 +60,8 @@ public class Connection extends Thread {
 	public void run() {
 		while (active) {
 			try {
-				System.out.println("Listening"); //TODO
 				String command;
 				while ((command = in.readLine()) != null) {
-					System.out.println("Heard"); //TODO
 					sendStringToParent(command);
 				}
 			} catch (IOException e) {
@@ -94,7 +81,7 @@ public class Connection extends Thread {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
-		//TODO need to notify parent
+		//TODO need to notify parent (need to kick from game)
 	}
 	
 	public NetworkPlayer getPlayer() {

@@ -145,6 +145,11 @@ public class Server extends Thread {
 	private void handleNextMove(List<Move> moves) {
 		if (isInstanceOfPlaymoves(moves)) {
 			List<PlayMove> playMoves = toPlayMove(moves);
+			for (PlayMove move : playMoves) {
+				System.out.println(move.x);
+				System.out.println(move.y);
+				System.out.println(move.getBlock().toString());
+			}
 			if (board.isLegalMoveList(playMoves)) {
 				board.makeMove(playMoves);
 				Player player = playMoves.get(0).getPlayer();
@@ -153,7 +158,7 @@ public class Server extends Thread {
 				broadcastPlayMove(playMoves);
 			} else {
 				Connection conn = moves.get(0).getPlayer().getConnection();
-				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command!");
+				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command! (HandleNext)");
 			}
 		} else {
 			List<SwapMove> swapMoves = toSwapMove(moves);
@@ -162,12 +167,13 @@ public class Server extends Thread {
 				broadcastSwapMove(swapMoves);
 			} else {
 				Connection conn = moves.get(0).getPlayer().getConnection();
-				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid swap command!");
+				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid swap command! (HandleNext)");
 			}
 		}
 	}
 
 	private List<Move> waitForNextMove() {
+		List<Move> result;
 		while (!moveAvailable) {
 			try {
 				nextMoveAvailable.await();
@@ -175,8 +181,8 @@ public class Server extends Thread {
 				//TODO
 			}
 		}
-		
-		return nextMove.poll();
+		result = nextMove.remove();
+		return result;
 	}
 
 	private void nextTurn() { //TODO if 1 player is left he wins, if next player is same player he wins
@@ -306,6 +312,7 @@ public class Server extends Thread {
 	
 	
 	public void processMessage(Connection conn, String msg) {
+		System.out.println("[SERVER]: Getting message from " + conn.getPlayer().getName() + " : \"" + msg + "\"");
 		Scanner reader = new Scanner(msg);
 		String command = reader.next();
 		if (command.equals("HELLO") && reader.hasNext()) {
@@ -314,7 +321,7 @@ public class Server extends Thread {
 				conn.getPlayer().setName(playerName);
 				sendMessage(conn, "WELCOME " + playerName + " " + conn.getPlayer().getNumber());
 			} else {
-				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid userName");
+				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid userName! (processMessage/Welcome)");
 			}
 		} else if (command.equals("MOVE")) {
 			if (!moveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
@@ -322,35 +329,41 @@ public class Server extends Thread {
 				boolean cycleDone = false;				
 				List<Move> moves = new ArrayList<Move>();
 				while (reader.hasNext()) {
+					
+					
 					cycleDone = false;
 					String blockString = reader.next();
 					char[] chars = blockString.toCharArray();
 					if (!(chars.length == 2)) break;
 					Block block = new Block(chars[0], chars[1]);
 					
+					
 					if (!reader.hasNext()) break;
 					String yString = reader.next();
 					if (!yString.matches("^-?\\d+$")) break;
 					int y = Integer.parseInt(yString); //TODO catche
+					
 					
 					if (!reader.hasNext()) break;
 					String xString = reader.next();
 					if (!xString.matches("^-?\\d+$")) break;
 					int x = Integer.parseInt(xString); //TODO catchen
 					
+					
 					PlayMove move = new PlayMove(block, x, y, conn.getPlayer());
 					moves.add(move);
 					cycleDone = true;
+					
 				}
 				if (cycleDone && !moves.isEmpty()) {
 					nextMove.add(moves);
 					moveAvailable = true;
 					nextMoveAvailable.countDown();
 				} else {
-					kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command!");
+					kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command! (processMessage/Move)");
 				}
 			} else {
-				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command, not your turn or one has already been send!");
+				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command, not your turn or one has already been send! (processMessage/Move)");
 			}
 		} else if (command.equals("SWAP")) {
 			if (!moveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
@@ -370,18 +383,18 @@ public class Server extends Thread {
 					moveAvailable = true;
 					nextMoveAvailable.countDown();
 				} else {
-					kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid swap command!");
+					kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid swap command! (processMessage/Swap)");
 				}
 			} else {
-				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid swap command, not your turn or one has already been send");
+				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid swap command, not your turn or one has already been send (processMessage/Swap)");
 			}
 		} else {
-			kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Command not recognized");
+			kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Command not recognized (processMessage");
 		}
 	}
 	
 	public void sendMessage(Connection conn, String msg) {
-		System.out.println("[SERVER]: Sending message: \"" + msg + "\"");
+		System.out.println("[SERVER]: Sending message to " + conn.getPlayer().getName() + " : \"" + msg + "\"");
 		conn.sendString(msg);
 	}
 

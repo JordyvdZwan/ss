@@ -52,7 +52,7 @@ public class TUI implements UI {
 	public void displayHand(List<Block> hand) {
 		String handString = "Your hand is:";
 		for (Block block : hand) {
-			handString.concat(" " + block.toString());
+			handString = handString.concat(" " + block.toString());
 		}
 		System.out.println(handString);
 	}
@@ -62,13 +62,19 @@ public class TUI implements UI {
 	}
 	
 	public String getChoiceServerClient() {
-		System.out.println("Do you want to start a server of client? (Server/Client)");
+		System.out.println("Do you want to start a server of client? press corresponding number.");
+		System.out.println("1. start Server          // 2. start Client");
+		System.out.println("3. start Default Server // 4. start local Client");
 		String input = in.nextLine();
 		String result = "";
-		if (input.equals("Server")) {
+		if (input.equals("1")) {
 			result = "SERVER";
-		} else if (input.equals("Client")) {
+		} else if (input.equals("2")) {
 			result = "CLIENT";
+		} else if (input.equals("3")) {
+			result = "DEFAULTSERVER";
+		} else if (input.equals("4")) {
+			result = "LOCALCLIENT";
 		} else {
 			System.out.println("Invalid input, please try again.");
 			result = getChoiceServerClient();
@@ -84,7 +90,23 @@ public class TUI implements UI {
 		System.out.println("Score: " + client.getPlayer().getScore());
 	}
 	
-	public List<Move> getMove() {
+	public List<PlayMove> toPlayMove(List<Move> moves) {
+		List<PlayMove> result = new ArrayList<PlayMove>();
+		for (Move move : moves) {
+			result.add((PlayMove) move);
+		}
+		return result;
+	}
+	
+	public List<SwapMove> toSwapMove(List<Move> moves) {
+		List<SwapMove> result = new ArrayList<SwapMove>();
+		for (Move move : moves) {
+			result.add((SwapMove) move);
+		}
+		return result;
+	}
+	
+	public List<Move> getMove(Board b) {
 		System.out.println("Please enter a move (in a protocol manner [TILE ROW COLLUM]");
 		String msg = in.nextLine();	
 		Scanner reader = new Scanner(msg);
@@ -114,10 +136,10 @@ public class TUI implements UI {
 					moves.add(move);
 					cycleDone = true;
 				}
-				if (cycleDone && !moves.isEmpty()) {
+				if (cycleDone && !moves.isEmpty() && b.isLegalMoveList(toPlayMove(moves))) {
 					result = moves;
 				} else {
-					result = invalidMove();
+					result = invalidMove(b);
 				}
 		} else if (command.equals("SWAP")) {
 				List<Move> moves = new ArrayList<Move>();
@@ -132,17 +154,17 @@ public class TUI implements UI {
 				if (!moves.isEmpty()) {
 					result = moves;
 				} else {
-					result = invalidMove();
+					result = invalidMove(b);
 				}
 		} else {
-			result = invalidMove();
+			result = invalidMove(b);
 		}
 		return result;
 	}
 	
-	private List<Move> invalidMove() {
+	private List<Move> invalidMove(Board b) {
 		System.out.println("Invalid Move please try again.");
-		return getMove();
+		return getMove(b);
 	}
 	
 	public InetAddress getHost() {
