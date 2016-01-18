@@ -13,6 +13,7 @@ public class LocalPlayer implements Player {
 	public String name;
 	private int score = 0;
 	private Board board = new Board();
+	private List<Block> hand;
 	
 	public LocalPlayer(String name) {
 		this.name = name;
@@ -39,14 +40,12 @@ public class LocalPlayer implements Player {
 
 	@Override
 	public List<Block> getHand() {
-		// TODO Auto-generated method stub
-		return null;
+		return hand;
 	}
 
 	@Override
 	public void setHand(List<Block> handArg) {
-		// TODO Auto-generated method stub
-		
+		hand = handArg;
 	}
 
 	@Override
