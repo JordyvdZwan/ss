@@ -3,26 +3,25 @@ import java.util.List;
 
 import model.*;
 
-public class StupidStrategy {
+public class RetardedStrategy {
 	private Board board;
 	private Player player;
 	
-	public int stupidStrategy() {
-		int score = 0;
+	public String retardedStrategy() {
+		String result = null;
 		List<PlayMove> playmove = null;
 		List<SwapMove> swapmove = null;
-		if (stupidStrategyPlay().size() == 0) {
-			swapmove = stupidStrategySwap();
-			board.makeSwap(swapmove);
+		if (retardedStrategyPlay().size() == 0) {
+			swapmove = retardedStrategySwap();
+			result = "SWAP" + swapmove.toString();
 		} else {
-			playmove = stupidStrategyPlay();
-//			board.makeMove(playmove);
-			score = board.makeMove(playmove);
+			playmove = retardedStrategyPlay();
+			result = "MOVE" + playmove.toString();
 		}
-		return score;
+		return result;
 	}
 	
-	public List<PlayMove> stupidStrategyPlay() {
+	public List<PlayMove> retardedStrategyPlay() {
 		Board moveboard = board.deepCopy();
 		List<Block> hand = player.getHand();
 		List<PlayMove> moves = null;
@@ -48,7 +47,7 @@ public class StupidStrategy {
 		return moves;
 	}
 	
-	public List<SwapMove> stupidStrategySwap() {
+	public List<SwapMove> retardedStrategySwap() {
 		List<Block> hand = player.getHand();
 		SwapMove move = null;
 		List<SwapMove> swapmove = null;

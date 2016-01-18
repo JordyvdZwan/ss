@@ -375,7 +375,6 @@ public class Board {
     public int makeMove(List<PlayMove> move) { 
     	int score = 0;
 		if (isLegalMoveList(move)) {
-			score = legitMoveScore(move);
 			for (int i = 0; i < move.size(); i ++) {
     			setField(move.get(i).x, move.get(i).y, move.get(i).block);
     			removeFromHand(move.get(i).block);

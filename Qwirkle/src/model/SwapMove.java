@@ -18,6 +18,11 @@ public class SwapMove implements Move{
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
+	
+	public String toString() {
+		return block.toString();
+		
+	}
 
 	public Block getBlock() {
 		return block;
