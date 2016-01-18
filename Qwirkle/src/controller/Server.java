@@ -130,32 +130,27 @@ public class Server extends Thread {
 		sendMessage(conn, "NEW" + blocks);
 	}
 	
-	private void broadcastPlayMove(List<PlayMove> playMoves) {
+	private void broadcastPlayMove(List<PlayMove> playMoves, int nr) {
 		String moves = "";
 		for (PlayMove move : playMoves) {
 			moves = moves.concat(" " + move.getBlock().toString() + " " + move.y + " " + move.x);
 		}
-		broadcastMessage("TURN " + playMoves.get(0) + moves);
+		broadcastMessage("TURN " + nr + moves);
 	}
 	
 	private void broadcastSwapMove(List<SwapMove> swapMoves) {
-		broadcastMessage("TURN " + swapMoves.get(0) + " empty");
+		broadcastMessage("TURN " + swapMoves.get(0) + " empty"); //TODO klopt geen donder van...
 	}
 	
 	private void handleNextMove(List<Move> moves) {
 		if (isInstanceOfPlaymoves(moves)) {
 			List<PlayMove> playMoves = toPlayMove(moves);
-			for (PlayMove move : playMoves) {
-				System.out.println(move.x);
-				System.out.println(move.y);
-				System.out.println(move.getBlock().toString());
-			}
 			if (board.isLegalMoveList(playMoves)) {
-				board.makeMove(playMoves);
 				Player player = playMoves.get(0).getPlayer();
+				board.makeMove(playMoves);
 				player.setScore(player.getScore() + board.legitMoveScore(playMoves));
-				swapStones(playMoves.get(0).getPlayer().getConnection(), moves, playMoves.size());
-				broadcastPlayMove(playMoves);
+				swapStones(player.getConnection(), moves, playMoves.size());
+				broadcastPlayMove(playMoves, player.getNumber());
 			} else {
 				Connection conn = moves.get(0).getPlayer().getConnection();
 				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command! (HandleNext)");
@@ -182,11 +177,13 @@ public class Server extends Thread {
 			}
 		}
 		result = nextMove.remove();
+		moveAvailable = false;
+		nextMoveAvailable = new CountDownLatch(1);
 		return result;
 	}
 
 	private void nextTurn() { //TODO if 1 player is left he wins, if next player is same player he wins
-		turn++;
+		turn = (turn + 1) % players.size();
 		if (getPlayer(turn) == null) {
 			nextTurn();
 		}

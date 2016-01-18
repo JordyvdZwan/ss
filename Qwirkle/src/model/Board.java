@@ -55,7 +55,8 @@ public class Board {
 		} else {
 			if (isOnlyX(moveslist) || isOnlyY(moveslist)) {
 				Board board = deepCopy(this);
-				List<PlayMove> moves = moveslist;
+				List<PlayMove> moves = new ArrayList<PlayMove>();
+				moves.addAll(moveslist);
 				while(moves.size() > 0) {
 					int j = 0;
 					for(int i = 0; i < moves.size(); i++) {
@@ -403,7 +404,7 @@ public class Board {
     	int maxY = maxY();
     	int minY = minY();
     	String colum = "";
-    	String index = "\\ x";
+    	String index = "\\x ";
     	String swag = "y\\ ";
     	for (int i = minX; i <= maxX; i++) {
     		index = index + " " + i + "|";
