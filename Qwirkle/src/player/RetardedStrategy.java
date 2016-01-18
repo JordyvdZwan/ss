@@ -1,35 +1,38 @@
 package player;
+import java.util.ArrayList;
 import java.util.List;
 
 import model.*;
 
 public class RetardedStrategy {
-	private Board board;
 	private Player player;
+	private Board board;
 	
-	public String retardedStrategy() {
-		String result = null;
-		List<PlayMove> playmove = null;
-		List<SwapMove> swapmove = null;
+	public RetardedStrategy(Board board, Player player) {
+		this.board = board;
+		this.player = player;
+	}
+	
+	public List<Move> determineMove() {
+		List<Move> move = new ArrayList<Move>();
 		if (retardedStrategyPlay().size() == 0) {
-			swapmove = retardedStrategySwap();
-			result = "SWAP" + swapmove.toString();
+			move.addAll(retardedStrategySwap());
 		} else {
-			playmove = retardedStrategyPlay();
-			result = "MOVE" + playmove.toString();
+			move.addAll(retardedStrategyPlay());
 		}
-		return result;
+		return move;
 	}
 	
 	public List<PlayMove> retardedStrategyPlay() {
 		Board moveboard = board.deepCopy();
 		List<Block> hand = player.getHand();
-		List<PlayMove> moves = null;
+		List<PlayMove> moves = new ArrayList<PlayMove>();
 		PlayMove move = null;
 		if (moveboard.isEmptyField(92, 92)) {
 			move = new PlayMove(hand.get(0), 92, 92, player);
 			moves.add(move);
-			hand.remove(hand.get(0));
+			moveboard.setField(92, 92, hand.get(0));
+			hand.remove(0);
 		}
 		for (Block block : hand) {
 			for (int i = moveboard.minX(); i <= moveboard.maxX(); i++) {
@@ -37,15 +40,13 @@ public class RetardedStrategy {
 					move = new PlayMove(block, i, j, player);
 					if (moveboard.isLegalMove(move)) {
 						moves.add(move);
-						hand.remove(block);
 						if (!moveboard.isLegalMoveList(moves)) {
 							moves.remove(move);
-							hand.add(block);
 						} else if (moveboard.isLegalMoveList(moves)) {
 							moveboard.setField(i, j, block);
+							hand.remove(block);
 						}
 					}
-					
 				}
 			}
 		}
@@ -55,10 +56,10 @@ public class RetardedStrategy {
 	public List<SwapMove> retardedStrategySwap() {
 		List<Block> hand = player.getHand();
 		SwapMove move = null;
-		List<SwapMove> swapmove = null;
+		List<SwapMove> swapmove = new ArrayList<SwapMove>();
 		double j = Math.random() * 6;
 		for(int i = 0; i < j; i++) {
-			move = new SwapMove(hand.get(1), player);
+			move = new SwapMove(hand.get(i), player);
 			swapmove.add(move);
 			
 		}

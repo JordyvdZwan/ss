@@ -50,25 +50,29 @@ public class Board {
 	
 	public boolean isLegalMoveList(List<PlayMove> moveslist) {
 		boolean legal = true;
-		if (isOnlyX(moveslist) || isOnlyY(moveslist)) {
-			Board board = deepCopy(this);
-			List<PlayMove> moves = moveslist;
-			while(moves.size() > 0) {
-				int j = 0;
-				for(int i = 0; i < moves.size(); i++) {
-					if(isLegalMove(moves.get(i))) {
-						board.setField(moves.get(i).x, moves.get(i).y, moves.get(i).block);
-						j = 1;
-						moves.remove(i);
-						}
-					}
-				if(j == 0) {
-					legal = false;
-					break;
-				}
-			}
-		} else {
+		if (moveslist.size() == 0) {
 			legal = false;
+		} else {
+			if (isOnlyX(moveslist) || isOnlyY(moveslist)) {
+				Board board = deepCopy(this);
+				List<PlayMove> moves = moveslist;
+				while(moves.size() > 0) {
+					int j = 0;
+					for(int i = 0; i < moves.size(); i++) {
+						if(isLegalMove(moves.get(i))) {
+							board.setField(moves.get(i).x, moves.get(i).y, moves.get(i).block);
+							j = 1;
+							moves.remove(i);
+							}
+						}
+					if(j == 0) {
+						legal = false;
+						break;
+					}
+				}
+			} else {
+				legal = false;
+			}
 		}
 		return legal;
 	}
@@ -149,17 +153,19 @@ public class Board {
 	//checks if stone has no other stone surrounding him
 	public boolean isLonelyStone(PlayMove move) {
 		boolean islonely = true;
-		if(move.y + 1 < DIM && blocks[move.x][move.y + 1] != null) {
-			islonely = false;
-		}
-		if(move.y - 1 > 0 && blocks[move.x][move.y - 1] != null) {
-			islonely = false;
-		}
-		if(move.x + 1 < DIM && blocks[move.x + 1][move.y] != null) {
-			islonely = false;
-		}
-		if(move.x - 1 > 0 && blocks[move.x - 1][move.y] != null) {
-			islonely = false;
+		if (move.x != 92 && move.y != 92) {
+			if(move.y + 1 < DIM && blocks[move.x][move.y + 1] != null) {
+				islonely = false;
+			}
+			if(move.y - 1 > 0 && blocks[move.x][move.y - 1] != null) {
+				islonely = false;
+			}
+			if(move.x + 1 < DIM && blocks[move.x + 1][move.y] != null) {
+				islonely = false;
+			}
+			if(move.x - 1 > 0 && blocks[move.x - 1][move.y] != null) {
+				islonely = false;
+			}
 		}
 		return islonely;
 	}

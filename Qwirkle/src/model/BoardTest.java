@@ -27,6 +27,7 @@ public class BoardTest {
 		assertEquals(board.getField(4, 5), null);
 		board.emptyField(3, 4);
 		assertEquals(board.getField(3, 4), null);
+		assertTrue(board.isEmptyField(3, 4));
 	}
 	
 	@Test
@@ -65,12 +66,12 @@ public class BoardTest {
 		ArrayList<PlayMove> multipleMove = new ArrayList<PlayMove>();
 		ArrayList<PlayMove> singleMove = new ArrayList<PlayMove>();
 		ArrayList<PlayMove> ymove = new ArrayList<PlayMove>();
-		PlayMove move = new PlayMove(new Block(Color.PURPLE, Shape.STAR), 34, 69, new NetworkPlayer());
-		PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 34, 65, new NetworkPlayer());
-		PlayMove move2 = new PlayMove(new Block(Color.YELLOW, Shape.CIRCLE), 34 ,66, new NetworkPlayer());
-		PlayMove move3 = new PlayMove(new Block(Color.GREEN, Shape.DIAMOND), 34, 67, new NetworkPlayer());
-		PlayMove move4 = new PlayMove(new Block(Color.BLUE, Shape.CROSS), 34, 68, new NetworkPlayer());
-		PlayMove move5 = new PlayMove(new Block(Color.RED, Shape.CROSS), 33, 66, new NetworkPlayer());
+		PlayMove move = new PlayMove(new Block(Color.PURPLE, Shape.STAR), 92, 96, new NetworkPlayer());
+		PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 92, 95, new NetworkPlayer());
+		PlayMove move2 = new PlayMove(new Block(Color.YELLOW, Shape.CIRCLE), 92 ,92, new NetworkPlayer());
+		PlayMove move3 = new PlayMove(new Block(Color.GREEN, Shape.DIAMOND), 92, 93, new NetworkPlayer());
+		PlayMove move4 = new PlayMove(new Block(Color.BLUE, Shape.CROSS), 92, 94, new NetworkPlayer());
+		PlayMove move5 = new PlayMove(new Block(Color.RED, Shape.CROSS), 91, 92, new NetworkPlayer());
 		singleMove.add(move1);
 		ymove.add(move5);
 		ymove.add(move2);
@@ -82,8 +83,8 @@ public class BoardTest {
 		assertEquals(5, board.legitMoveScore(multipleMove));
 		assertEquals(1, board.legitMoveScore(singleMove));
 		assertEquals(2, board.legitMoveScore(ymove));
-		board.setField(35, 66, new Block(Color.BLUE, Shape.CROSS));
-		board.setField(35, 65, new Block(Color.BLUE, Shape.DIAMOND));
+		board.setField(93, 95, new Block(Color.BLUE, Shape.CROSS));
+		board.setField(93, 96, new Block(Color.BLUE, Shape.DIAMOND));
 		assertEquals(9, board.legitMoveScore(multipleMove));
 		assertEquals(2, board.legitMoveScore(singleMove));
 	}

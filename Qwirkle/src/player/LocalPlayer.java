@@ -45,9 +45,7 @@ public class LocalPlayer implements Player {
 
 	@Override
 	public void setHand(List<Block> handArg) {
-		for (Block block : handArg) {
-			hand.add(block);
-		}
+		hand = handArg;
 	}
 
 	@Override

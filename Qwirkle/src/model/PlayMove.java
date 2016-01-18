@@ -28,10 +28,6 @@ public class PlayMove implements Move {
 	}
 
 	public String toString() {
-		String result = "";
-		result.concat(block.toString());
-		result.concat(" " + y);
-		result.concat(" " + x);
-		return result;
+		return block.toString() + " " + x + " " + y;
 	}
 }
