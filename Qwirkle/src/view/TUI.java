@@ -31,8 +31,9 @@ public class TUI implements UI {
 		servercontroller = control;
 	}
 	
-	public void run() { //TODO
-		while (true) {
+	public void run() {
+		boolean running = true;
+		while (running) {
 			String txt = in.nextLine();
 			if (txt.equals("start")) {
 				servercontroller.handleInput(txt);
@@ -109,6 +110,7 @@ public class TUI implements UI {
 		String command = reader.next();
 		List<Move> result = null;
 		if (command.equals("MOVE")) {
+			try {
 				boolean cycleDone = false;				
 				List<Move> moves = new ArrayList<Move>();
 				while (reader.hasNext()) {
@@ -121,22 +123,25 @@ public class TUI implements UI {
 					if (!reader.hasNext()) break;
 					String yString = reader.next();
 					if (!yString.matches("^-?\\d+$")) break;
-					int y = Integer.parseInt(yString); //TODO cahtceh
+					int y = Integer.parseInt(yString);
 					
 					if (!reader.hasNext()) break;
 					String xString = reader.next();
 					if (!xString.matches("^-?\\d+$")) break;
-					int x = Integer.parseInt(xString); //TODO catchen
+					int x = Integer.parseInt(xString);
 					
 					PlayMove move = new PlayMove(block, x, y, client.getPlayer());
 					moves.add(move);
 					cycleDone = true;
 				}
-				if (cycleDone && !moves.isEmpty() && b.isLegalMoveList(toPlayMove(moves))) {
+				if (cycleDone && !moves.isEmpty()) {
 					result = moves;
 				} else {
 					result = invalidMove(b);
 				}
+			} catch (NumberFormatException e) {
+				result = invalidMove(b);
+			}
 		} else if (command.equals("SWAP")) {
 				List<Move> moves = new ArrayList<Move>();
 				while (reader.hasNext()) {

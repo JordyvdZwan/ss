@@ -48,54 +48,67 @@ public class Client {
 		String command = reader.next();
 		if (command.equals("WELCOME")) {
 			handleWelcome(reader.nextLine());
-		} else if (command.equals("NAMES")) { //TODO change msg to reader.nextLine()
-			handleNames(msg);
+		} else if (command.equals("NAMES")) { 
+			handleNames(reader.nextLine());
 		} else if (command.equals("NEXT")) {
-			handleNext(msg);
+			handleNext(reader.nextLine());
 		} else if (command.equals("NEW")) {
-			handleNew(msg);
+			handleNew(reader.nextLine());
 		} else if (command.equals("TURN")) {
-			handleTurn(msg);
+			handleTurn(reader.nextLine());
 		} else if (command.equals("KICK")) {
-			handleKick(msg);
+			handleKick(reader.nextLine());
 		} else if (command.equals("WINNER")) {
-			handleWinner(msg);
+			handleWinner(reader.nextLine());
+		} else if (command.equals("LOSSOFCONNECTION")) {
+			handleLossOfConnection();
 		} else {
-			//TODO throw Exception
+			fatalError("invalid command received from connection!");
 		}
 		reader.close();
 	}
 	
-	private void error(String msg) {
-		
+	private void handleLossOfConnection() {
+		fatalError("Connection with server was lost");
 	}
 	
 	private void fatalError(String msg) {
 		System.out.println("[FATAL ERROR]: " + msg);
-		System.exit(0);
+		if (ui.newGame()) {
+			Controller.startClient();
+		} else {
+			System.exit(0);
+		}
 	}
 	
 	private void handleWelcome(String msg) {
 		Scanner reader = new Scanner(msg);
-		String playerName = reader.next();
-		int playerNumber = Integer.parseInt(reader.next()); //TODO catch error
-		player = new HumanPlayer(playerName, playerNumber);
+		try {
+			String playerName = reader.next();
+			int playerNumber = Integer.parseInt(reader.next());
+			player = new HumanPlayer(playerName, playerNumber);
+		} catch (NumberFormatException e) {
+			fatalError("invalid Welcome command given by server (" + msg + ")");
+		}
 		reader.close();
 	}
 	
-	private void handleNames(String msg) { //TODO errors catchen
+	private void handleNames(String msg) { 
 		Scanner reader = new Scanner(msg);
-		reader.next();
+		try {
 			while (reader.hasNext()) {
 				String playerName = reader.next();
 				if (!reader.hasNext()) {
-					aiThinkTime = Integer.parseInt(playerName); //TODO catch
+					aiThinkTime = Integer.parseInt(playerName); 
 					break;
 				}
-				int playerNumber = Integer.parseInt(reader.next()); //TODO catch
+				int playerNumber = Integer.parseInt(reader.next()); 
 				opponents.add(new NetworkPlayer(playerName, playerNumber));
 			}
 			stackSize = 108 - (6 * (opponents.size() + 1));
+		} catch (NumberFormatException e) {
+			fatalError("invalid Names command was given by server! (" + msg + ")");
+		}
 		reader.close();
 	}
 	
@@ -153,7 +166,6 @@ public class Client {
 	
 	private void handleNew(String msg) {
 		Scanner reader = new Scanner(msg);
-		reader.next();
 		while (reader.hasNext()) {
 			String block = reader.next();
 			if (!block.equals("empty")) {
@@ -184,60 +196,69 @@ public class Client {
 	
 	private void handleTurn(String msg) {
 		Scanner reader = new Scanner(msg);
-		reader.next();
-		Player player = getPlayer(Integer.parseInt(reader.next())); //TODO catchen
-		List<PlayMove> moves = new ArrayList<PlayMove>();
-		String word = "";
-		while (reader.hasNext()) {
-			word = reader.next();
-			if (word.equals("empty")) {
-				break;
+		try {
+			Player player = getPlayer(Integer.parseInt(reader.next()));
+			List<PlayMove> moves = new ArrayList<PlayMove>();
+			String word = "";
+			while (reader.hasNext()) {
+				word = reader.next();
+				if (word.equals("empty")) {
+					break;
+				}
+				char[] chars = word.toCharArray();
+				Block block = new Block(chars[0], chars[1]);
+				int y = Integer.parseInt(reader.next());
+				int x = Integer.parseInt(reader.next());
+				moves.add(new PlayMove(block, x, y, player));
 			}
-			char[] chars = word.toCharArray();
-			Block block = new Block(chars[0], chars[1]);
-			int y = Integer.parseInt(reader.next()); //TODO catchen
-			int x = Integer.parseInt(reader.next()); //TODO catchen
-			moves.add(new PlayMove(block, x, y, player));
+			if (!word.equals("empty")) {
+				board.makeMove(moves);
+				player.setScore(player.getScore() + board.legitMoveScore(moves));
+			}
+		} catch (NumberFormatException e) {
+			fatalError("invalid Turn command from server! (" + msg + ")");
 		}
-		if (!word.equals("empty")) {
-			board.makeMove(moves);
-			player.setScore(player.getScore() + board.legitMoveScore(moves));
-		}
-		
 		reader.close();
 	}
 	
 	private void handleKick(String msg) {
 		Scanner reader = new Scanner(msg);
-		reader.next();
-		Player player = getPlayer(Integer.parseInt(reader.next())); //TODO catchen
-		int tilesBack = Integer.parseInt(reader.next()); //TODO catchen
-		String reason = reader.nextLine();
-		if (player == this.player) {
-			ui.displayKick(player, reason);
-			shutdown();
-		} else {
-			ui.displayKick(player, reason);
-			stackSize =+ tilesBack;
+		try {
+			Player player = getPlayer(Integer.parseInt(reader.next()));
+			int tilesBack = Integer.parseInt(reader.next());
+			String reason = reader.nextLine();
+			if (player == this.player) {
+				ui.displayKick(player, reason);
+				fatalError("You got kicked from the server! " + reason);
+			} else {
+				ui.displayKick(player, reason);
+				stackSize =+ tilesBack;
+			}
+		} catch (NumberFormatException e) {
+			fatalError("invalid Kick command received from server. (" + msg + ")");
 		}
 		reader.close();
 	}
 	
 	private void handleWinner(String msg) {
 		Scanner reader = new Scanner(msg);
-		reader.next();
-		int winner = Integer.parseInt(reader.next()); //TODO catchen
-		ui.displayWinner(getPlayer(winner));
-		if (ui.newGame()) {
-			Controller.startClient();
-		} else {
-			shutdown();
+		try {
+			int winner = Integer.parseInt(reader.next());
+			ui.displayWinner(getPlayer(winner));
+			if (ui.newGame()) {
+				Controller.startClient();
+			} else {
+				shutdown();
+			}
+		} catch (NumberFormatException e) {
+			fatalError("invalid winner command received from server. (" + msg + ")");
 		}
+		
 		reader.close();
 	}
 	
 	private void shutdown() {
-		conn.lossOfConnection();
+		conn.stopConnection();
 		System.exit(0);
 	}
 }

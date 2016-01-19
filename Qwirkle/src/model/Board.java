@@ -5,7 +5,6 @@ import java.util.*;
 import player.NetworkPlayer;
 
 public class Board {
-	private List<Block> hand;
 	private Block[][] blocks;
 	private final static int DIM = 183;
 	private final static int MID = 92;
@@ -14,7 +13,6 @@ public class Board {
 	
 	public Board() {
 		blocks = new Block[boardSize][boardSize];
-		hand = new ArrayList<Block>();
 	}
 	
 	public Board(Block[][] blocks) {
@@ -343,8 +341,8 @@ public class Board {
     }
     
     //is true if the game is over
-    public boolean gameOver() { 
-    	if (emptyStack() && noValidMoves()) {
+    public boolean gameOver(List<Block> hand) { 
+    	if (emptyStack() && noValidMoves(hand)) {
     		return true;
     	} else {
     		return false;
@@ -352,7 +350,7 @@ public class Board {
     }	
     
     //checks if there are no more valid moves
-    public boolean noValidMoves() { 
+    public boolean noValidMoves(List<Block> hand) { 
     	boolean illegal = true;
     	for(int i = 0; i < hand.size(); i++) {
     		for(int j = 0; j < DIM; j++) {
@@ -366,14 +364,6 @@ public class Board {
     		}
     	}
     	return illegal;
-    }
-    
-    public void addToHand(Block block) {
-    	hand.add(block);
-    }
-    
-    public void removeFromHand(Block block) {
-    	hand.remove(block);
     }
     
     //checks if Xrow is empty
@@ -401,18 +391,11 @@ public class Board {
     }
     
     //sets the move on the board, gives the player points and returns the point for this particular move 
-    public void makeMove(List<PlayMove> move) { 
-			for (int i = 0; i < move.size(); i++) {
-    			setField(move.get(i).x, move.get(i).y, move.get(i).block);
-    			removeFromHand(move.get(i).block);
+    public void makeMove(List<PlayMove> moves) { 
+			for (PlayMove move : moves) {
+    			setField(move.x, move.y, move.block);
     		}
     	} 
-    
-    public void makeSwap(List<SwapMove> move) {
-    	for (int i = 0; i < move.size(); i ++) {
-    		removeFromHand(move.get(i).getBlock());
-    	}
-    }
     
     //prints out the board
     public String toString() {
