@@ -35,7 +35,7 @@ public class Connection extends Thread {
 			in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 		} catch (IOException e) {
-			lossOfConnection();
+			stopConnection();
 		}
 		this.start();
 	}
@@ -45,7 +45,7 @@ public class Connection extends Thread {
 			out.write(msg + "\n");
 			out.flush();
 		} catch (IOException e) {
-			lossOfConnection();
+			stopConnection();
 		}
 	}
 	
@@ -65,15 +65,13 @@ public class Connection extends Thread {
 					sendStringToParent(command);
 				}
 			} catch (IOException e) {
-				lossOfConnection();
+				stopConnection();
 			}
 		}
 	}
 	
-	public void lossOfConnection() {
+	public void stopConnection() {
 		try {
-			//TODO 
-			System.out.println("ERROR loss of connection");
 			active = false;
 			in.close();
 			out.close();
@@ -81,7 +79,7 @@ public class Connection extends Thread {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
-		//TODO need to notify parent (need to kick from game)
+		sendStringToParent("LOSSOFCONNECTION");
 	}
 	
 	public NetworkPlayer getPlayer() {

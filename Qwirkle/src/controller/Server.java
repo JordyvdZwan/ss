@@ -4,18 +4,11 @@ import model.*;
 import model.Stack;
 import player.NetworkPlayer;
 import player.Player;
-import view.*;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 
-import org.hamcrest.Condition;
-
-
 public class Server extends Thread {
-	
-	//TODO kick when conection is lost
-	//TODO win when 1 person is left
 	
 	private List<Connection> connections;
 	private List<NetworkPlayer> players;
@@ -72,13 +65,9 @@ public class Server extends Thread {
 		broadcastMessage("NAMES" + names + " " + aiThinkTime);
 	}	
 	
-	private void cleanUpGame() {
-		// TOD Auto-generated method stub
-	}
-
-	private void stopServer() {
+	private void endGame() {
 		for (Connection conn : connections) {
-			conn.lossOfConnection();
+			conn.stopConnection();
 		}
 		this.interrupt();
 	}
@@ -173,7 +162,7 @@ public class Server extends Thread {
 			try {
 				nextMoveAvailable.await();
 			} catch (InterruptedException e) {
-				//TODO
+				//TODO dont know what to do...
 			}
 		}
 		result = nextMove.remove();
@@ -182,11 +171,11 @@ public class Server extends Thread {
 		return result;
 	}
 
-	private void nextTurn() { //TODO if 1 player is left he wins, if next player is same player he wins
+	private void nextTurn() {
 		if (players.size() == 1) {
 			playerWins(players.get(0).getNumber());
 		} else if (players.size() == 0) {
-			//TODO game stops
+			endGame();
 		} else {
 			turn = (turn + 1) % players.size();
 			if (getPlayer(turn) == null) {
@@ -195,7 +184,7 @@ public class Server extends Thread {
 			sendMessage(getPlayer(turn).getConnection(), "NEXT " + getPlayer(turn).getNumber());
 		}
 	}
-
+	
 	private NetworkPlayer getPlayer(int playerNumber) {
 		NetworkPlayer player = null;
 		for (NetworkPlayer netPlayer : players) {
@@ -211,7 +200,6 @@ public class Server extends Thread {
 		for (Player player : players) {
 			scores[player.getNumber()] = maxScore(player.getHand());
 		}
-		
 	}
 
 	private int maxScore(List<Block> blocks) {
@@ -268,8 +256,7 @@ public class Server extends Thread {
 	private void playerWins(int win) {
 		winner = win;
 		broadcastWinner();
-		cleanUpGame();
-		stopServer();
+		endGame();
 	}
 
 	public void addConnection(Connection conn) {
@@ -328,42 +315,45 @@ public class Server extends Thread {
 			}
 		} else if (command.equals("MOVE")) {
 			if (!moveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
-				
-				boolean cycleDone = false;				
-				List<Move> moves = new ArrayList<Move>();
-				while (reader.hasNext()) {
-					
-					
-					cycleDone = false;
-					String blockString = reader.next();
-					char[] chars = blockString.toCharArray();
-					if (!(chars.length == 2)) break;
-					Block block = new Block(chars[0], chars[1]);
-					
-					
-					if (!reader.hasNext()) break;
-					String yString = reader.next();
-					if (!yString.matches("^-?\\d+$")) break;
-					int y = Integer.parseInt(yString); //TODO catche
-					
-					
-					if (!reader.hasNext()) break;
-					String xString = reader.next();
-					if (!xString.matches("^-?\\d+$")) break;
-					int x = Integer.parseInt(xString); //TODO catchen
-					
-					
-					PlayMove move = new PlayMove(block, x, y, conn.getPlayer());
-					moves.add(move);
-					cycleDone = true;
-					
-				}
-				if (cycleDone && !moves.isEmpty()) {
-					nextMove.add(moves);
-					moveAvailable = true;
-					nextMoveAvailable.countDown();
-				} else {
-					kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command! (processMessage/Move)");
+				try {
+					boolean cycleDone = false;				
+					List<Move> moves = new ArrayList<Move>();
+					while (reader.hasNext()) {
+						
+						
+						cycleDone = false;
+						String blockString = reader.next();
+						char[] chars = blockString.toCharArray();
+						if (!(chars.length == 2)) break;
+						Block block = new Block(chars[0], chars[1]);
+						
+						
+						if (!reader.hasNext()) break;
+						String yString = reader.next();
+						if (!yString.matches("^-?\\d+$")) break;
+						int y = Integer.parseInt(yString);
+						
+						
+						if (!reader.hasNext()) break;
+						String xString = reader.next();
+						if (!xString.matches("^-?\\d+$")) break;
+						int x = Integer.parseInt(xString); 
+						
+						
+						PlayMove move = new PlayMove(block, x, y, conn.getPlayer());
+						moves.add(move);
+						cycleDone = true;
+						
+					}
+					if (cycleDone && !moves.isEmpty()) {
+						nextMove.add(moves);
+						moveAvailable = true;
+						nextMoveAvailable.countDown();
+					} else {
+						kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command! (processMessage/Move)");
+					}
+				} catch (NumberFormatException e) {
+					kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command! ((numbers) processMessage/Move)");
 				}
 			} else {
 				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command, not your turn or one has already been send! (processMessage/Move)");
@@ -391,9 +381,12 @@ public class Server extends Thread {
 			} else {
 				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid swap command, not your turn or one has already been send (processMessage/Swap)");
 			}
+		} else if (command.equals("LOSSOFCONNECTION")) {
+			kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Player lost connection");
 		} else {
 			kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Command not recognized (processMessage");
 		}
+		reader.close();
 	}
 	
 	public void sendMessage(Connection conn, String msg) {

@@ -7,11 +7,12 @@ import view.*;
 
 public class Controller extends Thread{	
 	public static final int MAX_PLAYERS = 4;
-	static UI ui;
+	static UI ui = new TUI();
 	public static final int DEFAULT_PORT = 25565;
 	public static final int DEFAULT_AITHINKTIME = 2000;
+	
+	
 	public static void main(String[] args) {
-		ui = new TUI();
 		chooseServerClient();
 	}
 	
