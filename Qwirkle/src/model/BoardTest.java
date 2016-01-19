@@ -127,6 +127,7 @@ public class BoardTest {
 		PlayMove move5 = new PlayMove(new Block(Color.PURPLE, Shape.CLOVER), 34, 63, new NetworkPlayer());
 		PlayMove move6 = new PlayMove(new Block(Color.ORANGE, Shape.CLOVER), 34,64, new NetworkPlayer());
 		PlayMove move7 = new PlayMove(new Block(Color.BLUE, Shape.CLOVER), 35, 68, new NetworkPlayer());
+		board.setField(92, 92, new Block(Color.YELLOW, Shape.DIAMOND));
 		multipleMove.add(move5);
 		multipleMove.add(move1);
 		multipleMove.add(move2);
