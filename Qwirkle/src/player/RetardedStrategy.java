@@ -21,43 +21,64 @@ public class RetardedStrategy {
 //		return move;
 //	}
 	
-	public String determineMove(Board board) {
+	public String determineMove(Board board, List<Block> hand) {
 		List<PlayMove> playmove = new ArrayList<PlayMove>();
 		List<SwapMove> swapmove = new ArrayList<SwapMove>();
 		String result = "";
-		if (retardedStrategyPlay(board).size() == 0) {
-			swapmove = retardedStrategySwap();
+		playmove = retardedStrategyPlay(board, hand);
+		if (playmove.size() == 0) {
+			swapmove = retardedStrategySwap(hand);
 			result = "SWAP" + swapmove.toString();
 		} else {
-			playmove = retardedStrategyPlay(board);
 			result = "MOVE" + playmove.toString();
 		}
 		return result;	
 	}
 	
-	public List<PlayMove> retardedStrategyPlay(Board board) {
+	public List<PlayMove> retardedStrategyPlay(Board board, List<Block> hand) {
 		Board moveboard = board.deepCopy();
 		List<Block> movehand = new ArrayList<Block>();
-		movehand.addAll(player.getHand());
+		movehand.addAll(hand);
 		List<PlayMove> moves = new ArrayList<PlayMove>();
 		PlayMove move = null;
-		if (moveboard.isEmptyField(92, 92)) {
-			move = new PlayMove(movehand.get(0), 92, 92, player);
-			moves.add(move);
-			moveboard.setField(92, 92, movehand.get(0));
-			movehand.remove(0);
-		}
-		for (Block block : movehand) {
-			for (int i = moveboard.minX(); i <= moveboard.maxX(); i++) {
-				for (int j = moveboard.minY(); j <= moveboard.maxY(); j++) {
-					move = new PlayMove(block, i, j, player);
-					if (moveboard.isLegalMove(move)) {
-						moves.add(move);
-						if (!moveboard.isLegalMoveList(moves)) {
-							moves.remove(move);
-						} else if (moveboard.isLegalMoveList(moves)) {
-							moveboard.setField(i, j, block);
-							movehand.remove(block);
+		if (movehand.size() > 0 ) {
+			if (moveboard.isEmptyField(92, 92)) {
+				move = new PlayMove(movehand.get(0), 92, 92, player);
+				moves.add(move);
+				moveboard.setField(92, 92, movehand.get(0));
+				movehand.remove(0);
+			}
+//			for (Block block : movehand) {
+//				for (int i = moveboard.minX(); i <= moveboard.maxX(); i++) {
+//					for (int j = moveboard.minY(); j <= moveboard.maxY(); j++) {
+//						move = new PlayMove(block, i, j, player);
+//						if (moveboard.isLegalMove(move)) {
+//							moves.add(move);
+//							if (!moveboard.isLegalMoveList(moves)) {
+//								moves.remove(move);
+//							} else if (moveboard.isLegalMoveList(moves)) {
+//								moveboard.setField(i, j, block);
+//								movehand.remove(block);
+//								moves.addAll(retardedStrategyPlay(moveboard, movehand));
+//							}
+//						}
+//					}
+//				}
+//			}
+			for (int k = 0; k < movehand.size(); k++) {
+				for (int i = moveboard.minX(); i <= moveboard.maxX(); i++) {
+					for (int j = moveboard.minY(); j <= moveboard.maxY(); j++) {
+						move = new PlayMove(movehand.get(k), i, j, player);
+						System.out.println(move.toString());
+						if (moveboard.isLegalMove(move)) {
+							moves.add(move);
+							if (!moveboard.isLegalMoveList(moves)) {
+								moves.remove(move);
+								System.out.println(moves.toString());
+							} else if (moveboard.isLegalMoveList(moves)) {
+								moveboard.setField(i, j, movehand.get(k));
+								movehand.remove(movehand.get(k));
+							}
 						}
 					}
 				}
@@ -66,13 +87,14 @@ public class RetardedStrategy {
 		return moves;
 	}
 	
-	public List<SwapMove> retardedStrategySwap() {
-		List<Block> hand = player.getHand();
+	public List<SwapMove> retardedStrategySwap(List<Block> hand) {
+		List<Block> swaphand = new ArrayList<Block>();
+		swaphand.addAll(hand);
 		SwapMove move = null;
 		List<SwapMove> swapmove = new ArrayList<SwapMove>();
 		double j = Math.random() * 6;
 		for(int i = 0; i < j; i++) {
-			move = new SwapMove(hand.get(i), player);
+			move = new SwapMove(swaphand.get(i), player);
 			swapmove.add(move);
 			
 		}

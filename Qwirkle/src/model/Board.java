@@ -47,26 +47,25 @@ public class Board {
 	}
 	
 	public boolean isLegalMoveList(List<PlayMove> moveslist) {
+		Board board = deepCopy(this);
+		List<PlayMove> moves = new ArrayList<PlayMove>();
+		moves.addAll(moveslist);
 		boolean legal = true;
 		if (moveslist.size() == 0) {
 			legal = false;
 		} else {
 			if (isOnlyX(moveslist) || isOnlyY(moveslist)) {
-				Board board = deepCopy();
-				List<PlayMove> moves = new ArrayList<PlayMove>();
-				moves.addAll(moveslist);
 				while(moves.size() > 0) {
-					int j = 0;
+					boolean legalmove = false;
 					for(int i = 0; i < moves.size(); i++) {
 						if(isLegalMove(moves.get(i))) {
 							board.setField(moves.get(i).x, moves.get(i).y, moves.get(i).block);
-							j = 1;
+							legalmove = true;
 							moves.remove(i);
 							}
 						}
-					if(j == 0) {
+					if(!legalmove) {
 						legal = false;
-						break;
 					}
 				}
 			} else {
