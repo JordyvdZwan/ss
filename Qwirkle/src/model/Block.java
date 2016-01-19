@@ -4,12 +4,12 @@ public class Block {
 	public Color color;
 	public Shape shape;	
 	
-	public static final String RED = (char)27+"[01;41;30m";
-	public static final String BLUE = (char)27+"[01;44;30m";
-	public static final String PURPLE = (char)27+"[01;45;30m";
-	public static final String ORANGE = (char)27+"[01;46;30m"; //CYAN
-	public static final String GREEN = (char)27+"[01;42;30m";
-	public static final String YELLOW = (char)27+"[01;43;30m";
+	public static final String RED = (char)27+"[01;41;37m";
+	public static final String BLUE = (char)27+"[01;44;37m";
+	public static final String PURPLE = (char)27+"[01;45;37m";
+	public static final String ORANGE = (char)27+"[01;46;37m"; //CYAN
+	public static final String GREEN = (char)27+"[01;42;37m";
+	public static final String YELLOW = (char)27+"[01;43;37m";
 	public static final String BLACK = (char)27+"[01;47;00m";
 	
 	public Block(Color color, Shape shape) {
