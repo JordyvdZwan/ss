@@ -52,14 +52,19 @@ public class RetardedStrategy {
 //				for (int i = moveboard.minX(); i <= moveboard.maxX(); i++) {
 //					for (int j = moveboard.minY(); j <= moveboard.maxY(); j++) {
 //						move = new PlayMove(block, i, j, player);
+//						System.out.println(move.toString());
 //						if (moveboard.isLegalMove(move)) {
 //							moves.add(move);
-//							if (!moveboard.isLegalMoveList(moves)) {
+////							System.out.println(moves.toString());
+//							boolean valid = moveboard.isLegalMoveList(moves);
+//							if (!valid) {
 //								moves.remove(move);
-//							} else if (moveboard.isLegalMoveList(moves)) {
+//								System.out.println(moves.toString());
+//							} else if (valid) {
 //								moveboard.setField(i, j, block);
 //								movehand.remove(block);
-//								moves.addAll(retardedStrategyPlay(moveboard, movehand));
+//								System.out.println(moves.toString());
+////								break;
 //							}
 //						}
 //					}
@@ -72,12 +77,14 @@ public class RetardedStrategy {
 						System.out.println(move.toString());
 						if (moveboard.isLegalMove(move)) {
 							moves.add(move);
-							if (!moveboard.isLegalMoveList(moves)) {
+							boolean valid = moveboard.isLegalMoveList(moves);
+							if (!valid) {
 								moves.remove(move);
 								System.out.println(moves.toString());
-							} else if (moveboard.isLegalMoveList(moves)) {
+							} else if (valid) {
 								moveboard.setField(i, j, movehand.get(k));
 								movehand.remove(movehand.get(k));
+								System.out.println(moves.toString());
 							}
 						}
 					}

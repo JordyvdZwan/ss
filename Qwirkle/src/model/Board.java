@@ -91,6 +91,10 @@ public class Board {
 			if (blocks[move.x + counter][move.y].shape != move.block.shape) {
 				shapeResult = false;
 			}
+			if (blocks[move.x + counter][move.y] == move.block) {
+				result = false;
+				break;
+			}
 			if (!colorResult && !shapeResult) {
 				result = false;
 				break;
@@ -104,6 +108,10 @@ public class Board {
 			}
 			if (blocks[move.x - counter][move.y].shape != move.block.shape) {
 				shapeResult = false;
+			}
+			if (blocks[move.x - counter][move.y] == move.block) {
+				result = false;
+				break;
 			}
 			if (!colorResult && !shapeResult) {
 				result = false;
@@ -127,6 +135,10 @@ public class Board {
 			if (blocks[move.x][move.y + counter].shape != move.block.shape) {
 				shapeResult = false;
 			}
+			if (blocks[move.x][move.y + counter] == move.block) {
+				result = false;
+				break;
+			}
 			if (!colorResult && !shapeResult) {
 				result = false;
 				break;
@@ -140,6 +152,10 @@ public class Board {
 			}
 			if (blocks[move.x][move.y - counter].shape != move.block.shape) {
 				shapeResult = false;
+			}
+			if (blocks[move.x][move.y - counter] == move.block) {
+				result = false;
+				break;
 			}
 			if (!colorResult && !shapeResult) {
 				result = false;
