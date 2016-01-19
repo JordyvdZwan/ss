@@ -15,6 +15,14 @@ public class Board {
 		blocks = new Block[boardSize][boardSize];
 	}
 	
+	public Board(Board b) {
+		this.blocks = b.getBlock();
+	}
+	
+	public Block[][] getBlock() {
+		return blocks;
+	}
+	
 	public Board(Block[][] blocks) {
 		this.blocks = blocks;
 	}
@@ -50,6 +58,7 @@ public class Board {
 		Board board = deepCopy(this);
 		List<PlayMove> moves = new ArrayList<PlayMove>();
 		moves.addAll(moveslist);
+		List<PlayMove> checkedmoves = new ArrayList<PlayMove>();
 		boolean legal = true;
 		if (moveslist.size() == 0) {
 			legal = false;
@@ -61,6 +70,7 @@ public class Board {
 						if(isLegalMove(moves.get(i))) {
 							board.setField(moves.get(i).x, moves.get(i).y, moves.get(i).block);
 							legalmove = true;
+							checkedmoves.add(moves.get(i));
 							moves.remove(i);
 							}
 						}
@@ -71,6 +81,9 @@ public class Board {
 			} else {
 				legal = false;
 			}
+		}
+		for (PlayMove checkd : checkedmoves) {
+			board.emptyField(checkd.x, checkd.y);
 		}
 		return legal;
 	}
@@ -88,6 +101,10 @@ public class Board {
 			}
 			if (blocks[move.x + counter][move.y].shape != move.block.shape) {
 				shapeResult = false;
+			} 
+			if (blocks[move.x + counter][move.y].shape == move.block.shape && blocks[move.x + counter][move.y].color == move.block.color) {
+				result = false;
+				break;
 			}
 			if (!colorResult && !shapeResult) {
 				result = false;
@@ -102,6 +119,10 @@ public class Board {
 			}
 			if (blocks[move.x - counter][move.y].shape != move.block.shape) {
 				shapeResult = false;
+			}
+			if (blocks[move.x - counter][move.y].shape == move.block.shape && blocks[move.x - counter][move.y].color == move.block.color) {
+				result = false;
+				break;
 			}
 			if (!colorResult && !shapeResult) {
 				result = false;
@@ -125,6 +146,10 @@ public class Board {
 			if (blocks[move.x][move.y + counter].shape != move.block.shape) {
 				shapeResult = false;
 			}
+			if (blocks[move.x][move.y + counter].shape == move.block.shape && blocks[move.x][move.y + counter].color == move.block.color) {
+				result = false;
+				break;
+			}
 			if (!colorResult && !shapeResult) {
 				result = false;
 				break;
@@ -138,6 +163,10 @@ public class Board {
 			}
 			if (blocks[move.x][move.y - counter].shape != move.block.shape) {
 				shapeResult = false;
+			}
+			if (blocks[move.x][move.y - counter].shape == move.block.shape && blocks[move.x][move.y - counter].color == move.block.color) {
+				result = false;
+				break;
 			}
 			if (!colorResult && !shapeResult) {
 				result = false;
@@ -170,16 +199,12 @@ public class Board {
 	}
 	
 	public Board deepCopy(Board b) {
-		return new Board(b.blocks);
+		Board board = new Board(this);
+		return board;
 	}
 	
 	public Board deepCopy() { 
-		Board board = new Board();
-		for (int i = 0; i < DIM; i++) {
-			for (int j = 0; j < DIM; j++) {
-				board.setField(i, j, (blocks[i][j]));
-			}
-		}
+		Board board = new Board(this);	
 		return board;
 	}
 	

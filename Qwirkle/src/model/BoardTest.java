@@ -102,6 +102,7 @@ public class BoardTest {
 		PlayMove move9 = new PlayMove(new Block(Color.BLUE, Shape.CLOVER), 34, 64, new NetworkPlayer());
 		PlayMove move10 = new PlayMove(new Block(Color.GREEN, Shape.DIAMOND), 33, 65, new NetworkPlayer());
 		PlayMove move11 = new PlayMove(new Block(Color.GREEN, Shape.DIAMOND), 92, 92, new NetworkPlayer());
+		PlayMove move12 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 35, 65, new NetworkPlayer());
 		assertFalse(board.isLegalMove(move1));
 		assertTrue(board.isLegalMove(move11));
 		board.setField(34, 65, (new Block(Color.GREEN, Shape.CLOVER)));
@@ -115,6 +116,7 @@ public class BoardTest {
 		assertTrue(board.isLegalMove(move8));
 		assertTrue(board.isLegalMove(move9));
 		assertTrue(board.isLegalMove(move10));
+		assertFalse(board.isLegalMove(move12));
 	}
 	
 	@Test
@@ -211,6 +213,7 @@ public class BoardTest {
 		assertEquals(board.maxY(), 96);
 		assertEquals(board.minX(), 89);
 		assertEquals(board.minY(), 89);
+		System.out.print(board.toString());
 
 	}
 	
