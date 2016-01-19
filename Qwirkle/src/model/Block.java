@@ -4,12 +4,62 @@ public class Block {
 	public Color color;
 	public Shape shape;	
 	
+	public static final String RED = (char)27+"[01;41;30m";
+	public static final String BLUE = (char)27+"[01;44;30m";
+	public static final String PURPLE = (char)27+"[01;45;30m";
+	public static final String ORANGE = (char)27+"[01;46;30m"; //CYAN
+	public static final String GREEN = (char)27+"[01;42;30m";
+	public static final String YELLOW = (char)27+"[01;43;30m";
+	public static final String BLACK = (char)27+"[01;47;00m";
+	
 	public Block(Color color, Shape shape) {
 		this.color = color;
 		this.shape = shape;
 	}
 	
-
+	 //prints out a block
+    public String toColorString() {
+    	String color = "";
+    	String shape = "";
+    	if (this.color.equals(Color.BLUE)) {
+    		color = BLUE;
+    	}
+    	if (this.color.equals(Color.ORANGE)) {
+    		color = ORANGE;
+    	}
+    	if (this.color.equals(Color.PURPLE)) {
+    		color = PURPLE;
+    	}
+    	if (this.color.equals(Color.RED)) {
+    		color = RED;
+    	}
+    	if (this.color.equals(Color.YELLOW)) {
+    		color = YELLOW;
+    	}
+    	if (this.color.equals(Color.GREEN)) {
+    		color = GREEN;
+    	}
+    	if (this.shape.equals(Shape.CIRCLE)) {
+    		shape = "oo";
+    	}
+    	if (this.shape.equals(Shape.STAR)) {
+    		shape = "**";
+    	}
+    	if (this.shape.equals(Shape.DIAMOND)) {
+    		shape = "dd";
+    	}
+    	if (this.shape.equals(Shape.SQUARE)) {
+    		shape = "ss";
+    	}
+    	if (this.shape.equals(Shape.CROSS)) {
+    		shape = "xx";
+    	}
+    	if (this.shape.equals(Shape.CLOVER)) {
+    		shape = "cc";
+    	}
+    	return color + shape + BLACK;
+    }
+	
 	 //prints out a block
     public String toString() {
     	char color = 'E';

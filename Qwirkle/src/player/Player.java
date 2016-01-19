@@ -4,11 +4,12 @@ import java.util.List;
 
 import controller.Connection;
 import model.Block;
+import model.Board;
 import model.Move;
 import view.UI;
 
 public interface Player {
-	public List<Move> determineMove(UI ui);
+	public List<Move> determineMove(UI ui, Board board, List<Block> hand);
 	public List<Block> getHand();
 	public void setHand(List<Block> handArg);
 	public void swapHand(List<Move> moves, List<Block> blocks);

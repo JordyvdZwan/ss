@@ -438,6 +438,34 @@ public class Board {
     	return index + "\n" + swag + "\n" + colum;
     }
     
+    public String toColorString() {
+    	int maxX = maxX();
+    	int minX = minX();
+    	int maxY = maxY();
+    	int minY = minY();
+    	String colum = "";
+    	String index = "\\x ";
+    	String swag = "y\\ ";
+    	for (int i = minX; i <= maxX; i++) {
+    		index = index + " " + i + "|";
+    	}
+    	for (int i = minX; i <= maxX; i++) {
+    		swag = swag + "___" + "|";
+    	}
+    	for (int i = minY; i <= maxY; i++) {
+        	String row = "";
+    		for (int j = minX; j <= maxX; j++) {
+    			if (getField(j, i) != null) {
+    				row = row + " " + getField(j, i).toColorString() + "|";
+    			} else {
+    				row = row + "  " + "_" + "|";
+    			}
+    		}
+    		colum = colum + i + "|" + row + "\n";
+    	}
+    	return index + "\n" + swag + "\n" + colum;
+    }
+    
     public int maxX() {
     	int maxX = 0;
     	for (int i = 1; i < MID; i++) {

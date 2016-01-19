@@ -3,6 +3,9 @@ package controller;
 import java.io.IOException;
 import java.net.*;
 
+import player.ComputerPlayer;
+import player.HumanPlayer;
+import strategy.RetardedStrategy;
 import view.*;
 
 public class Controller extends Thread{	
@@ -26,7 +29,9 @@ public class Controller extends Thread{
 			startLocalClient(DEFAULT_PORT);
 		} else if (choice.equals("DEFAULTSERVER")) {
 			startLocalServer(DEFAULT_PORT);
-		} 
+		} else if (choice.equals("LOCALAI")) {
+			startLocalAI(DEFAULT_PORT);
+		}
 	}
 	
 	@SuppressWarnings("unused")
@@ -42,6 +47,38 @@ public class Controller extends Thread{
 	}
 	
 	@SuppressWarnings("unused")
+	public static void startLocalAI(int port) {
+		try {
+			Socket sock;
+			InetAddress address;
+			
+			address = InetAddress.getByName("localhost");
+			
+			sock = new Socket(address, port);
+			Client client = new Client(ui, sock, new ComputerPlayer("AI", new RetardedStrategy()));
+		} catch (IOException e) {
+			ui.errorOccured("Could not start Client.");
+		}
+	}
+	
+	@SuppressWarnings("unused")
+	public static void startAI() {
+		try {
+			Socket sock;
+			InetAddress address;
+			
+			address = ui.getHost();
+			int port = ui.getPort();
+			String userName = ui.getUserName();
+			
+			sock = new Socket(address, port);
+			Client client = new Client(ui, sock, new ComputerPlayer(new RetardedStrategy()));
+		} catch (IOException e) {
+			ui.errorOccured("Could not start Client.");
+		}
+	}
+	
+	@SuppressWarnings("unused")
 	public static void startLocalClient(int port) {
 		try {
 			Socket sock;
@@ -51,7 +88,7 @@ public class Controller extends Thread{
 			String userName = ui.getUserName();
 			
 			sock = new Socket(address, port);
-			Client client = new Client(ui, sock, userName);
+			Client client = new Client(ui, sock, new HumanPlayer(userName));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
 		}
@@ -68,7 +105,7 @@ public class Controller extends Thread{
 			String userName = ui.getUserName();
 			
 			sock = new Socket(address, port);
-			Client client = new Client(ui, sock, userName);
+			Client client = new Client(ui, sock, new HumanPlayer(userName));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
 		}

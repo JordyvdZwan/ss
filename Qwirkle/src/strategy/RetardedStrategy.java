@@ -1,14 +1,13 @@
-package player;
+package strategy;
 import java.util.ArrayList;
 import java.util.List;
 
 import model.*;
+import player.Player;
 
-public class RetardedStrategy {
-	private Player player;
+public class RetardedStrategy implements Strategy {
 	
-	public RetardedStrategy(Player player) {
-		this.player = player;
+	public RetardedStrategy() {
 	}
 	
 //	public List<Move> determineMove() {
@@ -21,21 +20,25 @@ public class RetardedStrategy {
 //		return move;
 //	}
 	
-	public String determineMove(Board board, List<Block> hand) {
+	public List<Move> getMove(Board board, List<Block> hand, Player player) {
 		List<PlayMove> playmove = new ArrayList<PlayMove>();
 		List<SwapMove> swapmove = new ArrayList<SwapMove>();
-		String result = "";
-		playmove = retardedStrategyPlay(board, hand);
+		List<Move> result = new ArrayList<Move>();
+		playmove = retardedStrategyPlay(board, hand, player);
 		if (playmove.size() == 0) {
-			swapmove = retardedStrategySwap(hand);
-			result = "SWAP" + swapmove.toString();
+			swapmove = retardedStrategySwap(hand, player);
+			for (SwapMove move : swapmove) {
+				result.add(move);
+			}
 		} else {
-			result = "MOVE" + playmove.toString();
+			for (PlayMove move : playmove) {
+				result.add(move);
+			}
 		}
 		return result;	
 	}
 	
-	public List<PlayMove> retardedStrategyPlay(Board board, List<Block> hand) {
+	public List<PlayMove> retardedStrategyPlay(Board board, List<Block> hand, Player player) {
 		Board moveboard = board.deepCopy();
 		List<Block> movehand = new ArrayList<Block>();
 		movehand.addAll(hand);
@@ -89,7 +92,7 @@ public class RetardedStrategy {
 		return moves;
 	}
 	
-	public List<SwapMove> retardedStrategySwap(List<Block> hand) {
+	public List<SwapMove> retardedStrategySwap(List<Block> hand, Player player) {
 		List<Block> swaphand = new ArrayList<Block>();
 		swaphand.addAll(hand);
 		SwapMove move = null;
