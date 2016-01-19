@@ -5,6 +5,7 @@ import java.util.List;
 
 import controller.Connection;
 import model.Block;
+import model.Board;
 import model.Move;
 import view.UI;
 
@@ -16,14 +17,16 @@ public class HumanPlayer implements Player {
 	private Connection connection;
 	private List<Block> hand;
 	
-	public HumanPlayer() {
+	public HumanPlayer(String name) {
 		hand = new ArrayList<Block>();
 	}
 	
 	@Override
-	public List<Move> determineMove(UI ui) { // TODO
-		return null;
-	}
+	public List<Move> determineMove(UI ui, Board board, List<Block> hand) {
+		ui.displayBoard(board);
+		ui.displayHand(hand);
+		return ui.getMove(board);
+}
 	
 	public HumanPlayer(String name, int number) {
 		this.number = number;

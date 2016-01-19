@@ -1,21 +1,25 @@
 package view;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import controller.Client;
 import controller.Server;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-
-import model.*;
+import model.Block;
+import model.Board;
+import model.Move;
+import model.PlayMove;
+import model.SwapMove;
 import player.Player;
+//NOTE: only works when console has ANSI escape 
 
-public class TUI implements UI {
+public class CTUI implements UI {
 	private Client client;
 	private Server servercontroller;
+	
 	
 	public void setClient(Client client) {
 		this.client = client;
@@ -23,7 +27,7 @@ public class TUI implements UI {
 
 	private Scanner in = new Scanner(System.in);
 	
-	public TUI() {
+	public CTUI() {
 		
 	}
 	
@@ -83,7 +87,7 @@ public class TUI implements UI {
 	}
 	
 	public void displayBoard(Board board) {
-		System.out.println(board.toString());
+		System.out.println(board.toColorString());
 	} 
 	
 	public void displayScore() {

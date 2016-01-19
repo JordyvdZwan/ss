@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import model.*;
+import strategy.RetardedStrategy;
 
 
 public class AITest {

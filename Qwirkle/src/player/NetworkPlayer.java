@@ -5,6 +5,7 @@ import java.util.List;
 
 import controller.Connection;
 import model.Block;
+import model.Board;
 import model.Move;
 import view.UI;
 
@@ -20,7 +21,7 @@ public class NetworkPlayer implements Player{
 	}
 	
 	@Override
-	public List<Move> determineMove(UI ui) { // TODO
+	public List<Move> determineMove(UI ui, Board board, List<Block> hand) {
 		return null;
 	}
 		

@@ -3,6 +3,7 @@ package controller;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import model.*;
@@ -21,37 +22,43 @@ public class Client {
 	private List<Block> tempHand = new ArrayList<Block>();
 	private int stackSize;
 	
-	public Client(UI uiArg, Socket sockArg, String userNameArg) {
+	public Client(UI uiArg, Socket sockArg, Player player) {//TODO maak er localplayer van
 		board = new Board();
 		ui = uiArg;
+		this.player = player;
 		ui.setClient(this);
 		conn = new Connection(this, sockArg);
 		
-		conn.sendString("HELLO " + userNameArg);
+		conn.sendString("HELLO " + player.getName());
 	}
 	
 	public void processMessage(Connection conn, String msg) {
-		Scanner reader = new Scanner(msg);
-		String command = reader.next();
-		String message = reader.nextLine();
-		reader.close();
-		if (command.equals("WELCOME")) {
-			handleWelcome(message);
-		} else if (command.equals("NAMES")) { 
-			handleNames(message);
-		} else if (command.equals("NEXT")) {
-			handleNext(message);
-		} else if (command.equals("NEW")) {
-			handleNew(message);
-		} else if (command.equals("TURN")) {
-			handleTurn(message);
-		} else if (command.equals("KICK")) {
-			handleKick(message);
-		} else if (command.equals("WINNER")) {
-			handleWinner(message);
-		} else if (command.equals("LOSSOFCONNECTION")) {
-			handleLossOfConnection();
-		} else {
+		try {
+			Scanner reader = new Scanner(msg);
+			String command = reader.next();
+			String message = reader.nextLine();
+			reader.close();
+		
+			if (command.equals("WELCOME")) {
+				handleWelcome(message);
+			} else if (command.equals("NAMES")) { 
+				handleNames(message);
+			} else if (command.equals("NEXT")) {
+				handleNext(message);
+			} else if (command.equals("NEW")) {
+				handleNew(message);
+			} else if (command.equals("TURN")) {
+				handleTurn(message);
+			} else if (command.equals("KICK")) {
+				handleKick(message);
+			} else if (command.equals("WINNER")) {
+				handleWinner(message);
+			} else if (command.equals("LOSSOFCONNECTION")) {
+				handleLossOfConnection();
+			} else {
+				fatalError("invalid command received from connection!");
+			}
+		} catch (NoSuchElementException e) {
 			fatalError("invalid command received from connection!");
 		}
 	}
@@ -61,7 +68,7 @@ public class Client {
 		try {
 			String playerName = reader.next();
 			int playerNumber = Integer.parseInt(reader.next());
-			player = new HumanPlayer(playerName, playerNumber);
+			player.setNumber(playerNumber);
 		} catch (NumberFormatException e) {
 			fatalError("invalid Welcome command given by server (" + msg + ")");
 		}
@@ -105,9 +112,7 @@ public class Client {
 	}
 
 	private void handleNext(String msg) {
-		ui.displayBoard(board);
-		ui.displayHand(hand);
-		List<Move> moves = ui.getMove(board);
+		List<Move> moves = player.determineMove(ui, board, hand);
 		String move = "";
 		if (isInstanceOfPlayMoves(moves)) {
 			List<PlayMove> playMoves = toPlayMove(moves);
