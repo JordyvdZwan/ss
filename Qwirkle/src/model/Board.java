@@ -2,7 +2,8 @@ package model;
 
 import java.util.*;
 
-import player.NetworkPlayer;
+import controller.*;
+import player.*;
 
 public class Board {
 	private Block[][] blocks;
@@ -248,6 +249,10 @@ public class Board {
     		stack = 0;
     	}
     	return stack;
+    }
+    
+    public int playerHandCount(Player player) { //TODO
+    	return player.getHand().size();
     }
     
     //indicates when the stack is empty

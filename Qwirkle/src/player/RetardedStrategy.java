@@ -48,43 +48,36 @@ public class RetardedStrategy {
 				moveboard.setField(92, 92, movehand.get(0));
 				movehand.remove(0);
 			}
-//			for (Block block : movehand) {
-//				for (int i = moveboard.minX(); i <= moveboard.maxX(); i++) {
-//					for (int j = moveboard.minY(); j <= moveboard.maxY(); j++) {
-//						move = new PlayMove(block, i, j, player);
-//						System.out.println(move.toString());
-//						if (moveboard.isLegalMove(move)) {
-//							moves.add(move);
-////							System.out.println(moves.toString());
-//							boolean valid = moveboard.isLegalMoveList(moves);
-//							if (!valid) {
-//								moves.remove(move);
-//								System.out.println(moves.toString());
-//							} else if (valid) {
-//								moveboard.setField(i, j, block);
-//								movehand.remove(block);
-//								System.out.println(moves.toString());
-////								break;
-//							}
-//						}
-//					}
-//				}
-//			}
-			for (int k = 0; k < movehand.size(); k++) {
+			for (Block block : movehand) {
 				for (int i = moveboard.minX(); i <= moveboard.maxX(); i++) {
 					for (int j = moveboard.minY(); j <= moveboard.maxY(); j++) {
-						move = new PlayMove(movehand.get(k), i, j, player);
+						move = new PlayMove(block, i, j, player);
 						if (moveboard.isLegalMove(move)) {
 							moves.add(move);
 							if (!board.isLegalMoveList(moves)) {
 								moves.remove(move);
 							} else {
-								moveboard.setField(i, j, movehand.get(k));
+								moveboard.setField(i, j, block);
 							}
 						}
 					}
 				}
 			}
+//			for (int k = 0; k < movehand.size(); k++) {
+//				for (int i = moveboard.minX(); i <= moveboard.maxX(); i++) {
+//					for (int j = moveboard.minY(); j <= moveboard.maxY(); j++) {
+//						move = new PlayMove(movehand.get(k), i, j, player);
+//						if (moveboard.isLegalMove(move)) {
+//							moves.add(move);
+//							if (!board.isLegalMoveList(moves)) {
+//								moves.remove(move);
+//							} else {
+//								moveboard.setField(i, j, movehand.get(k));
+//							}
+//						}
+//					}
+//				}
+//			}
 		}
 		return moves;
 	}
