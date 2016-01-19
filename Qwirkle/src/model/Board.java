@@ -14,7 +14,12 @@ public class Board {
 	}
 	
 	public Board(Board b) {
-		this.blocks = b.getBlock();
+		blocks = new Block[DIM][DIM];
+		for (int x = 0; x < b.getBlock().length; x++) {
+			for (int y = 0; y < b.getBlock().length; y++) {
+				blocks[x][y] = b.getBlock()[x][y];
+			}
+		}
 	}
 	
 	public Block[][] getBlock() {
