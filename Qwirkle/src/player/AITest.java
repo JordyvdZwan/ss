@@ -19,12 +19,12 @@ public class AITest {
 		player.setHand(stack.give(6));
 		}
 	
-//	@Test
-//	public void TestRetardedAIFirstMove() {
-//		System.out.print(board.toString());
-//		System.out.println(player.getHand().toString());
-//		System.out.println(retard.determineMove(board, player.getHand()).toString());
-//	}
+	@Test
+	public void TestRetardedAIFirstMove() {
+		System.out.print(board.toString());
+		System.out.println(player.getHand().toString());
+		System.out.println(retard.determineMove(board, player.getHand()).toString());
+	}
 	
 	@Test
 	public void TestRetardedAI() {
@@ -34,12 +34,12 @@ public class AITest {
 		System.out.println(retard.determineMove(board, player.getHand()).toString());
 	}
 	
-//	@Test
-//	public void TestRetardedAISecondMove() {
-//		board.setField(92, 92, new Block(Color.BLUE, Shape.CLOVER));
-//		board.setField(92, 93, new Block(Color.BLUE, Shape.CIRCLE));
-//		System.out.print(board.toString());
-//		System.out.println(player.getHand().toString());
-//		System.out.println(retard.determineMove(board, player.getHand()).toString());
-//	}
+	@Test
+	public void TestRetardedAISecondMove() {
+		board.setField(92, 92, new Block(Color.BLUE, Shape.CLOVER));
+		board.setField(92, 93, new Block(Color.BLUE, Shape.CIRCLE));
+		System.out.print(board.toString());
+		System.out.println(player.getHand().toString());
+		System.out.println(retard.determineMove(board, player.getHand()).toString());
+	}
 }
