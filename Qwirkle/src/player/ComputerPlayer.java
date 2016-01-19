@@ -8,7 +8,7 @@ import model.Block;
 import model.Move;
 import view.UI;
 
-public class HumanPlayer implements Player {
+public class ComputerPlayer implements Player {
 
 	private int score;
 	private int number;
@@ -16,16 +16,11 @@ public class HumanPlayer implements Player {
 	private Connection connection;
 	private List<Block> hand;
 	
-	public HumanPlayer() {
+	public ComputerPlayer() {
 		hand = new ArrayList<Block>();
 	}
 	
-	@Override
-	public List<Move> determineMove(UI ui) { // TODO
-		return null;
-	}
-	
-	public HumanPlayer(String name, int number) {
+	public ComputerPlayer(String name, int number) {
 		this.number = number;
 		this.name = name;
 	}
@@ -40,6 +35,11 @@ public class HumanPlayer implements Player {
 		
 	}
 	
+	@Override
+	public List<Move> determineMove(UI ui) { // TODO
+		return null;
+	}
+		
 	@Override
 	public int getScore() {
 		return score;
@@ -89,7 +89,6 @@ public class HumanPlayer implements Player {
 	public void setConnection(Connection conn) {
 		connection = conn;		
 	}
-
 
 
 

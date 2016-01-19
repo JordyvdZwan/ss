@@ -6,6 +6,7 @@ import java.util.List;
 import controller.Connection;
 import model.Block;
 import model.Move;
+import view.UI;
 
 public class NetworkPlayer implements Player{
 	private int score;
@@ -18,6 +19,11 @@ public class NetworkPlayer implements Player{
 		hand = new ArrayList<Block>();
 	}
 	
+	@Override
+	public List<Move> determineMove(UI ui) { // TODO
+		return null;
+	}
+		
 	public NetworkPlayer(String name, int number) {
 		this.number = number;
 		this.name = name;
@@ -83,10 +89,7 @@ public class NetworkPlayer implements Player{
 		connection = conn;		
 	}
 
-	@Override
-	public List<Move> determineMove() { // TODO
-		return null;
-	}
+
 
 
 }
