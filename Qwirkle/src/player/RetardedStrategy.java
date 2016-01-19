@@ -74,20 +74,12 @@ public class RetardedStrategy {
 				for (int i = moveboard.minX(); i <= moveboard.maxX(); i++) {
 					for (int j = moveboard.minY(); j <= moveboard.maxY(); j++) {
 						move = new PlayMove(movehand.get(k), i, j, player);
-						System.out.println(move.toString());
 						if (moveboard.isLegalMove(move)) {
 							moves.add(move);
-							System.out.println(moves.toString());
-							System.out.println(moveboard.isLegalMoveList(moves));
 							if (!board.isLegalMoveList(moves)) {
 								moves.remove(move);
-//								System.out.println("false " + moves.toString());
 							} else {
 								moveboard.setField(i, j, movehand.get(k));
-								System.out.print(moveboard.toString());
-								System.out.print(board.toString());
-//								movehand.remove(movehand.get(k));
-//								System.out.println("true " + moves.toString());
 							}
 						}
 					}

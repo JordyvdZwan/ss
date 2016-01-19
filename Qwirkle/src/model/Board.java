@@ -58,10 +58,9 @@ public class Board {
 	}
 	
 	public boolean isLegalMoveList(List<PlayMove> moveslist) {
-		Board board = deepCopy(this);
+		Board board = deepCopy();
 		List<PlayMove> moves = new ArrayList<PlayMove>();
 		moves.addAll(moveslist);
-		List<PlayMove> checkedmoves = new ArrayList<PlayMove>();
 		boolean legal = true;
 		if (moveslist.size() == 0) {
 			legal = false;
@@ -70,23 +69,20 @@ public class Board {
 				while(moves.size() > 0) {
 					boolean legalmove = false;
 					for(int i = 0; i < moves.size(); i++) {
-						if(isLegalMove(moves.get(i))) {
+						if(board.isLegalMove(moves.get(i))) {
 							board.setField(moves.get(i).x, moves.get(i).y, moves.get(i).block);
 							legalmove = true;
-							checkedmoves.add(moves.get(i));
 							moves.remove(i);
 							}
 						}
 					if(!legalmove) {
 						legal = false;
+						break;
 					}
 				}
 			} else {
 				legal = false;
 			}
-		}
-		for (PlayMove checkd : checkedmoves) {
-			board.emptyField(checkd.x, checkd.y);
 		}
 		return legal;
 	}
@@ -202,23 +198,11 @@ public class Board {
 	}
 	
 	public Board deepCopy(Board b) {
-//		Board board = new Board();	
-//		for (int i = 0; i < DIM; i++) {
-//			for (int j = 0; j < DIM; j++) {
-//				board.setField(i, j, b.getField(i, j)); 
-//			}
-//		}
 		Board board = new Board(b);
 		return board;
 	}
 	
 	public Board deepCopy() { 
-//		Board board = new Board();	
-//		for (int i = 0; i < DIM; i++) {
-//			for (int j = 0; j < DIM; j++) {
-//				board.setField(i, j, getField(i, j)); 
-//			}
-//		}
 		Board board = new Board(this);
 		return board;
 	}
