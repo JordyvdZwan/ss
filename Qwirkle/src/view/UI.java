@@ -28,6 +28,6 @@ public interface UI extends Runnable{
 	public void errorOccured(String msg);
 	public boolean newGame();
 	
-	public void setServerController(ServerController control);
+	public void setServerController(Server control);
 	public void setClient(Client client);
 }

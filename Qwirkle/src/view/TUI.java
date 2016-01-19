@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import controller.Client;
-import controller.ServerController;
+import controller.Server;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -15,7 +15,7 @@ import player.Player;
 
 public class TUI implements UI {
 	private Client client;
-	private ServerController servercontroller;
+	private Server servercontroller;
 	
 	public void setClient(Client client) {
 		this.client = client;
@@ -27,7 +27,7 @@ public class TUI implements UI {
 		
 	}
 	
-	public void setServerController(ServerController control) {
+	public void setServerController(Server control) {
 		servercontroller = control;
 	}
 	

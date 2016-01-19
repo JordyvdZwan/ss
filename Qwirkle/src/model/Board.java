@@ -210,7 +210,6 @@ public class Board {
 	
 	//puts a stone on the board
 	public void setField(int x, int y, Block block) {
-		System.out.println("Setting field"); //TODO
 		blocks[x][y] = block;
 	}
 	
@@ -402,9 +401,7 @@ public class Board {
     
     //sets the move on the board, gives the player points and returns the point for this particular move 
     public void makeMove(List<PlayMove> moves) { 
-    	System.out.println("STARTING TO MAKE MOVES!"); //TODO
 			for (PlayMove move : moves) {
-				System.out.println("MAKEING A MOVE: " + move.x + " " + move.y + " " + move.block);
     			setField(move.x, move.y, move.block);
     		}
     	} 

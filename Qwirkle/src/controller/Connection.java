@@ -6,7 +6,7 @@ import java.net.*;
 import player.NetworkPlayer;
 
 public class Connection extends Thread {
-	private Server server;
+	private Game game;
 	private Client client;
 	private Socket sock;
 	private boolean active = true;
@@ -17,9 +17,9 @@ public class Connection extends Thread {
 	private BufferedReader in;
 	private BufferedWriter out;
 	
-	public Connection(Server serverArg, Socket sockArg, NetworkPlayer playerArg) {
+	public Connection(Game serverArg, Socket sockArg, NetworkPlayer playerArg) {
 		player = playerArg;
-		server = serverArg;
+		game = serverArg;
 		sock = sockArg;
 		openCommunication();
 	}
@@ -50,8 +50,8 @@ public class Connection extends Thread {
 	}
 	
 	public void sendStringToParent(String msg) {
-		if (server != null) {
-			server.processMessage(this, msg);
+		if (game != null) {
+			game.processMessage(this, msg);
 		} else {
 			client.processMessage(this, msg);
 		}
