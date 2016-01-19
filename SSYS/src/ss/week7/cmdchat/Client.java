@@ -1,4 +1,4 @@
-package ss.week7.cmdchat;
+dpackage ss.week7.cmdchat;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -27,7 +27,7 @@ public class Client extends Thread{
 		}
 		
 		InetAddress host=null;
-		int port =0;
+		int port = 0;
 
 		try {
 			host = InetAddress.getByName(args[1]);

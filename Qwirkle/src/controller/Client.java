@@ -12,17 +12,13 @@ import view.*;
 public class Client {
 
 	private int aiThinkTime;
-	
 	private UI ui;
 	private Connection conn;
-	
 	private Player player;
 	private List<Player> opponents = new ArrayList<Player>();
-	
 	private Board board;
 	private List<Block> hand = new ArrayList<Block>();
 	private List<Block> tempHand = new ArrayList<Block>();
-	
 	private int stackSize;
 	
 	public Client(UI uiArg, Socket sockArg, String userNameArg) {
@@ -34,53 +30,33 @@ public class Client {
 		conn.sendString("HELLO " + userNameArg);
 	}
 	
-	public List<Block> getHand() {
-		return hand;
-	}
-	
-	public Player getPlayer() {
-		return player;
-	}
-	
 	public void processMessage(Connection conn, String msg) {
 		System.out.println("[CLIENT]: proccesing Message");
 		Scanner reader = new Scanner(msg);
 		String command = reader.next();
+		String message = reader.nextLine();
+		reader.close();
 		if (command.equals("WELCOME")) {
-			handleWelcome(reader.nextLine());
+			handleWelcome(message);
 		} else if (command.equals("NAMES")) { 
-			handleNames(reader.nextLine());
+			handleNames(message);
 		} else if (command.equals("NEXT")) {
-			handleNext(reader.nextLine());
+			handleNext(message);
 		} else if (command.equals("NEW")) {
-			handleNew(reader.nextLine());
+			handleNew(message);
 		} else if (command.equals("TURN")) {
-			handleTurn(reader.nextLine());
+			handleTurn(message);
 		} else if (command.equals("KICK")) {
-			handleKick(reader.nextLine());
+			handleKick(message);
 		} else if (command.equals("WINNER")) {
-			handleWinner(reader.nextLine());
+			handleWinner(message);
 		} else if (command.equals("LOSSOFCONNECTION")) {
 			handleLossOfConnection();
 		} else {
 			fatalError("invalid command received from connection!");
 		}
-		reader.close();
 	}
-	
-	private void handleLossOfConnection() {
-		fatalError("Connection with server was lost");
-	}
-	
-	private void fatalError(String msg) {
-		System.out.println("[FATAL ERROR]: " + msg);
-		if (ui.newGame()) {
-			Controller.startClient();
-		} else {
-			System.exit(0);
-		}
-	}
-	
+
 	private void handleWelcome(String msg) {
 		Scanner reader = new Scanner(msg);
 		try {
@@ -92,7 +68,7 @@ public class Client {
 		}
 		reader.close();
 	}
-	
+
 	private void handleNames(String msg) { 
 		Scanner reader = new Scanner(msg);
 		try {
@@ -111,59 +87,7 @@ public class Client {
 		}
 		reader.close();
 	}
-	
-	private boolean isInstanceOfPlayMoves(List<Move> moves) {
-		boolean result = true;
-		for (Move move : moves) {
-			if (!(move instanceof PlayMove)) {
-				result = false;
-				break;
-			}
-		}
-		return result;
-	}
-	
-	public List<PlayMove> toPlayMove(List<Move> moves) {
-		List<PlayMove> result = new ArrayList<PlayMove>();
-		for (Move move : moves) {
-			result.add((PlayMove) move);
-		}
-		return result;
-	}
-	
-	public List<SwapMove> toSwapMove(List<Move> moves) {
-		List<SwapMove> result = new ArrayList<SwapMove>();
-		for (Move move : moves) {
-			result.add((SwapMove) move);
-		}
-		return result;
-	}
-	
-	private void handleNext(String msg) {
-		ui.displayBoard(board);
-		ui.displayHand(hand);
-		List<Move> moves = ui.getMove(board);
-		String move = "";
-		if (isInstanceOfPlayMoves(moves)) {
-			List<PlayMove> playMoves = toPlayMove(moves);
-			for (PlayMove playMove : playMoves) {
-				move = move.concat(" " + playMove.getBlock().toString() + " " + playMove.y + " " + playMove.x);
-				tempHand.add(playMove.getBlock());
-				hand.remove(playMove.getBlock());
-			}
-			conn.sendString("MOVE" + move);			
-		} else {
-			List<SwapMove> swapMoves = toSwapMove(moves);
-			tempHand = new ArrayList<Block>();
-			for (SwapMove swapMove : swapMoves) {
-				move = move.concat(" " + swapMove.getBlock().toString());
-				tempHand.add(swapMove.getBlock());
-				hand.remove(swapMove.getBlock());
-			}
-			conn.sendString("SWAP" + move);		
-		}
-	}
-	
+
 	private void handleNew(String msg) {
 		Scanner reader = new Scanner(msg);
 		while (reader.hasNext()) {
@@ -177,23 +101,45 @@ public class Client {
 				}
 			}
 		}
+		tempHand = new ArrayList<Block>();
 		reader.close();
 	}
-	
-	private Player getPlayer(int number) {
-		Player result = null;
-		if (player.getNumber() == number) {
-			result = player;
-		} else {
-			for (Player player : opponents) {
-				if (player.getNumber() == number) {
-					result = player;
+
+	private void handleNext(String msg) {
+		ui.displayBoard(board);
+		ui.displayHand(hand);
+		List<Move> moves = ui.getMove(board);
+		String move = "";
+		if (isInstanceOfPlayMoves(moves)) {
+			List<PlayMove> playMoves = toPlayMove(moves);
+			if (board.isLegalMoveList(playMoves)) {
+				for (PlayMove playMove : playMoves) {
+					move = move.concat(" " + playMove.getBlock().toString() + " " + playMove.y + " " + playMove.x);
+					tempHand.add(playMove.getBlock());
+					hand.remove(playMove.getBlock());
 				}
+				conn.sendString("MOVE" + move);
+			} else {
+				error("invalid move command");
+				handleNext(msg);
+			}
+		} else {
+			List<SwapMove> swapMoves = toSwapMove(moves);
+			if (stackSize >= swapMoves.size()) {
+				tempHand = new ArrayList<Block>();
+				for (SwapMove swapMove : swapMoves) {
+					move = move.concat(" " + swapMove.getBlock().toString());
+					tempHand.add(swapMove.getBlock());
+					hand.remove(swapMove.getBlock());
+				}
+				conn.sendString("SWAP" + move);	
+			} else {
+				error("invalid swap command");
+				handleNext(msg);
 			}
 		}
-		return result;
 	}
-	
+
 	private void handleTurn(String msg) {
 		Scanner reader = new Scanner(msg);
 		try {
@@ -212,8 +158,8 @@ public class Client {
 				moves.add(new PlayMove(block, x, y, player));
 			}
 			if (!word.equals("empty")) {
-				board.makeMove(moves);
 				player.setScore(player.getScore() + board.legitMoveScore(moves));
+				board.makeMove(moves);
 			}
 		} catch (NumberFormatException e) {
 			fatalError("invalid Turn command from server! (" + msg + ")");
@@ -257,8 +203,74 @@ public class Client {
 		reader.close();
 	}
 	
+	private void handleLossOfConnection() {
+		fatalError("Connection with server was lost");
+	}
+
+	private void fatalError(String msg) {
+		System.out.println("[FATAL ERROR]: " + msg);
+		if (ui.newGame()) {
+			Controller.startClient();
+		} else {
+			System.exit(0);
+		}
+	}
+
+	private void error(String msg) {
+		System.out.println("ERROR " + msg);
+	}
+
 	private void shutdown() {
 		conn.stopConnection();
 		System.exit(0);
+	}
+
+	public List<PlayMove> toPlayMove(List<Move> moves) {
+		List<PlayMove> result = new ArrayList<PlayMove>();
+		for (Move move : moves) {
+			result.add((PlayMove) move);
+		}
+		return result;
+	}
+
+	public List<SwapMove> toSwapMove(List<Move> moves) {
+		List<SwapMove> result = new ArrayList<SwapMove>();
+		for (Move move : moves) {
+			result.add((SwapMove) move);
+		}
+		return result;
+	}
+
+	private boolean isInstanceOfPlayMoves(List<Move> moves) {
+		boolean result = true;
+		for (Move move : moves) {
+			if (!(move instanceof PlayMove)) {
+				result = false;
+				break;
+			}
+		}
+		return result;
+	}
+
+	private Player getPlayer(int number) {
+		Player result = null;
+		if (player.getNumber() == number) {
+			result = player;
+		} else {
+			for (Player player : opponents) {
+				if (player.getNumber() == number) {
+					result = player;
+				}
+			}
+		}
+		return result;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public List<Block> getHand() {
+		return hand;
 	}
 }
