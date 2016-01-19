@@ -33,12 +33,12 @@ public class Controller extends Thread{
 	public static void startServer() {
 		int aiThinkTime = ui.getAIThinkTime();
 		int port = ui.getPort();
-		ServerController serverController = new ServerController(port, ui, aiThinkTime);
+		Server server = new Server(port, ui, aiThinkTime);
 	}
 	
 	@SuppressWarnings("unused")
 	public static void startLocalServer(int port) {
-		ServerController serverController = new ServerController(port, ui, DEFAULT_AITHINKTIME);
+		Server server = new Server(port, ui, DEFAULT_AITHINKTIME);
 	}
 	
 	@SuppressWarnings("unused")

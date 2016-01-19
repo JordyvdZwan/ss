@@ -14,7 +14,12 @@ public class Board {
 	}
 	
 	public Board(Board b) {
-		this.blocks = b.getBlock();
+		blocks = new Block[DIM][DIM];
+		for (int x = 0; x < b.getBlock().length; x++) {
+			for (int y = 0; y < b.getBlock().length; y++) {
+				blocks[x][y] = b.getBlock()[x][y];
+			}
+		}
 	}
 	
 	public Block[][] getBlock() {
@@ -416,7 +421,6 @@ public class Board {
     //sets the move on the board, gives the player points and returns the point for this particular move 
     public void makeMove(List<PlayMove> moves) { 
 			for (PlayMove move : moves) {
-				System.out.println("MAKEING A MOVE: " + move.x + " " + move.y + " " + move.block);
     			setField(move.x, move.y, move.block);
     		}
     	} 

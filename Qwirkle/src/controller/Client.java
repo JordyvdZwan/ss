@@ -31,7 +31,6 @@ public class Client {
 	}
 	
 	public void processMessage(Connection conn, String msg) {
-		System.out.println("[CLIENT]: proccesing Message");
 		Scanner reader = new Scanner(msg);
 		String command = reader.next();
 		String message = reader.nextLine();
