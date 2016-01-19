@@ -9,10 +9,8 @@ public class Board {
 	private final static int DIM = 183;
 	private final static int MID = 92;
 	
-	public static final int boardSize = (93*2)+1;
-	
 	public Board() {
-		blocks = new Block[boardSize][boardSize];
+		blocks = new Block[DIM][DIM];
 	}
 	
 	public Board(Board b) {
@@ -199,12 +197,24 @@ public class Board {
 	}
 	
 	public Board deepCopy(Board b) {
+//		Board board = new Board();	
+//		for (int i = 0; i < DIM; i++) {
+//			for (int j = 0; j < DIM; j++) {
+//				board.setField(i, j, b.getField(i, j)); 
+//			}
+//		}
 		Board board = new Board(this);
 		return board;
 	}
 	
 	public Board deepCopy() { 
-		Board board = new Board(this);	
+//		Board board = new Board();	
+//		for (int i = 0; i < DIM; i++) {
+//			for (int j = 0; j < DIM; j++) {
+//				board.setField(i, j, getField(i, j)); 
+//			}
+//		}
+		Board board = new Board(this);
 		return board;
 	}
 	
