@@ -6,6 +6,7 @@ import java.util.List;
 import controller.Connection;
 import model.Block;
 import model.Move;
+import strategy.Strategy;
 import view.UI;
 
 public class ComputerPlayer implements Player {
@@ -15,14 +16,16 @@ public class ComputerPlayer implements Player {
 	private String name;
 	private Connection connection;
 	private List<Block> hand;
+	private Strategy strategy;
 	
 	public ComputerPlayer() {
 		hand = new ArrayList<Block>();
 	}
 	
-	public ComputerPlayer(String name, int number) {
+	public ComputerPlayer(String name, int number, Strategy strategy) {
 		this.number = number;
 		this.name = name;
+		this.strategy = strategy;
 	}
 	
 	public void swapHand(List<Move> moves, List<Block> blocks) {
@@ -37,7 +40,7 @@ public class ComputerPlayer implements Player {
 	
 	@Override
 	public List<Move> determineMove(UI ui) { // TODO
-		return null;
+		return strategy.getMove(b);
 	}
 		
 	@Override
