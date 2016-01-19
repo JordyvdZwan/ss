@@ -203,7 +203,7 @@ public class Board {
 //				board.setField(i, j, b.getField(i, j)); 
 //			}
 //		}
-		Board board = new Board(this);
+		Board board = new Board(b);
 		return board;
 	}
 	
@@ -220,7 +220,6 @@ public class Board {
 	
 	//puts a stone on the board
 	public void setField(int x, int y, Block block) {
-		System.out.println("Setting field"); //TODO
 		blocks[x][y] = block;
 	}
 	
@@ -235,7 +234,11 @@ public class Board {
     
     //says if a field is empty
     public Boolean isEmptyField(int x, int y) {
-    	return getField(x, y) == null;
+    	boolean result = false;
+    	if (getField(x, y) == null) {
+    		result = true;
+    	}
+    	return result;
     }
     
     //gives the number of stones left in the stack
@@ -243,8 +246,8 @@ public class Board {
     	int NumberOfStones = 0;
     	int NumberOfPlayers = 4;
     	int stack = 108;
-    	for(int i = 0; i <= DIM; i++) {
-    		for(int j = 0; j <= DIM; j++) {
+    	for(int i = 0; i < DIM; i++) {
+    		for(int j = 0; j < DIM; j++) {
     			if(!isEmptyField(i,j)) {
     				NumberOfStones++;
     			}
@@ -412,7 +415,6 @@ public class Board {
     
     //sets the move on the board, gives the player points and returns the point for this particular move 
     public void makeMove(List<PlayMove> moves) { 
-    	System.out.println("STARTING TO MAKE MOVES!"); //TODO
 			for (PlayMove move : moves) {
 				System.out.println("MAKEING A MOVE: " + move.x + " " + move.y + " " + move.block);
     			setField(move.x, move.y, move.block);

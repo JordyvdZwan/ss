@@ -173,7 +173,7 @@ public class BoardTest {
 	public void TestIsLonely() {
 		PlayMove move = new PlayMove( (new Block(Color.GREEN, Shape.CLOVER)), 34, 65, new NetworkPlayer());
 		PlayMove move1 = new PlayMove((new Block(Color.GREEN, Shape.CIRCLE)), 0, 0, new NetworkPlayer());
-		PlayMove move2 = new PlayMove((new Block(Color.GREEN, Shape.CIRCLE)), 183, 183, new NetworkPlayer());
+		PlayMove move2 = new PlayMove((new Block(Color.GREEN, Shape.CIRCLE)), 182, 182, new NetworkPlayer());
 		assertTrue(board.isLonelyStone(move));
 		assertTrue(board.isLonelyStone(move1));
 		assertTrue(board.isLonelyStone(move2));

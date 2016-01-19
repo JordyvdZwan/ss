@@ -78,13 +78,14 @@ public class RetardedStrategy {
 						if (moveboard.isLegalMove(move)) {
 							moves.add(move);
 							System.out.println(moves.toString());
-//							System.out.println(!moveboard.isLegalMoveList(moves));
-							if (!moveboard.isLegalMoveList(moves)) {
+							System.out.println(moveboard.isLegalMoveList(moves));
+							if (!board.isLegalMoveList(moves)) {
 								moves.remove(move);
 //								System.out.println("false " + moves.toString());
 							} else {
 								moveboard.setField(i, j, movehand.get(k));
 								System.out.print(moveboard.toString());
+								System.out.print(board.toString());
 //								movehand.remove(movehand.get(k));
 //								System.out.println("true " + moves.toString());
 							}
