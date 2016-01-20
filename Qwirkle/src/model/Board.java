@@ -274,32 +274,8 @@ public class Board {
     	return result;
     }
     
-    //gives the number of stones left in the stack
-    public int countStack() { //TODO fix it numberofplayers moet variabel worden tijdens kick moet worden geüpdate.
-    	int NumberOfStones = 0;
-    	int NumberOfPlayers = 4;
-    	int stack = 108;
-    	for(int i = 0; i < DIM; i++) {
-    		for(int j = 0; j < DIM; j++) {
-    			if(!isEmptyField(i,j)) {
-    				NumberOfStones++;
-    			}
-    		}
-    		
-    	}
-    	stack = stack - NumberOfStones - (6 * NumberOfPlayers);
-    	if (stack < 0) {
-    		stack = 0;
-    	}
-    	return stack;
-    }
-    
-    public int playerHandCount(Player player) { //TODO
-    	return player.getHand().size();
-    }
-    
     //indicates when the stack is empty
-    public boolean emptyStack() {
+    public boolean emptyStack() { //TODO
     	if(countStack() == 0) {
     		return true;
     	} else {

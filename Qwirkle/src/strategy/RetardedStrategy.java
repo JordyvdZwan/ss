@@ -4,6 +4,7 @@ import java.util.List;
 
 import model.*;
 import player.Player;
+import controller.*;
 
 public class RetardedStrategy implements Strategy {
 	
@@ -16,7 +17,7 @@ public class RetardedStrategy implements Strategy {
 		List<Move> result = new ArrayList<Move>();
 		playmove = retardedStrategyPlay(board, hand, player);
 		if (playmove.size() == 0) {
-			swapmove = retardedStrategySwap(hand, player);
+			swapmove = retardedStrategySwap(hand, player, board);
 			for (SwapMove move : swapmove) {
 				result.add(move);
 			}
@@ -75,16 +76,23 @@ public class RetardedStrategy implements Strategy {
 		return moves;
 	}
 	
-	public List<SwapMove> retardedStrategySwap(List<Block> hand, Player player) {
+	public List<SwapMove>  retardedStrategySwap (List<Block> hand, Player player, Board board) {
 		List<Block> swaphand = new ArrayList<Block>();
 		swaphand.addAll(hand);
 		SwapMove move = null;
 		List<SwapMove> swapmove = new ArrayList<SwapMove>();
-		double j = Math.random() * 6;
-		for(int i = 0; i < j; i++) {
-			move = new SwapMove(swaphand.get(i), player);
-			swapmove.add(move);
-			
+		if (//TODO > 6) {
+			double j = Math.random() * 6;
+			for(int i = 0; i < j; i++) {
+				move = new SwapMove(swaphand.get(i), player);
+				swapmove.add(move);
+			} 
+		} else {
+			int j = board.countStack();
+			for(int i = 0; i < j; i++) {
+				move = new SwapMove(swaphand.get(i), player);
+				swapmove.add(move);
+			}
 		}
 		return swapmove;
 	}

@@ -15,7 +15,7 @@ public class SupremeLeaderStrategy implements Strategy {
 		List<Move> result = new ArrayList<Move>();
 		playmove = supremeLeaderStrategyPlay(board, hand, player);
 		if (playmove.size() == 0) {
-			swapmove = supremeLeaderStrategySwap(hand, player);
+			swapmove = supremeLeaderStrategySwap(hand, player, board);
 			for (SwapMove move : swapmove) {
 				result.add(move);
 			}
@@ -47,7 +47,6 @@ public class SupremeLeaderStrategy implements Strategy {
 						move = new PlayMove(block, i, j, player);
 						if (moveboard.isLegalMove(move)) {
 							moves.add(move);
-							moveboard.setField(i, j, block);
 							if (!board.isLegalMoveList(moves)) {
 								moves.remove(move);
 							} else {
@@ -58,53 +57,63 @@ public class SupremeLeaderStrategy implements Strategy {
 				}
 			}
 			allmoves.add(moves);
-			while (moves.size() > 0) {
+			if (moves.size() > 0) {
 				moves = new ArrayList<PlayMove>();
+				Board b = moveboard.deepCopy();
 				for (List<PlayMove> all : allmoves) {
 					for (Block block : movehand) {
-						for (int i = all.get(0).x; i <= moveboard.maxX(); i++) {
-							for (int j = all.get(0).y; j <= moveboard.maxY(); j++) {
+						for (int i = all.get(0).x; i <= b.maxX(); i++) {
+							for (int j = all.get(0).y; j <= b.maxY(); j++) {
 								move = new PlayMove(block, i, j, player);
-								if (moveboard.isLegalMove(move)) {
+								if (b.isLegalMove(move)) {
 									moves.add(move);
-									moveboard.setField(i, j, block);
 									if (!board.isLegalMoveList(moves)) {
 										moves.remove(move);
 									} else {
-										moveboard.setField(i, j, block);
+										b.setField(i, j, block);
 									}
 								}
 							}
 						}
 					}
-					allmoves.add(moves);
 				}
 			}
 		}
-		Board testboard = board.deepCopy();
-		for (int i = 0; i < allmoves.size() - 1; i++) {
-			if (testboard.legitMoveScore(allmoves.get(i)) > testboard.legitMoveScore(allmoves.get(i - 1))) {
-				allmoves.remove(i - 1);
-			} else {
-				allmoves.remove(i);
-			}
+		if (moves.size() > 0) {
+			allmoves.add(moves);
 		}
-		moves = allmoves.get(0);
+		if (allmoves.size() > 0) {
+			Board testboard = board.deepCopy();
+			for (int i = 0; i < allmoves.size() - 1; i++) {
+				if (testboard.legitMoveScore(allmoves.get(i)) > testboard.legitMoveScore(allmoves.get(i + 1))) {
+					allmoves.remove(i + 1);
+				} else {
+					allmoves.remove(i);
+				}
+			}
+			moves = allmoves.get(0);
+		}
 		return moves;
 	}
 	
-	public List<SwapMove>  supremeLeaderStrategySwap (List<Block> hand, Player player) {
+	public List<SwapMove>  supremeLeaderStrategySwap (List<Block> hand, Player player, Board board) {
 		List<Block> swaphand = new ArrayList<Block>();
 		swaphand.addAll(hand);
 		SwapMove move = null;
 		List<SwapMove> swapmove = new ArrayList<SwapMove>();
-		double j = Math.random() * 6;
-		for(int i = 0; i < j; i++) {
-			move = new SwapMove(swaphand.get(i), player);
-			swapmove.add(move);
-			
+		if (board.countStack() > 6) {
+			double j = Math.random() * 6;
+			for(int i = 0; i < j; i++) {
+				move = new SwapMove(swaphand.get(i), player);
+				swapmove.add(move);
+			} 
+		} else {
+			int j = board.countStack();
+			for(int i = 0; i < j; i++) {
+				move = new SwapMove(swaphand.get(i), player);
+				swapmove.add(move);
+			}
 		}
 		return swapmove;
 	}
-
 }
