@@ -46,7 +46,7 @@ public class Stack {
 		Block block34 = new Block(Color.ORANGE, Shape.CROSS);
 		Block block35 = new Block(Color.ORANGE, Shape.DIAMOND);
 		Block block36 = new Block(Color.ORANGE, Shape.STAR);
-		for(int i = 0; i < 3; i++) {
+		for (int i = 0; i < 3; i++) {
 			stack.add(block36);
 			stack.add(block35);
 			stack.add(block34);
@@ -104,14 +104,14 @@ public class Stack {
 	}
 	
 	public void giveBack(List<Block> blocks) {
-		for(int i = 0; i < blocks.size(); i++) {
+		for (int i = 0; i < blocks.size(); i++) {
 			stack.add(blocks.get(i));
 		}
 	}
 	
 	public List<Block> give(int x) {
 		List<Block> hand = new ArrayList<Block>();
-		for(int i = x; i > 0; i--) {
+		for (int i = x; i > 0; i--) {
 			if (stack.size() > i) {
 				hand.add(stack.get(i));
 				stack.remove(i);

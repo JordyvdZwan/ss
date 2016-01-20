@@ -2,7 +2,7 @@ package model;
 
 import player.Player;
 
-public class SwapMove implements Move{
+public class SwapMove implements Move {
 	private Block block;
 	private Player player;
 

@@ -63,7 +63,8 @@ public class Game extends Thread {
 	 * 
 	 */
 	public void sendMessage(Connection conn, String msg) {
-		System.out.println("[SERVER]: Sending message to " + conn.getPlayer().getName() + " : \"" + msg + "\"");
+		System.out.println("[SERVER]: Sending message to " + 
+						conn.getPlayer().getName() + " : \"" + msg + "\"");
 		conn.sendString(msg);
 	}
 
@@ -92,7 +93,8 @@ public class Game extends Thread {
 	}
 
 	public void processMessage(Connection conn, String msg) {
-		System.out.println("[SERVER]: Getting message from " + conn.getPlayer().getName() + " : \"" + msg + "\"");
+		System.out.println("[SERVER]: Getting message from " + 
+						conn.getPlayer().getName() + " : \"" + msg + "\"");
 		Scanner reader = new Scanner(msg);
 		String command = reader.next();
 		if (command.equals("HELLO") && reader.hasNext()) {
@@ -101,7 +103,9 @@ public class Game extends Thread {
 				conn.getPlayer().setName(playerName);
 				sendMessage(conn, "WELCOME " + playerName + " " + conn.getPlayer().getNumber());
 			} else {
-				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid userName! (processMessage/Welcome)");
+				kickPlayer(conn, conn.getPlayer().getNumber(), 
+								conn.getPlayer().getHand(), 
+								"Invalid userName! (processMessage/Welcome)");
 			}
 		} else if (command.equals("MOVE")) {
 			if (!moveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
@@ -140,13 +144,18 @@ public class Game extends Thread {
 						moveAvailable = true;
 						nextMoveAvailable.countDown();
 					} else {
-						kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command! (processMessage/Move)");
+						kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), 
+										"Invalid move command! (processMessage/Move)");
 					}
 				} catch (NumberFormatException e) {
-					kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command! ((numbers) processMessage/Move)");
+					kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), 
+									"Invalid move command! ((numbers) processMessage/Move)");
 				}
 			} else {
-				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command, not your turn or one has already been send! (processMessage/Move)");
+				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), 
+								"Invalid move command, "
+										+ "not your turn or one has already "
+										+ "been send! (processMessage/Move)");
 			}
 		} else if (command.equals("SWAP")) {
 			if (!moveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
@@ -157,7 +166,8 @@ public class Game extends Thread {
 					String blockString = reader.next();
 					if (Block.isValidBlockString(blockString)) {
 						char[] chars = blockString.toCharArray();
-						SwapMove move = new SwapMove(new Block(chars[0], chars[1]), conn.getPlayer());
+						SwapMove move = new SwapMove(new Block(chars[0], 
+										chars[1]), conn.getPlayer());
 						moves.add(move);
 					}
 				}
@@ -166,15 +176,22 @@ public class Game extends Thread {
 					moveAvailable = true;
 					nextMoveAvailable.countDown();
 				} else {
-					kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid swap command! (processMessage/Swap)");
+					kickPlayer(conn, conn.getPlayer().getNumber(), 
+									conn.getPlayer().getHand(), "Invalid swap command! "
+											+ "(processMessage/Swap)");
 				}
 			} else {
-				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid swap command, not your turn or one has already been send (processMessage/Swap)");
+				kickPlayer(conn, conn.getPlayer().getNumber(), 
+								conn.getPlayer().getHand(), "Invalid swap command, "
+								+ "not your turn or one has already been send ("
+								+ "processMessage/Swap)");
 			}
 		} else if (command.equals("LOSSOFCONNECTION")) {
-			kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Player lost connection");
+			kickPlayer(conn, conn.getPlayer().getNumber(), 
+							conn.getPlayer().getHand(), "Player lost connection");
 		} else {
-			kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Command not recognized (processMessage");
+			kickPlayer(conn, conn.getPlayer().getNumber(), 
+							conn.getPlayer().getHand(), "Command not recognized (processMessage");
 		}
 		reader.close();
 	}
@@ -208,7 +225,8 @@ public class Game extends Thread {
 				}
 			} else {
 				Connection conn = moves.get(0).getPlayer().getConnection();
-				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command! (HandleNext)");
+				kickPlayer(conn, conn.getPlayer().getNumber(), 
+								conn.getPlayer().getHand(), "Invalid move command! (HandleNext)");
 			}
 		} else {
 			List<SwapMove> swapMoves = toSwapMove(moves);
@@ -217,7 +235,8 @@ public class Game extends Thread {
 				broadcastSwapMove(swapMoves, swapMoves.get(0).getPlayer().getNumber());
 			} else {
 				Connection conn = moves.get(0).getPlayer().getConnection();
-				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid swap command! (HandleNext)");
+				kickPlayer(conn, conn.getPlayer().getNumber(), 
+								conn.getPlayer().getHand(), "Invalid swap command! (HandleNext)");
 			}
 		}
 	}
@@ -256,7 +275,8 @@ public class Game extends Thread {
 	private void broadcastNames() {
 		String names = "";
 		for (Connection conn: connections) {
-			names = names.concat(" " + conn.getPlayer().getName() + " " + conn.getPlayer().getNumber());
+			names = names.concat(" " + conn.getPlayer().getName() 
+							+ " " + conn.getPlayer().getNumber());
 		}
 		broadcastMessage("NAMES" + names + " " + aiThinkTime);
 	}	
@@ -399,9 +419,9 @@ public class Game extends Thread {
 	}
 
 	private void endGame() {
-			for (int i = 0; i < connections.size(); i++) {
-				connections.get(i).stopConnection();
-			}
+		for (int i = 0; i < connections.size(); i++) {
+			connections.get(i).stopConnection();
+		}
 		this.interrupt();
 	}
 
@@ -411,7 +431,7 @@ public class Game extends Thread {
 			result = players.get(0).getNumber();
 			for (Player player : players) {
 				if (player.getScore() > getPlayer(result).getScore()) {
-						result = player.getNumber();
+					result = player.getNumber();
 				}
 			}
 		}
