@@ -86,8 +86,8 @@ public class TUI implements UI {
 		System.out.println(board.toString());
 	} 
 	
-	public void displayScore() {
-		System.out.println("Score: " + client.getPlayer().getScore());
+	public void displayScore(int score) {
+		System.out.println("Score: " + score);
 	}
 	
 	public List<PlayMove> toPlayMove(List<Move> moves) {
