@@ -16,11 +16,10 @@ public class ComputerPlayer implements Player {
 	private int number;
 	private String name;
 	private Connection connection;
-	private List<Block> hand;
+	private List<Block> hand = new ArrayList<Block>();
 	private Strategy strategy;
 	
 	public ComputerPlayer(Strategy strategy) {
-		hand = new ArrayList<Block>();
 		this.strategy = strategy;
 	}
 	
@@ -33,13 +32,25 @@ public class ComputerPlayer implements Player {
 	 * 
 	 */
 	public void swapHand(List<Move> moves, List<Block> blocks) {
-		for (Move move : moves) {
-			hand.remove(move.getBlock());
+		outer : for (Move move : moves) {
+			for (Block block : hand) {
+				if (block.color == move.getBlock().color && block.shape == move.getBlock().shape) {
+					hand.remove(block);
+					continue outer;
+				}
+			}
 		}
 		for (Block block : blocks) {
 			hand.add(block);
 		}
-		
+	}
+	
+	public void removeFromHand(Move move) {
+		for (Block block : hand) {
+			if (block.color == move.getBlock().color && block.shape == move.getBlock().shape) {
+				hand.remove(block);
+			}
+		}
 	}
 	
 	/**

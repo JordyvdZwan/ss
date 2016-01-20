@@ -9,6 +9,9 @@ import model.Move;
 import view.UI;
 
 public interface Player {
+	
+	public void removeFromHand(Move move);
+	
 	public List<Move> determineMove(UI ui, Board board, List<Block> hand);
 	public List<Block> getHand();
 	public void setHand(List<Block> handArg);

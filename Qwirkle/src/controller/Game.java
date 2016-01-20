@@ -193,6 +193,9 @@ public class Game extends Thread {
 				board.makeMove(playMoves);
 				swapStones(player.getConnection(), moves, playMoves.size());
 				broadcastPlayMove(playMoves, player.getNumber());
+				for (Block block : player.getHand()) {
+					System.out.println(block.toColorString());
+				}
 			} else {
 				Connection conn = moves.get(0).getPlayer().getConnection();
 				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), "Invalid move command! (HandleNext)");
@@ -373,8 +376,10 @@ public class Game extends Thread {
 	}
 
 	private void endGame() {
-		for (Connection conn : connections) {
-			conn.stopConnection();
+		synchronized (connections) {
+			for (Connection conn : connections) {
+				conn.stopConnection();
+			}
 		}
 		this.interrupt();
 	}

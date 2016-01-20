@@ -18,7 +18,6 @@ public class Client {
 	private Player player;
 	private List<Player> opponents = new ArrayList<Player>();
 	private Board board;
-	private List<Block> hand = new ArrayList<Block>();
 	private List<Block> tempHand = new ArrayList<Block>();
 	private int stackSize;
 	
@@ -100,10 +99,10 @@ public class Client {
 			String block = reader.next();
 			if (!block.equals("empty")) {
 				char[] chars = block.toCharArray();
-				hand.add(new Block(chars[0], chars[1]));
+				player.getHand().add(new Block(chars[0], chars[1]));
 			} else {
 				for (Block handBlock : tempHand) {
-					hand.add(handBlock);
+					player.getHand().add(handBlock);
 				}
 			}
 		}
@@ -111,16 +110,8 @@ public class Client {
 		reader.close();
 	}
 	
-	private void removeBlockFromHand(Block block) {
-		for (Block handBlock : hand) {
-			if (block.color == handBlock.color && block.shape == handBlock.shape) {
-				hand.remove(handBlock);
-			}
-		}
-	}
-
 	private void handleNext(String msg) {
-		List<Move> moves = player.determineMove(ui, board, hand);
+		List<Move> moves = player.determineMove(ui, board, player.getHand());
 		String move = "";
 		if (isInstanceOfPlayMoves(moves)) {
 			List<PlayMove> playMoves = toPlayMove(moves);
@@ -128,7 +119,7 @@ public class Client {
 				for (PlayMove playMove : playMoves) {
 					move = move.concat(" " + playMove.getBlock().toString() + " " + playMove.y + " " + playMove.x);
 					tempHand.add(playMove.getBlock());
-					removeBlockFromHand(playMove.getBlock());
+					player.removeFromHand(playMove);
 				}
 				conn.sendString("MOVE" + move);
 			} else {
@@ -142,7 +133,7 @@ public class Client {
 				for (SwapMove swapMove : swapMoves) {
 					move = move.concat(" " + swapMove.getBlock().toString());
 					tempHand.add(swapMove.getBlock());
-					removeBlockFromHand(swapMove.getBlock());
+					player.removeFromHand(swapMove);
 				}
 				conn.sendString("SWAP" + move);	
 			} else {
@@ -283,6 +274,6 @@ public class Client {
 	}
 
 	public List<Block> getHand() {
-		return hand;
+		return player.getHand();
 	}
 }
