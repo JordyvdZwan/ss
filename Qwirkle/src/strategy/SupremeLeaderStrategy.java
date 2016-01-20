@@ -58,35 +58,28 @@ public class SupremeLeaderStrategy implements Strategy {
 			}
 			allmoves.add(moves);
 			if (moves.size() > 0) {
-				// TODO LOOP
 				while (true) {
 					moves = new ArrayList<PlayMove>();
-					List<Block> removeblocks = new ArrayList<Block>();
 					Board b = moveboard.deepCopy();
-					boolean doneblock = true;
-					for (List<PlayMove> all : allmoves) {
-						for (Block block : movehand) {
-							for (int i = all.get(0).x; i <= b.maxX(); i++) {
-								for (int j = all.get(0).y; j <= b.maxY(); j++) {
-									move = new PlayMove(block, i, j, player);
+					for (int k = 0; k < allmoves.size(); k++) {
+						for (int l = 0; l < movehand.size(); l++) {
+							for (int i = allmoves.get(k).get(0).x; i <= b.maxX(); i++) {
+								for (int j = allmoves.get(k).get(0).y; j <= b.maxY(); j++) {
+									move = new PlayMove(movehand.get(l), i, j, player);
 									if (b.isLegalMove(move)) {
 										moves.add(move);
-										doneblock = false;
 										if (!board.isLegalMoveList(moves)) {
 											moves.remove(move);
 										} else {
-											b.setField(i, j, block);
+											b.setField(i, j, movehand.get(l));
 										}
 									}
 								}
-							}
-							if (!doneblock) {
-								removeblocks.add(block);
+								if (i == b.maxX()) {
+									movehand.remove(l);
+								}
 							}
 						}
-					}
-					for (Block removeblock : removeblocks) {
-						movehand.remove(removeblock);
 					}
 					if (moves.size() > 0) {
 						allmoves.add(moves);
@@ -94,7 +87,6 @@ public class SupremeLeaderStrategy implements Strategy {
 						break;
 					}
 				}
-				// TODO TOT HIER
 //					moves = new ArrayList<PlayMove>();
 //					Board b = moveboard.deepCopy();
 //					for (List<PlayMove> all : allmoves) {

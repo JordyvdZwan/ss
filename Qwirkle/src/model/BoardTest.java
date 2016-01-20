@@ -147,6 +147,17 @@ public class BoardTest {
 	}
 	
 	@Test
+	public void TestLegalMovesNotConected() {
+		ArrayList<PlayMove> multipleMove = new ArrayList<PlayMove>();
+		PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 91, 92, new NetworkPlayer());
+		PlayMove move2 = new PlayMove(new Block(Color.GREEN, Shape.STAR), 93, 92, new NetworkPlayer());
+		board.setField(92, 92, new Block(Color.GREEN, Shape.CIRCLE));
+		multipleMove.add(move1);
+		multipleMove.add(move2);
+		assertTrue(board.isLegalMoveList(multipleMove));
+	}
+	
+	@Test
 	public void TestIndex() {
 		assertEquals(board.index(0, 1), 1);
 		assertEquals(board.index(27, 32), 4973);

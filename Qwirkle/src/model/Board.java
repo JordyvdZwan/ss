@@ -2,7 +2,6 @@ package model;
 
 import java.util.*;
 
-import controller.*;
 import player.*;
 
 public class Board {
@@ -67,6 +66,7 @@ public class Board {
 		int minX = moveslist.get(0).x;
 		int maxY = moveslist.get(0).y;
 		int minY = moveslist.get(0).y;
+		int size = moveslist.size(); 
 		if (isOnlyY(moveslist)) {
 			for (PlayMove move : moveslist) {
 				if (move.x > maxX) {
@@ -77,7 +77,12 @@ public class Board {
 				}
 			}
 			lenght = maxX - minX + 1;
-			if (lenght == moveslist.size()) {
+			for (int i = minX; i < maxX; i++) {
+				if (!isEmptyField(i, moveslist.get(0).y)) {
+					size++;
+				}
+			}
+			if (lenght == size) {
 				result = true;
 			}
 		} else if (isOnlyX(moveslist)) {
@@ -90,7 +95,12 @@ public class Board {
 				}
 			}
 			lenght = maxY - minY + 1;
-			if (lenght == moveslist.size()) {
+			for (int i = minY; i < maxY; i++) {
+				if (!isEmptyField(moveslist.get(0).x, i)) {
+					size++;
+				}
+			}
+			if (lenght == size) {
 				result = true;
 			}
 		}
@@ -444,8 +454,8 @@ public class Board {
     	int maxY = maxY();
     	int minY = minY();
     	String colum = "";
-    	String index = "\\x ";
-    	String swag = "y\\ ";
+    	String index = " \\ x";
+    	String swag = "y \\ ";
     	for (int i = minX; i <= maxX; i++) {
     		index = index + " " + i + "|";
     	}
@@ -461,7 +471,7 @@ public class Board {
     				row = row + "  " + "_" + "|";
     			}
     		}
-    		colum = colum + i + "|" + row + "\n";
+    		colum = colum + String.format("%03d", i) + "|" + row + "\n";
     	}
     	return index + "\n" + swag + "\n" + colum;
     }
