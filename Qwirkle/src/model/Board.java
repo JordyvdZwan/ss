@@ -37,6 +37,7 @@ public class Board {
 			for (PlayMove moves: move) {
 				if (moves.x != x) {
 					onlyX = false;
+					break;
 				}
 			}
 		return onlyX;
@@ -48,6 +49,7 @@ public class Board {
 			for (PlayMove moves: move) {
 				if (moves.y != y) {
 					onlyY = false;
+					break;
 				}
 			}
 		return onlyY;
@@ -58,33 +60,74 @@ public class Board {
 		return isLegalXRow(move) && isLegalYRow(move) && !isLonelyStone(move) && isEmptyField(move.x, move.y);
 	}
 	
+	public boolean allConnected(List<PlayMove> moveslist) {
+		boolean result = false;
+		int lenght = 0;
+		int maxX = moveslist.get(0).x;
+		int minX = moveslist.get(0).x;
+		int maxY = moveslist.get(0).y;
+		int minY = moveslist.get(0).y;
+		if (isOnlyY(moveslist)) {
+			for (PlayMove move : moveslist) {
+				if (move.x > maxX) {
+					maxX = move.x;
+				}
+				if (move.x < minX) {
+					minX = move.x;
+				}
+			}
+			lenght = maxX - minX + 1;
+			if (lenght == moveslist.size()) {
+				result = true;
+			}
+		} else if (isOnlyX(moveslist)) {
+			for (PlayMove move : moveslist) {
+				if (move.y > maxY) {
+					maxY = move.y;
+				}
+				if (move.y < minY) {
+					minY = move.y;
+				}
+			}
+			lenght = maxY - minY + 1;
+			if (lenght == moveslist.size()) {
+				result = true;
+			}
+		}
+		return result;
+	}
+	
 	public boolean isLegalMoveList(List<PlayMove> moveslist) {
+		boolean legal = true;
 		Board board = deepCopy();
 		List<PlayMove> moves = new ArrayList<PlayMove>();
 		moves.addAll(moveslist);
-		boolean legal = true;
 		if (moveslist.size() == 0) {
 			legal = false;
 		} else {
-			if (isOnlyX(moveslist) || isOnlyY(moveslist)) {
-				while(moves.size() > 0) {
-					boolean legalmove = false;
-					for(int i = 0; i < moves.size(); i++) {
-						if(board.isLegalMove(moves.get(i))) {
-							board.setField(moves.get(i).x, moves.get(i).y, moves.get(i).block);
-							legalmove = true;
-							moves.remove(i);
+			if (allConnected(moveslist)) {
+				if (isOnlyX(moveslist) || isOnlyY(moveslist)) {
+					while(moves.size() > 0) {
+						boolean legalmove = false;
+						for(int i = 0; i < moves.size(); i++) {
+							if(board.isLegalMove(moves.get(i))) {
+								board.setField(moves.get(i).x, moves.get(i).y, moves.get(i).block);
+								legalmove = true;
+								moves.remove(i);
+								}
 							}
+						if(!legalmove) {
+							legal = false;
+							break;
 						}
-					if(!legalmove) {
-						legal = false;
-						break;
 					}
+				} else {
+					legal = false;
 				}
 			} else {
 				legal = false;
 			}
-		}
+		} 
 		return legal;
 	}
 	
