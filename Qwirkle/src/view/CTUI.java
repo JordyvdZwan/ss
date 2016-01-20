@@ -138,47 +138,48 @@ public class CTUI implements UI {
 	
 	public List<Move> getMove(Board b) {
 		System.out.println("Please enter a move (in a protocol manner [TILE ROW COLLUM]");
-		String msg = in.nextLine();	
-		Scanner reader = new Scanner(msg);
-		String command = reader.next();
 		List<Move> result = null;
-		if (command.equals("MOVE")) {
-			try {
-				boolean cycleDone = false;				
-				List<Move> moves = new ArrayList<Move>();
-				while (reader.hasNext()) {
-					cycleDone = false;
-					String blockString = reader.next();
-					char[] chars = blockString.toCharArray();
-					if (!(chars.length == 2)) break;
-					Block block = new Block(chars[0], chars[1]);
-					
-					if (!reader.hasNext()) break;
-					String yString = reader.next();
-					if (!yString.matches("^-?\\d+$")) break;
-					int y = Integer.parseInt(yString);
-					
-					if (!reader.hasNext()) break;
-					String xString = reader.next();
-					if (!xString.matches("^-?\\d+$")) break;
-					int x = Integer.parseInt(xString);
-					
-					PlayMove move = new PlayMove(block, x, y, client.getPlayer());
-					moves.add(move);
-					cycleDone = true;
-				}
-				if (cycleDone && !moves.isEmpty()) {
-					result = moves;
-				} else {
+		if (in.hasNextLine()) {
+			String msg = in.nextLine();	
+			Scanner reader = new Scanner(msg);
+			String command = reader.next();
+			if (command.equals("MOVE")) {
+				try {
+					boolean cycleDone = false;				
+					List<Move> moves = new ArrayList<Move>();
+					while (reader.hasNext()) {
+						cycleDone = false;
+						String blockString = reader.next();
+						char[] chars = blockString.toCharArray();
+						if (!(chars.length == 2)) break;
+						Block block = new Block(chars[0], chars[1]);
+						
+						if (!reader.hasNext()) break;
+						String yString = reader.next();
+						if (!yString.matches("^-?\\d+$")) break;
+						int y = Integer.parseInt(yString);
+						
+						if (!reader.hasNext()) break;
+						String xString = reader.next();
+						if (!xString.matches("^-?\\d+$")) break;
+						int x = Integer.parseInt(xString);
+						
+						PlayMove move = new PlayMove(block, x, y, client.getPlayer());
+						moves.add(move);
+						cycleDone = true;
+					}
+					if (cycleDone && !moves.isEmpty()) {
+						result = moves;
+					} else {
+						result = invalidMove(b);
+					}
+				} catch (NumberFormatException e) {
 					result = invalidMove(b);
 				}
-			} catch (NumberFormatException e) {
-				result = invalidMove(b);
-			}
-		} else if (command.equals("SWAP")) {
+			} else if (command.equals("SWAP")) {
 				List<Move> moves = new ArrayList<Move>();
 				while (reader.hasNext()) {
-					String blockString = reader.next();
+				String blockString = reader.next();
 					if (Block.isValidBlockString(blockString)) {
 						char[] chars = blockString.toCharArray();
 						SwapMove move = new SwapMove(new Block(chars[0], chars[1]), client.getPlayer());
@@ -190,10 +191,13 @@ public class CTUI implements UI {
 				} else {
 					result = invalidMove(b);
 				}
+			} else {
+				result = invalidMove(b);
+			}
+			reader.close();
 		} else {
 			result = invalidMove(b);
 		}
-		reader.close();
 		return result;
 	}
 	

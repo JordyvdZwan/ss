@@ -205,7 +205,7 @@ public class Client {
 			int winner = Integer.parseInt(reader.next());
 			ui.displayWinner(getPlayer(winner));
 			if (ui.newGame()) {
-				Controller.startClient();
+				Controller.chooseServerClient();
 			} else {
 				shutdown();
 			}

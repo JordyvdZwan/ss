@@ -101,6 +101,9 @@ public class Game extends Thread {
 			String playerName = reader.next();
 			if (isValidName(playerName)) {
 				conn.getPlayer().setName(playerName);
+				if (connections.size() == Controller.MAX_PLAYERS) {
+					controller.nextGame();
+				}
 				sendMessage(conn, "WELCOME " + playerName + " " + conn.getPlayer().getNumber());
 			} else {
 				kickPlayer(conn, conn.getPlayer().getNumber(), 
@@ -258,9 +261,6 @@ public class Game extends Thread {
 		numberOfPlayers++;
 		conn.getPlayer().setConnection(conn);
 		connections.get(connections.size() - 1).getPlayer().setNumber(connections.size() - 1);
-		if (connections.size() == Controller.MAX_PLAYERS) {
-			controller.nextGame();
-		}
 	}
 
 	private void createGameEnviroment() {
