@@ -3,11 +3,14 @@ package model;
 import java.util.*;
 
 import player.*;
+import strategy.*;
 
 public class Board {
 	private Block[][] blocks;
 	private static final int DIM = 183;
 	private static final int MID = 92;
+	private ComputerPlayer player = new ComputerPlayer("retard", new RetardedStrategy());
+	RetardedStrategy retard = new RetardedStrategy();
 
 	public Board() {
 		blocks = new Block[DIM][DIM];
@@ -24,6 +27,10 @@ public class Board {
 	
 	public Block[][] getBlock() {
 		return blocks;
+	}
+	
+	public String hint(List<Block> hand, int stacksize) {
+		return retard.getMove(this, player.getHand(), player, stacksize).toString();
 	}
 	
 	public Board(Block[][] blocks) {
@@ -238,7 +245,7 @@ public class Board {
 	//checks if stone has no other stone surrounding him
 	public boolean isLonelyStone(PlayMove move) {
 		boolean islonely = true;
-		if (move.x == 92 && move.y == 92) {
+		if (move.x == MID && move.y == MID) {
 			islonely = false;
 		}
 		if (move.y + 1 < DIM && blocks[move.x][move.y + 1] != null) {
