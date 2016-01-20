@@ -65,7 +65,7 @@ public class Client {
 	private void handleWelcome(String msg) {
 		Scanner reader = new Scanner(msg);
 		try {
-			String playerName = reader.next();
+			reader.next();
 			int playerNumber = Integer.parseInt(reader.next());
 			player.setNumber(playerNumber);
 		} catch (NumberFormatException e) {
@@ -84,7 +84,9 @@ public class Client {
 					break;
 				}
 				int playerNumber = Integer.parseInt(reader.next()); 
-				opponents.add(new NetworkPlayer(playerName, playerNumber));
+				if (!(playerNumber == player.getNumber())) {
+					opponents.add(new NetworkPlayer(playerName, playerNumber));
+				}
 			}
 			stackSize = 108 - (6 * (opponents.size() + 1));
 		} catch (NumberFormatException e) {
@@ -113,7 +115,7 @@ public class Client {
 	}
 	
 	private void handleNext(String msg) {
-		List<Move> moves = player.determineMove(ui, board, player.getHand(), stackSize);
+		List<Move> moves = player.determineMove(ui, board, player.getHand(), stackSize, opponents);
 		String move = "";
 		if (isInstanceOfPlayMoves(moves)) {
 			List<PlayMove> playMoves = toPlayMove(moves);

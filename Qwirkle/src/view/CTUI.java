@@ -3,7 +3,9 @@ package view;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import controller.Client;
@@ -90,8 +92,32 @@ public class CTUI implements UI {
 		System.out.println(board.toColorString());
 	} 
 	
-	public void displayScore(int score) {
-		System.out.println("Score: " + score);
+	public void displayScore(Player player, List<Player> opponents) {
+		System.out.println("Scores:");
+		Map<Player, Integer> scores = new HashMap<Player, Integer>();
+		scores.put(player, player.getScore());
+		for (Player person : opponents) {
+			scores.put(person, person.getScore());
+		}
+		int counter = 1;
+		while (scores.size() > 0) {
+			Player person = highestPlayer(scores);
+			System.out.println(counter + ". " + person.getName() + " (" + person.getNumber() + "): " + person.getScore());
+			scores.remove(person);
+			counter++;
+		}
+	}
+	
+	private Player highestPlayer(Map<Player, Integer> scores) {
+		Player result = null;
+		Integer score = 0;
+		for (Player i : scores.keySet()) {
+			if (i.getScore() >= score) {
+				result = i;
+				score = i.getScore();
+			}
+		}
+		return result;
 	}
 	
 	public List<PlayMove> toPlayMove(List<Move> moves) {

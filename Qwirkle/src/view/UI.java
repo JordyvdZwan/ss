@@ -10,7 +10,7 @@ import controller.*;
 
 public interface UI extends Runnable{
 	public void displayBoard(Board board);
-	public void displayScore(int score);
+	public void displayScore(Player player, List<Player> opponents);
 	public void displayFatalError(String msg);
 	public void displayHand(List<Block> hand);
 	public void displayKick(Player player, String reason);

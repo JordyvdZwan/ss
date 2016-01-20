@@ -18,12 +18,13 @@ public class HumanPlayer implements Player {
 	private List<Block> hand = new ArrayList<Block>();
 	
 	public HumanPlayer(String name) {
+		this.name = name;
 	}
 	
 	@Override
-	public List<Move> determineMove(UI ui, Board board, List<Block> hand, int stackSize) {
+	public List<Move> determineMove(UI ui, Board board, List<Block> hand, int stackSize, List<Player> opponents) {
 		ui.displayBoard(board);
-		ui.displayScore(score);
+		ui.displayScore(this, opponents);
 		ui.displayHand(hand);
 		return ui.getMove(board);
 }

@@ -12,7 +12,7 @@ public interface Player {
 	
 	public void removeFromHand(Move move);
 	
-	public List<Move> determineMove(UI ui, Board board, List<Block> hand, int stackSize);
+	public List<Move> determineMove(UI ui, Board board, List<Block> hand, int stackSize, List<Player> opponents);
 	public List<Block> getHand();
 	public void setHand(List<Block> handArg);
 	public void swapHand(List<Move> moves, List<Block> blocks);
