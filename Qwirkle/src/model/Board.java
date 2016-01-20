@@ -172,6 +172,9 @@ public class Board {
 				result = false;
 				break;
 			}
+			if (colorResult && shapeResult) {
+				result = false;
+			}
 			counter++;
 		}
 		counter = 1;
@@ -190,6 +193,9 @@ public class Board {
 			if (!colorResult && !shapeResult) {
 				result = false;
 				break;
+			}
+			if (colorResult && shapeResult) {
+				result = false;
 			}
 			counter++;
 		}
@@ -218,6 +224,9 @@ public class Board {
 				result = false;
 				break;
 			}
+			if (colorResult && shapeResult) {
+				result = false;
+			}
 			counter++;
 		}
 		counter = 1;
@@ -236,6 +245,9 @@ public class Board {
 			if (!colorResult && !shapeResult) {
 				result = false;
 				break;
+			}
+			if (colorResult && shapeResult) {
+				result = false;
 			}
 			counter++;
 		}
@@ -465,10 +477,10 @@ public class Board {
 		int maxY = maxY();
 		int minY = minY();
 		String colum = "";
-		String index = " \\ x";
+		String index = " \\x ";
 		String swag = "y \\ ";
 		for (int i = minX; i <= maxX; i++) {
-			index = index + " " + i + "|";
+			index = index + String.format("%03d", i) + "|";
 		}
 		for (int i = minX; i <= maxX; i++) {
 			swag = swag + "___" + "|";
