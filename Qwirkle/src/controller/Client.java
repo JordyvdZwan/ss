@@ -21,7 +21,8 @@ public class Client {
 	private List<Block> tempHand = new ArrayList<Block>();
 	private int stackSize;
 	
-	public Client(UI uiArg, Socket sockArg, Player player) { //TODO maak er localplayer van
+	public Client(UI uiArg, Socket sockArg, Player player) {
+		//TODO maak er localplayer van
 		board = new Board();
 		ui = uiArg;
 		this.player = player;
