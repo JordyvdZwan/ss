@@ -21,7 +21,7 @@ public class NetworkPlayer implements Player{
 	}
 	
 	@Override
-	public List<Move> determineMove(UI ui, Board board, List<Block> hand) {
+	public List<Move> determineMove(UI ui, Board board, List<Block> hand, int stackSize) {
 		return null;
 	}
 		

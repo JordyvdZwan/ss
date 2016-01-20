@@ -108,8 +108,12 @@ public class Stack {
 	public List<Block> give(int x) {
 		List<Block> hand = new ArrayList<Block>();
 		for(int i = 0; i < x; i++) {
-			hand.add(stack.get(i));
-			stack.remove(i);
+			if (stack.size() > 0) {
+				hand.add(stack.get(i));
+				stack.remove(i);
+			} else {
+				break;
+			}
 		}
 		return hand;
 	}

@@ -21,7 +21,7 @@ public class HumanPlayer implements Player {
 	}
 	
 	@Override
-	public List<Move> determineMove(UI ui, Board board, List<Block> hand) {
+	public List<Move> determineMove(UI ui, Board board, List<Block> hand, int stackSize) {
 		ui.displayBoard(board);
 		ui.displayScore(score);
 		ui.displayHand(hand);

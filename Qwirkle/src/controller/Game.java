@@ -325,12 +325,16 @@ public class Game extends Thread {
 
 	private void swapStones(Connection conn, List<Move> moves, int amount) {
 		List<Block> blocks = stack.give(amount);
-		conn.getPlayer().swapHand(moves, blocks);
-		String blockString = "";
-		for (Block block : blocks) {
-			blockString = blockString.concat(" " + block.toString());
+		if (blocks.isEmpty()) {
+			sendMessage(conn, "NEW empty");
+		} else {
+			conn.getPlayer().swapHand(moves, blocks);
+			String blockString = "";
+			for (Block block : blocks) {
+				blockString = blockString.concat(" " + block.toString());
+			}
+			sendMessage(conn, "NEW" + blockString);
 		}
-		sendMessage(conn, "NEW" + blockString);
 	}
 	
 	private NetworkPlayer getPlayer(int playerNumber) {

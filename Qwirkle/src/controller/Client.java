@@ -113,7 +113,7 @@ public class Client {
 	}
 	
 	private void handleNext(String msg) {
-		List<Move> moves = player.determineMove(ui, board, player.getHand());
+		List<Move> moves = player.determineMove(ui, board, player.getHand(), stackSize);
 		String move = "";
 		if (isInstanceOfPlayMoves(moves)) {
 			List<PlayMove> playMoves = toPlayMove(moves);
@@ -143,7 +143,7 @@ public class Client {
 				}
 				conn.sendString("SWAP" + move);	
 			} else {
-				error("invalid swap command");
+				error("no enough blocks in stack: " + stackSize);
 				handleNext(msg);
 			}
 		}
@@ -168,6 +168,7 @@ public class Client {
 			}
 			if (!word.equals("empty")) {
 				player.setScore(player.getScore() + board.legitMoveScore(moves));
+				stackSize =- moves.size();
 				board.makeMove(moves);
 			}
 		} catch (NumberFormatException e) {
