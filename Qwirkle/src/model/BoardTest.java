@@ -164,12 +164,6 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void TestStack() {
-		board.setField(34, 65, (new Block(Color.GREEN, Shape.CLOVER)));
-		assertEquals(board.countStack(), 83);
-	}
-	
-	@Test
 	public void TestIsLonely() {
 		PlayMove move = new PlayMove( (new Block(Color.GREEN, Shape.CLOVER)), 34, 65, new NetworkPlayer());
 		PlayMove move1 = new PlayMove((new Block(Color.GREEN, Shape.CIRCLE)), 0, 0, new NetworkPlayer());
