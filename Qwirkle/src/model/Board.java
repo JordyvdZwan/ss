@@ -275,8 +275,8 @@ public class Board {
     }
     
     //indicates when the stack is empty
-    public boolean emptyStack() { //TODO
-    	if(countStack() == 0) {
+    public boolean emptyStack(int stackSize) { //TODO
+    	if(stackSize == 0) {
     		return true;
     	} else {
     		return false;
@@ -377,8 +377,8 @@ public class Board {
     }
     
     //is true if the game is over
-    public boolean gameOver(List<Block> hand) { 
-    	if (emptyStack() && noValidMoves(hand)) {
+    public boolean gameOver(List<Block> hand, int stackSize) { 
+    	if (emptyStack(stackSize) && noValidMoves(hand)) {
     		return true;
     	} else {
     		return false;

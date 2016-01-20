@@ -41,14 +41,26 @@ public class Game extends Thread {
 		broadcastNames();
 		giveOutStones();
 		determineFirstMove();
-		while (notOver) {
+		while (notGameOver()) {
 			nextTurn();
 			handleNextMove(waitForNextMove());
 			notOver = checkNotOver();
 		}
 		playerWins(detectWinner());
 	}
-
+	
+	private boolean notGameOver() {
+		int stackSize = stack.size();
+		boolean result = false;
+		for (Player player : players) {
+			if (!board.gameOver(player.getHand(), stackSize)) {
+				result = true;
+				break;
+			}
+		}
+		return result;
+	}
+ 
 	/**
 	 * 
 	 */

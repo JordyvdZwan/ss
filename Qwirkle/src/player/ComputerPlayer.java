@@ -63,7 +63,7 @@ public class ComputerPlayer implements Player {
 		ui.displayBoard(board);
 		ui.displayScore(score);
 		ui.displayHand(hand);
-		return strategy.getMove(board, hand, this);
+		return strategy.getMove(board, hand, this, stackSize);
 	}
 		
 	@Override

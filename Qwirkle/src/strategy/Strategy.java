@@ -6,5 +6,5 @@ import model.*;
 import player.Player;
 
 public interface Strategy {
-	public List<Move> getMove(Board b, List<Block> hand, Player player);
+	public List<Move> getMove(Board b, List<Block> hand, Player player, int stackSize);
 }
