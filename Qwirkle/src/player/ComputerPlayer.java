@@ -33,24 +33,26 @@ public class ComputerPlayer implements Player {
 	 */
 	public void swapHand(List<Move> moves, List<Block> blocks) {
 		outer : for (Move move : moves) {
-			for (Block block : hand) {
+			for (Block block : getHand()) {
 				if (block.color == move.getBlock().color && block.shape == move.getBlock().shape) {
-					hand.remove(block);
+					getHand().remove(block);
 					continue outer;
 				}
 			}
 		}
 		for (Block block : blocks) {
-			hand.add(block);
+			getHand().add(block);
 		}
 	}
 	
 	public void removeFromHand(Move move) {
+		Block deleteBlock = null;
 		for (Block block : hand) {
 			if (block.color == move.getBlock().color && block.shape == move.getBlock().shape) {
-				hand.remove(block);
+				deleteBlock = block;
 			}
 		}
+		hand.remove(deleteBlock);
 	}
 	
 	/**

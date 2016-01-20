@@ -33,11 +33,13 @@ public class HumanPlayer implements Player {
 	}
 	
 	public void removeFromHand(Move move) {
+		Block deleteBlock = null;
 		for (Block block : hand) {
 			if (block.color == move.getBlock().color && block.shape == move.getBlock().shape) {
-				hand.remove(block);
+				deleteBlock = block;
 			}
 		}
+		hand.remove(deleteBlock);
 	}
 	
 	public void swapHand(List<Move> moves, List<Block> blocks) {

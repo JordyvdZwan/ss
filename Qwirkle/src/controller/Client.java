@@ -99,7 +99,9 @@ public class Client {
 			String block = reader.next();
 			if (!block.equals("empty")) {
 				char[] chars = block.toCharArray();
-				player.getHand().add(new Block(chars[0], chars[1]));
+				synchronized (player) {
+					player.getHand().add(new Block(chars[0], chars[1]));
+				}
 			} else {
 				for (Block handBlock : tempHand) {
 					player.getHand().add(handBlock);
@@ -119,7 +121,9 @@ public class Client {
 				for (PlayMove playMove : playMoves) {
 					move = move.concat(" " + playMove.getBlock().toString() + " " + playMove.y + " " + playMove.x);
 					tempHand.add(playMove.getBlock());
-					player.removeFromHand(playMove);
+					synchronized (player) {
+						player.removeFromHand(playMove);
+					}
 				}
 				conn.sendString("MOVE" + move);
 			} else {
@@ -133,7 +137,9 @@ public class Client {
 				for (SwapMove swapMove : swapMoves) {
 					move = move.concat(" " + swapMove.getBlock().toString());
 					tempHand.add(swapMove.getBlock());
-					player.removeFromHand(swapMove);
+					synchronized (player) {
+						player.removeFromHand(swapMove);
+					}
 				}
 				conn.sendString("SWAP" + move);	
 			} else {
