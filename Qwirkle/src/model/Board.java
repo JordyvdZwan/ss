@@ -6,9 +6,9 @@ import player.*;
 
 public class Board {
 	private Block[][] blocks;
-	private final static int DIM = 183;
-	private final static int MID = 92;
-	
+	private static final int DIM = 183;
+	private static final int MID = 92;
+
 	public Board() {
 		blocks = new Block[DIM][DIM];
 	}
@@ -33,32 +33,33 @@ public class Board {
 	public boolean isOnlyX(List<PlayMove> move) {
 		boolean onlyX = true;
 		int x = move.get(0).x;
-			for (PlayMove moves: move) {
-				if (moves.x != x) {
-					onlyX = false;
-					break;
-				}
+		for (PlayMove moves: move) {
+			if (moves.x != x) {
+				onlyX = false;
+				break;
 			}
+		}
 		return onlyX;
 	}
 	
 	public boolean isOnlyY(List<PlayMove> move) {
 		boolean onlyY = true;
 		int y = move.get(0).y;
-			for (PlayMove moves: move) {
-				if (moves.y != y) {
-					onlyY = false;
-					break;
-				}
+		for (PlayMove moves: move) {
+			if (moves.y != y) {
+				onlyY = false;
+				break;
 			}
+		}
 		return onlyY;
 	}
 	
 	// A move is not legal if the block is placed next to a line it does not belong to.
 	public boolean isLegalMove(PlayMove move) {
-		return isLegalXRow(move) && isLegalYRow(move) && !isLonelyStone(move) && isEmptyField(move.x, move.y);
+		return isLegalXRow(move) && isLegalYRow(move) 
+						&& !isLonelyStone(move) && isEmptyField(move.x, move.y);
 	}
-	
+
 	public boolean allConnected(List<PlayMove> moveslist) {
 		boolean result = false;
 		int lenght = 0;
@@ -106,7 +107,7 @@ public class Board {
 		}
 		return result;
 	}
-	
+
 	public boolean isLegalMoveList(List<PlayMove> moveslist) {
 		boolean legal = true;
 		Board board = deepCopy();
@@ -117,16 +118,16 @@ public class Board {
 		} else {
 			if (allConnected(moveslist)) {
 				if (isOnlyX(moveslist) || isOnlyY(moveslist)) {
-					while(moves.size() > 0) {
+					while (moves.size() > 0) {
 						boolean legalmove = false;
-						for(int i = 0; i < moves.size(); i++) {
-							if(board.isLegalMove(moves.get(i))) {
+						for (int i = 0; i < moves.size(); i++) {
+							if (board.isLegalMove(moves.get(i))) {
 								board.setField(moves.get(i).x, moves.get(i).y, moves.get(i).block);
 								legalmove = true;
 								moves.remove(i);
-								}
 							}
-						if(!legalmove) {
+						}
+						if (!legalmove) {
 							legal = false;
 							break;
 						}
@@ -140,9 +141,9 @@ public class Board {
 		} 
 		return legal;
 	}
-	
-	
-	//Checks for each block in the x row if the color of shape of the blocks match the moveblock !!!!!! not final
+
+
+	//Checks for each block in the x row if the color of shape of the blocks match the moveblock
 	public boolean isLegalXRow(PlayMove move) {
 		boolean result = true;
 		int counter = 1;
@@ -155,7 +156,8 @@ public class Board {
 			if (blocks[move.x + counter][move.y].shape != move.block.shape) {
 				shapeResult = false;
 			} 
-			if (blocks[move.x + counter][move.y].shape == move.block.shape && blocks[move.x + counter][move.y].color == move.block.color) {
+			if (blocks[move.x + counter][move.y].shape == move.block.shape
+								&& blocks[move.x + counter][move.y].color == move.block.color) {
 				result = false;
 				break;
 			}
@@ -173,7 +175,8 @@ public class Board {
 			if (blocks[move.x - counter][move.y].shape != move.block.shape) {
 				shapeResult = false;
 			}
-			if (blocks[move.x - counter][move.y].shape == move.block.shape && blocks[move.x - counter][move.y].color == move.block.color) {
+			if (blocks[move.x - counter][move.y].shape == move.block.shape 
+								&& blocks[move.x - counter][move.y].color == move.block.color) {
 				result = false;
 				break;
 			}
@@ -186,7 +189,7 @@ public class Board {
 		return result;		
 	}
 	
-	//Checks for each block in the x row if the color of shape of the blocks match the moveblock !!!!!! not final
+	//Checks for each block in the x row if the color of shape of the blocks match the moveblock
 	public boolean isLegalYRow(PlayMove move) {
 		boolean result = true;
 		int counter = 1;
@@ -199,7 +202,8 @@ public class Board {
 			if (blocks[move.x][move.y + counter].shape != move.block.shape) {
 				shapeResult = false;
 			}
-			if (blocks[move.x][move.y + counter].shape == move.block.shape && blocks[move.x][move.y + counter].color == move.block.color) {
+			if (blocks[move.x][move.y + counter].shape == move.block.shape 
+								&& blocks[move.x][move.y + counter].color == move.block.color) {
 				result = false;
 				break;
 			}
@@ -217,7 +221,8 @@ public class Board {
 			if (blocks[move.x][move.y - counter].shape != move.block.shape) {
 				shapeResult = false;
 			}
-			if (blocks[move.x][move.y - counter].shape == move.block.shape && blocks[move.x][move.y - counter].color == move.block.color) {
+			if (blocks[move.x][move.y - counter].shape == move.block.shape 
+								&& blocks[move.x][move.y - counter].color == move.block.color) {
 				result = false;
 				break;
 			}
@@ -236,16 +241,16 @@ public class Board {
 		if (move.x == 92 && move.y == 92) {
 			islonely = false;
 		}
-		if(move.y + 1 < DIM && blocks[move.x][move.y + 1] != null) {
+		if (move.y + 1 < DIM && blocks[move.x][move.y + 1] != null) {
 			islonely = false;
 		}
-		if(move.y - 1 > 0 && blocks[move.x][move.y - 1] != null) {
+		if (move.y - 1 > 0 && blocks[move.x][move.y - 1] != null) {
 			islonely = false;
 		}
-		if(move.x + 1 < DIM && blocks[move.x + 1][move.y] != null) {
+		if (move.x + 1 < DIM && blocks[move.x + 1][move.y] != null) {
 			islonely = false;
 		}
-		if(move.x - 1 > 0 && blocks[move.x - 1][move.y] != null) {
+		if (move.x - 1 > 0 && blocks[move.x - 1][move.y] != null) {
 			islonely = false;
 		}
 		return islonely;
@@ -271,42 +276,42 @@ public class Board {
 	}
 	
 	//shows the stone on the board
-    public Block getField(int x, int y) {
-        return blocks[x][y];
-    }
-    
-    //says if a field is empty
-    public Boolean isEmptyField(int x, int y) {
-    	boolean result = false;
-    	if (getField(x, y) == null) {
-    		result = true;
-    	}
-    	return result;
-    }
-    
-    //indicates when the stack is empty
-    public boolean emptyStack(int stackSize) { //TODO
-    	if(stackSize == 0) {
-    		return true;
-    	} else {
-    		return false;
-    	}
-    }
-    
-    //calculates the score of 1 move
-    public int moveScore(PlayMove move) { 
-    	int score = 0;
-    	score = xScore(move) + yScore(move);
-    	if (score == 0) {
-    		score++;
-    	}
-    	return score;
-
-    }
-    
-    public int xScore(PlayMove move) {
-    	int scorex = 0;
-    	int counter = 1;
+	public Block getField(int x, int y) {
+	    return blocks[x][y];
+	}
+	
+	//says if a field is empty
+	public Boolean isEmptyField(int x, int y) {
+		boolean result = false;
+		if (getField(x, y) == null) {
+			result = true;
+		}
+		return result;
+	}
+	
+	//indicates when the stack is empty
+	public boolean emptyStack(int stackSize) { //TODO
+		if (stackSize == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	//calculates the score of 1 move
+	public int moveScore(PlayMove move) { 
+		int score = 0;
+		score = xScore(move) + yScore(move);
+		if (score == 0) {
+			score++;
+		}
+		return score;
+	
+	}
+	
+	public int xScore(PlayMove move) {
+		int scorex = 0;
+		int counter = 1;
 		while (blocks[move.x + counter][move.y] != null) {
 			scorex++;
 			counter++;
@@ -323,11 +328,11 @@ public class Board {
 			scorex++;
 		}
 		return scorex;
-    }
-    
-    public int yScore(PlayMove move) {
-    	int counter = 1;
-    	int scorey = 0;
+	}
+	
+	public int yScore(PlayMove move) {
+		int counter = 1;
+		int scorey = 0;
 		while (blocks[move.x][move.y + counter] != null) {
 			scorey++;
 			counter++;
@@ -344,164 +349,163 @@ public class Board {
 			scorey++;
 		}
 		return scorey;
-    }
-    
-    public int legitMoveScore(List<PlayMove> move) {
-    	int result = 0;
-    	if (move.size() > 1) {
-    		if (move.get(0).x == move.get(1).x) {
-    			for (int i = 0; i < move.size() - 1; i++) {
-    				setField(move.get(i).x, move.get(i).y, move.get(i).block);
-    			}
-    			result = moveScore(move.get(move.size() - 1));
-    			for (int k = 0; k < move.size() - 1; k++) {
-    				result = result + xScore(move.get(k));
-    			}
-    		}
-    		if (move.get(0).y == move.get(1).y) {
-    			for (int i = 0; i < move.size() - 1; i++) {
-    				setField(move.get(i).x, move.get(i).y, move.get(i).block);
-    			}
-    			result = moveScore(move.get(move.size() - 1));
-    			for (int k = 0; k < move.size() - 1; k++) {
-    				result = result + yScore(move.get(k));
-    			}
-    		}
-    		for (int j = 0; j < move.size() - 1; j++) {
-    			emptyField(move.get(j).x, move.get(j).y);
-    		}	
-    	} else {
-    		result = moveScore(move.get(0));
-    	}
-    	return result;
-
-    } 
+	}
 	
-    public int index(int x, int y) {
-    	return (x * DIM) + y;
-    }
-    
-    public boolean isField(int x, int y) {
-    	return 0 < x && x < DIM && 0 < y && y < DIM;
-    	
-    }
-    
-    //is true if the game is over
-    public boolean gameOver(List<Block> hand, int stackSize) { 
-    	if (emptyStack(stackSize) && noValidMoves(hand)) {
-    		return true;
-    	} else {
-    		return false;
-    	}
-    }	
-    
-    //checks if there are no more valid moves
-    public boolean noValidMoves(List<Block> hand) { 
-    	boolean illegal = true;
-    	if (hand.size() == 0) {
-    		illegal = true;
-    	} else {
-    		for(int i = 0; i < hand.size(); i++) {
-    			for(int j = 0; j < DIM; j++) {
-    				for(int k = 0; k < DIM; k++) {
-    					PlayMove move = new PlayMove(hand.get(i), j, k, new NetworkPlayer());
-    					if (isLegalMove(move)) {
-    						illegal = false;
-    						break;
-    					}
-    				}
-    			}
-    		}
-    	}
-    	return illegal;
-    }
-    
-    //checks if Xrow is empty
-    public boolean emptyXRow(int x) {
-    	boolean empty = true;
-    	for(int i = 0; i < DIM; i++) {
-    		if (!isEmptyField(x, i)) {
-    			empty = false;
-    			break;
-    		}
-    	}
-    	return empty;
-    }
-    
-    //checks if Yrow is empty
-    public boolean emptyYRow(int y) {
-    	boolean empty = true;
-    	for(int i = 0; i < DIM; i++) {
-    		if (!isEmptyField(i, y)) { 
-    			empty = false;
-    			break;
-    		}
-    	}
-    	return empty;
-    }
-    
-    //sets the move on the board, gives the player points and returns the point for this particular move 
-    public void makeMove(List<PlayMove> moves) { 
-			for (PlayMove move : moves) {
-    			setField(move.x, move.y, move.block);
-    		}
-    	} 
-    
-    //prints out the board
-    public String toString() {
-    	int maxX = maxX();
-    	int minX = minX();
-    	int maxY = maxY();
-    	int minY = minY();
-    	String colum = "";
-    	String index = " \\ x";
-    	String swag = "y \\ ";
-    	for (int i = minX; i <= maxX; i++) {
-    		index = index + " " + i + "|";
-    	}
-    	for (int i = minX; i <= maxX; i++) {
-    		swag = swag + "___" + "|";
-    	}
-    	for (int i = minY; i <= maxY; i++) {
-        	String row = "";
-    		for (int j = minX; j <= maxX; j++) {
-    			if (getField(j, i) != null) {
-    				row = row + " " + getField(j, i).toString() + "|";
-    			} else {
-    				row = row + "  " + "_" + "|";
-    			}
-    		}
-    		colum = colum + String.format("%03d", i) + "|" + row + "\n";
-    	}
-    	return index + "\n" + swag + "\n" + colum;
-    }
-    
-    public String toColorString() {
-    	int maxX = maxX();
-    	int minX = minX();
-    	int maxY = maxY();
-    	int minY = minY();
-    	String colum = "";
-    	String index = "\\x ";
-    	String swag = "y\\ ";
-    	for (int i = minX; i <= maxX; i++) {
-    		index = index + " " + i + "|";
-    	}
-    	for (int i = minX; i <= maxX; i++) {
-    		swag = swag + "___" + "|";
-    	}
-    	for (int i = minY; i <= maxY; i++) {
-        	String row = "";
-    		for (int j = minX; j <= maxX; j++) {
-    			if (getField(j, i) != null) {
-    				row = row + " " + getField(j, i).toColorString() + "|";
-    			} else {
-    				row = row + "  " + "_" + "|";
-    			}
-    		}
-    		colum = colum + i + "|" + row + "\n";
-    	}
-    	return index + "\n" + swag + "\n" + colum;
+	public int legitMoveScore(List<PlayMove> move) {
+		int result = 0;
+		if (move.size() > 1) {
+			if (move.get(0).x == move.get(1).x) {
+				for (int i = 0; i < move.size() - 1; i++) {
+					setField(move.get(i).x, move.get(i).y, move.get(i).block);
+				}
+				result = moveScore(move.get(move.size() - 1));
+				for (int k = 0; k < move.size() - 1; k++) {
+					result = result + xScore(move.get(k));
+				}
+			}
+			if (move.get(0).y == move.get(1).y) {
+				for (int i = 0; i < move.size() - 1; i++) {
+					setField(move.get(i).x, move.get(i).y, move.get(i).block);
+				}
+				result = moveScore(move.get(move.size() - 1));
+				for (int k = 0; k < move.size() - 1; k++) {
+					result = result + yScore(move.get(k));
+				}
+			}
+			for (int j = 0; j < move.size() - 1; j++) {
+				emptyField(move.get(j).x, move.get(j).y);
+			}	
+		} else {
+			result = moveScore(move.get(0));
+		}
+		return result;
+	
+	} 
+	
+	public int index(int x, int y) {
+		return (x * DIM) + y;
+	}
+	
+	public boolean isField(int x, int y) {
+		return 0 < x && x < DIM && 0 < y && y < DIM;
+		
+	}
+	
+	//is true if the game is over
+	public boolean gameOver(List<Block> hand, int stackSize) { 
+		if (emptyStack(stackSize) && noValidMoves(hand)) {
+			return true;
+		} else {
+			return false;
+		}
+	}	
+	
+	//checks if there are no more valid moves
+	public boolean noValidMoves(List<Block> hand) { 
+		boolean illegal = true;
+		if (hand.size() == 0) {
+			illegal = true;
+		} else {
+			for (int i = 0; i < hand.size(); i++) {
+				for (int j = 0; j < DIM; j++) {
+					for (int k = 0; k < DIM; k++) {
+						PlayMove move = new PlayMove(hand.get(i), j, k, new NetworkPlayer());
+						if (isLegalMove(move)) {
+							illegal = false;
+							break;
+						}
+					}
+				}
+			}
+		}
+		return illegal;
+	}
+	
+	//checks if Xrow is empty
+	public boolean emptyXRow(int x) {
+		boolean empty = true;
+		for (int i = 0; i < DIM; i++) {
+			if (!isEmptyField(x, i)) {
+				empty = false;
+				break;
+			}
+		}
+		return empty;
+	}
+	
+	//checks if Yrow is empty
+	public boolean emptyYRow(int y) {
+		boolean empty = true;
+		for (int i = 0; i < DIM; i++) {
+			if (!isEmptyField(i, y)) { 
+				empty = false;
+				break;
+			}
+		}
+		return empty;
+	}
+	
+	public void makeMove(List<PlayMove> moves) { 
+		for (PlayMove move : moves) {
+			setField(move.x, move.y, move.block);
+		}
+	} 
+	
+	//prints out the board
+	public String toString() {
+		int maxX = maxX();
+		int minX = minX();
+		int maxY = maxY();
+		int minY = minY();
+		String colum = "";
+		String index = " \\ x";
+		String swag = "y \\ ";
+		for (int i = minX; i <= maxX; i++) {
+			index = index + " " + i + "|";
+		}
+		for (int i = minX; i <= maxX; i++) {
+			swag = swag + "___" + "|";
+		}
+		for (int i = minY; i <= maxY; i++) {
+	    	String row = "";
+			for (int j = minX; j <= maxX; j++) {
+				if (getField(j, i) != null) {
+					row = row + " " + getField(j, i).toString() + "|";
+				} else {
+					row = row + "  " + "_" + "|";
+				}
+			}
+			colum = colum + String.format("%03d", i) + "|" + row + "\n";
+		}
+		return index + "\n" + swag + "\n" + colum;
+	}
+	
+	public String toColorString() {
+		int maxX = maxX();
+		int minX = minX();
+		int maxY = maxY();
+		int minY = minY();
+		String colum = "";
+		String index = "\\x ";
+		String swag = "y\\ ";
+		for (int i = minX; i <= maxX; i++) {
+			index = index + " " + i + "|";
+		}
+		for (int i = minX; i <= maxX; i++) {
+			swag = swag + "___" + "|";
+		}
+		for (int i = minY; i <= maxY; i++) {
+	    	String row = "";
+			for (int j = minX; j <= maxX; j++) {
+				if (getField(j, i) != null) {
+					row = row + " " + getField(j, i).toColorString() + "|";
+				} else {
+					row = row + "  " + "_" + "|";
+				}
+			}
+			colum = colum + i + "|" + row + "\n";
+		}
+		return index + "\n" + swag + "\n" + colum;
     }
     
     public int maxX() {
@@ -548,5 +552,5 @@ public class Board {
     	}
     	return minY;
     }
-    
+
 }
