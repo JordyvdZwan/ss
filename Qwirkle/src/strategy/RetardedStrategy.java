@@ -1,10 +1,9 @@
 package strategy;
+
 import java.util.ArrayList;
 import java.util.List;
-
 import model.*;
 import player.Player;
-import controller.*;
 
 public class RetardedStrategy implements Strategy {
 	
@@ -35,7 +34,7 @@ public class RetardedStrategy implements Strategy {
 		movehand.addAll(hand);
 		List<PlayMove> moves = new ArrayList<PlayMove>();
 		PlayMove move = null;
-		if (movehand.size() > 0 ) {
+		if (movehand.size() > 0) {
 			if (moveboard.isEmptyField(92, 92)) {
 				move = new PlayMove(movehand.get(0), 92, 92, player);
 				moves.add(move);
@@ -76,20 +75,21 @@ public class RetardedStrategy implements Strategy {
 		return moves;
 	}
 	
-	public List<SwapMove>  retardedStrategySwap (List<Block> hand, Player player, Board board, int stackSize) {
+	public List<SwapMove> retardedStrategySwap(List<Block> hand, 
+					Player player, Board board, int stackSize) {
 		List<Block> swaphand = new ArrayList<Block>();
 		swaphand.addAll(hand);
 		SwapMove move = null;
 		List<SwapMove> swapmove = new ArrayList<SwapMove>();
 		if (stackSize > 6) {
 			double j = Math.random() * 6;
-			for(int i = 0; i < j; i++) {
+			for (int i = 0; i < j; i++) {
 				move = new SwapMove(swaphand.get(i), player);
 				swapmove.add(move);
 			} 
 		} else {
 			int j = stackSize;
-			for(int i = 0; i < j; i++) {
+			for (int i = 0; i < j; i++) {
 				move = new SwapMove(swaphand.get(i), player);
 				swapmove.add(move);
 			}
