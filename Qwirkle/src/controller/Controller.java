@@ -31,6 +31,9 @@ public class Controller extends Thread {
 			startLocalServer(DEFAULT_PORT);
 		} else if (choice.equals("LOCALAI")) {
 			startLocalAI(DEFAULT_PORT);
+		} else {
+			ui.errorOccured("wrong input");
+			chooseServerClient();
 		}
 	}
 	
@@ -58,6 +61,7 @@ public class Controller extends Thread {
 			Client client = new Client(ui, sock, new ComputerPlayer("AI", new RetardedStrategy()));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
+			chooseServerClient();
 		}
 	}
 	
@@ -75,6 +79,7 @@ public class Controller extends Thread {
 			Client client = new Client(ui, sock, new ComputerPlayer(new RetardedStrategy()));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
+			chooseServerClient();
 		}
 	}
 	
@@ -91,6 +96,7 @@ public class Controller extends Thread {
 			Client client = new Client(ui, sock, new HumanPlayer(userName));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
+			chooseServerClient();
 		}
 	}
 	
@@ -108,6 +114,7 @@ public class Controller extends Thread {
 			Client client = new Client(ui, sock, new HumanPlayer(userName));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
+			chooseServerClient();
 		}
 	}
 	

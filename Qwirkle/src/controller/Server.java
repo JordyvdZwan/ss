@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.*;
-import model.*;
 import view.*;
 
 public class Server {
@@ -39,8 +38,8 @@ public class Server {
 		
 		if (command.equals("start")) {
 			nextGame();
-		} else if (command.equals("")) {
-			
+		} else {
+			ui.errorOccured("no valid input.");
 		}
 	}
 }

@@ -21,7 +21,7 @@ public class Client {
 	private List<Block> tempHand = new ArrayList<Block>();
 	private int stackSize;
 	
-	public Client(UI uiArg, Socket sockArg, Player player) {//TODO maak er localplayer van
+	public Client(UI uiArg, Socket sockArg, Player player) { //TODO maak er localplayer van
 		board = new Board();
 		ui = uiArg;
 		this.player = player;
@@ -31,7 +31,7 @@ public class Client {
 		conn.sendString("HELLO " + player.getName());
 	}
 	
-	public void processMessage(Connection conn, String msg) {
+	public void processMessage(Connection connection, String msg) {
 		try {
 			Scanner reader = new Scanner(msg);
 			String command = reader.next();
@@ -121,7 +121,8 @@ public class Client {
 			List<PlayMove> playMoves = toPlayMove(moves);
 			if (board.isLegalMoveList(playMoves)) {
 				for (PlayMove playMove : playMoves) {
-					move = move.concat(" " + playMove.getBlock().toString() + " " + playMove.y + " " + playMove.x);
+					move = move.concat(" " + playMove.getBlock().toString() + //TODO fuck dit
+										" " + playMove.y + " " + playMove.x);
 					synchronized (player) {
 						player.removeFromHand(playMove);
 					}
@@ -153,7 +154,7 @@ public class Client {
 	private void handleTurn(String msg) {
 		Scanner reader = new Scanner(msg);
 		try {
-			Player player = getPlayer(Integer.parseInt(reader.next()));
+			Player speler = getPlayer(Integer.parseInt(reader.next()));
 			List<PlayMove> moves = new ArrayList<PlayMove>();
 			String word = "";
 			while (reader.hasNext()) {
@@ -165,11 +166,11 @@ public class Client {
 				Block block = new Block(chars[0], chars[1]);
 				int y = Integer.parseInt(reader.next());
 				int x = Integer.parseInt(reader.next());
-				moves.add(new PlayMove(block, x, y, player));
+				moves.add(new PlayMove(block, x, y, speler));
 			}
 			if (!word.equals("empty")) {
-				player.setScore(player.getScore() + board.legitMoveScore(moves));
-				stackSize =- moves.size();
+				speler.setScore(speler.getScore() + board.legitMoveScore(moves));
+				stackSize -= moves.size();
 				board.makeMove(moves);
 			}
 		} catch (NumberFormatException e) {
@@ -181,15 +182,15 @@ public class Client {
 	private void handleKick(String msg) {
 		Scanner reader = new Scanner(msg);
 		try {
-			Player player = getPlayer(Integer.parseInt(reader.next()));
+			Player speler = getPlayer(Integer.parseInt(reader.next()));
 			int tilesBack = Integer.parseInt(reader.next());
 			String reason = reader.nextLine();
-			if (player == this.player) {
-				ui.displayKick(player, reason);
+			if (speler == this.player) {
+				ui.displayKick(speler, reason);
 				fatalError("You got kicked from the server! " + reason);
 			} else {
-				ui.displayKick(player, reason);
-				stackSize =+ tilesBack;
+				ui.displayKick(speler, reason);
+				stackSize += tilesBack;
 			}
 		} catch (NumberFormatException e) {
 			fatalError("invalid Kick command received from server. (" + msg + ")");
@@ -221,7 +222,7 @@ public class Client {
 	private void fatalError(String msg) {
 		System.out.println("[FATAL ERROR]: " + msg);
 		if (ui.newGame()) {
-			Controller.startClient();
+			Controller.chooseServerClient();
 		} else {
 			System.exit(0);
 		}
@@ -268,9 +269,9 @@ public class Client {
 		if (player.getNumber() == number) {
 			result = player;
 		} else {
-			for (Player player : opponents) {
-				if (player.getNumber() == number) {
-					result = player;
+			for (Player speler : opponents) {
+				if (speler.getNumber() == number) {
+					result = speler;
 				}
 			}
 		}
