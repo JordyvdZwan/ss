@@ -408,7 +408,7 @@ public class Game extends Thread {
 	private int detectWinner() {
 		int result = -1;
 		if (players.size() > 0) {
-			result = players.get(0).getScore();
+			result = players.get(0).getNumber();
 			for (Player player : players) {
 				if (player.getScore() > getPlayer(result).getScore()) {
 						result = player.getNumber();
