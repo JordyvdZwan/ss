@@ -376,11 +376,9 @@ public class Game extends Thread {
 	}
 
 	private void endGame() {
-		synchronized (connections) {
-			for (Connection conn : connections) {
-				conn.stopConnection();
+			for (int i = 0; i < connections.size(); i++) {
+				connections.get(i).stopConnection();
 			}
-		}
 		this.interrupt();
 	}
 
