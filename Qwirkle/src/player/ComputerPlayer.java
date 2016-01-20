@@ -60,6 +60,9 @@ public class ComputerPlayer implements Player {
 	 */
 	@Override
 	public List<Move> determineMove(UI ui, Board board, List<Block> hand) {
+		ui.displayBoard(board);
+		ui.displayScore(score);
+		ui.displayHand(hand);
 		return strategy.getMove(board, hand, this);
 	}
 		

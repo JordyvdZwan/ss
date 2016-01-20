@@ -53,7 +53,7 @@ public class CTUI implements UI {
 	public void displayHand(List<Block> hand) {
 		String handString = "Your hand is:";
 		for (Block block : hand) {
-			handString = handString.concat(" " + block.toString());
+			handString = handString.concat(" " + block.toColorString());
 		}
 		System.out.println(handString);
 	}
@@ -90,8 +90,8 @@ public class CTUI implements UI {
 		System.out.println(board.toColorString());
 	} 
 	
-	public void displayScore() {
-		System.out.println("Score: " + client.getPlayer().getScore());
+	public void displayScore(int score) {
+		System.out.println("Score: " + score);
 	}
 	
 	public List<PlayMove> toPlayMove(List<Move> moves) {
