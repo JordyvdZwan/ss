@@ -15,7 +15,6 @@ public class Game extends Thread {
 	private Server controller;
 	
 	private int turn;
-	private boolean notOver = true;
 	private int numberOfPlayers;
 	private int aiThinkTime;
 	private Board board;
@@ -44,7 +43,6 @@ public class Game extends Thread {
 		while (notGameOver()) {
 			nextTurn();
 			handleNextMove(waitForNextMove());
-			notOver = checkNotOver();
 		}
 		playerWins(detectWinner());
 	}
@@ -331,13 +329,22 @@ public class Game extends Thread {
 			if (getPlayer(turn) == null) {
 				nextTurn();
 			}
-			sendMessage(getPlayer(turn).getConnection(), "NEXT " + getPlayer(turn).getNumber());
+			if (!board.noValidMoves(getPlayer(turn).getHand())) {
+				sendMessage(getPlayer(turn).getConnection(), "NEXT " + getPlayer(turn).getNumber());
+			} else {
+				playerWins(detectWinner());
+			}
 		}
 	}
 
 	private void swapStones(Connection conn, List<Move> moves, int amount) {
 		List<Block> blocks = stack.give(amount);
 		if (blocks.isEmpty()) {
+			if (isInstanceOfPlaymoves(moves)) {
+				for (Move move : moves) {
+					conn.getPlayer().removeFromHand(move);
+				}
+			}
 			sendMessage(conn, "NEW empty");
 		} else {
 			conn.getPlayer().swapHand(moves, blocks);
@@ -406,16 +413,6 @@ public class Game extends Thread {
 				if (player.getScore() > getPlayer(result).getScore()) {
 						result = player.getNumber();
 				}
-			}
-		}
-		return result;
-	}
-
-	private boolean checkNotOver() {
-		boolean result = true;
-		for (Player player : players) {
-			if (board.noValidMoves(player.getHand())) {
-				result = false;
 			}
 		}
 		return result;

@@ -120,7 +120,6 @@ public class Client {
 			if (board.isLegalMoveList(playMoves)) {
 				for (PlayMove playMove : playMoves) {
 					move = move.concat(" " + playMove.getBlock().toString() + " " + playMove.y + " " + playMove.x);
-					tempHand.add(playMove.getBlock());
 					synchronized (player) {
 						player.removeFromHand(playMove);
 					}

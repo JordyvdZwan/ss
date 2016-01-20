@@ -111,13 +111,11 @@ public class Stack {
 	
 	public List<Block> give(int x) {
 		List<Block> hand = new ArrayList<Block>();
-		for(int i = 0; i < x; i++) {
-			if (stack.size() > 0) {
+		for(int i = x; i > 0; i--) {
+			if (stack.size() > i) {
 				hand.add(stack.get(i));
 				stack.remove(i);
-			} else {
-				break;
-			}
+			} 
 		}
 		return hand;
 	}
