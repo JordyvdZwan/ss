@@ -388,13 +388,17 @@ public class Board {
     //checks if there are no more valid moves
     public boolean noValidMoves(List<Block> hand) { 
     	boolean illegal = true;
-    	for(int i = 0; i < hand.size(); i++) {
-    		for(int j = 0; j < DIM; j++) {
-    			for(int k = 0; k < DIM; k++) {
-    				PlayMove move = new PlayMove(hand.get(i), j, k, new NetworkPlayer());
-    				if (isLegalMove(move)) {
-    					illegal = false;
-    					break;
+    	if (hand.size() == 0) {
+    		illegal = true;
+    	} else {
+    		for(int i = 0; i < hand.size(); i++) {
+    			for(int j = 0; j < DIM; j++) {
+    				for(int k = 0; k < DIM; k++) {
+    					PlayMove move = new PlayMove(hand.get(i), j, k, new NetworkPlayer());
+    					if (isLegalMove(move)) {
+    						illegal = false;
+    						break;
+    					}
     				}
     			}
     		}
