@@ -72,8 +72,8 @@ public class Game extends Thread {
 	 * 
 	 */
 	public void broadcastMessage(String msg) {
-		for (Connection conn: connections) {
-			sendMessage(conn, msg);
+		for (int i = 0; i < connections.size(); i++) {
+			sendMessage(connections.get(i), msg);
 		}
 	}
 
