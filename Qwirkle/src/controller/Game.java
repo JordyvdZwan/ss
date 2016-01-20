@@ -32,6 +32,10 @@ public class Game extends Thread {
 		controller = controllerArg;
 	}
 	
+
+	/**
+	 * 
+	 */
 	public void run() { 
 		createGameEnviroment();
 		broadcastNames();
@@ -44,18 +48,27 @@ public class Game extends Thread {
 		}
 		playerWins(detectWinner());
 	}
-	
+
+	/**
+	 * 
+	 */
 	public void sendMessage(Connection conn, String msg) {
 		System.out.println("[SERVER]: Sending message to " + conn.getPlayer().getName() + " : \"" + msg + "\"");
 		conn.sendString(msg);
 	}
 
+	/**
+	 * 
+	 */
 	public void broadcastMessage(String msg) {
 		for (Connection conn: connections) {
 			sendMessage(conn, msg);
 		}
 	}
 
+	/**
+	 * 
+	 */
 	private void broadcastPlayMove(List<PlayMove> playMoves, int nr) {
 		String moves = "";
 		for (PlayMove move : playMoves) {

@@ -29,6 +29,9 @@ public class ComputerPlayer implements Player {
 		this.strategy = strategy;
 	}
 	
+	/**
+	 * 
+	 */
 	public void swapHand(List<Move> moves, List<Block> blocks) {
 		for (Move move : moves) {
 			hand.remove(move.getBlock());
@@ -39,6 +42,9 @@ public class ComputerPlayer implements Player {
 		
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public List<Move> determineMove(UI ui, Board board, List<Block> hand) {
 		return strategy.getMove(board, hand, this);

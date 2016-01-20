@@ -110,6 +110,14 @@ public class Client {
 		tempHand = new ArrayList<Block>();
 		reader.close();
 	}
+	
+	private void removeBlockFromHand(Block block) {
+		for (Block handBlock : hand) {
+			if (block.color == handBlock.color && block.shape == handBlock.shape) {
+				hand.remove(handBlock);
+			}
+		}
+	}
 
 	private void handleNext(String msg) {
 		List<Move> moves = player.determineMove(ui, board, hand);
@@ -120,7 +128,7 @@ public class Client {
 				for (PlayMove playMove : playMoves) {
 					move = move.concat(" " + playMove.getBlock().toString() + " " + playMove.y + " " + playMove.x);
 					tempHand.add(playMove.getBlock());
-					hand.remove(playMove.getBlock());
+					removeBlockFromHand(playMove.getBlock());
 				}
 				conn.sendString("MOVE" + move);
 			} else {
@@ -134,7 +142,7 @@ public class Client {
 				for (SwapMove swapMove : swapMoves) {
 					move = move.concat(" " + swapMove.getBlock().toString());
 					tempHand.add(swapMove.getBlock());
-					hand.remove(swapMove.getBlock());
+					removeBlockFromHand(swapMove.getBlock());
 				}
 				conn.sendString("SWAP" + move);	
 			} else {
