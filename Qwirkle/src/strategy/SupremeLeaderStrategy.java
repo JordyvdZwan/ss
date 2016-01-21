@@ -41,38 +41,41 @@ public List<Move> getMove(Board board, List<Block> hand, Player player, int stac
 				moveboard.setField(92, 92, movehand.get(0));
 				movehand.remove(0);
 			}
-			for (int i = 0; i < movehand.size(); i++) {
-				for (int j = moveboard.minX(); j <= moveboard.maxX(); j++) {
-					for (int k = moveboard.minY(); k <= moveboard.maxY(); k++) {
-						move = new PlayMove(movehand.get(i), j, k, player);
-						if (moveboard.isLegalMove(move)) {
-							List<PlayMove> listmoves = new ArrayList<PlayMove>();
-							listmoves.add(move);
-							moveboard.setField(j, k, movehand.get(i));
-							List<PlayMove> everymove = new ArrayList<PlayMove>();
-							everymove= supremeLeaderStrategyPlay(moveboard, hand, player);
-						}
-					}
-				}
-				movehand.remove(i);
-				
-//			for (Block block : movehand) {
-//				for (int i = moveboard.minX(); i <= moveboard.maxX(); i++) {
-//					for (int j = moveboard.minY(); j <= moveboard.maxY(); j++) {
-//						move = new PlayMove(block, i, j, player);
+//			for (int i = 0; i < movehand.size(); i++) {
+//				for (int j = moveboard.minX(); j <= moveboard.maxX(); j++) {
+//					for (int k = moveboard.minY(); k <= moveboard.maxY(); k++) {
+//						move = new PlayMove(movehand.get(i), j, k, player);
 //						if (moveboard.isLegalMove(move)) {
-//							moves.add(move);
-//							if (!board.isLegalMoveList(moves)) {
-//								moves.remove(move);
-//							} else {
-//								moveboard.setField(i, j, block);
-//							}
+//							List<PlayMove> listmoves = new ArrayList<PlayMove>();
+//							listmoves.add(move);
+//							moveboard.setField(j, k, movehand.get(i));
+//							List<PlayMove> everymove = new ArrayList<PlayMove>();
+//							everymove = supremeLeaderStrategyPlay(moveboard, hand, player);
 //						}
 //					}
 //				}
-//			}
-//			allmoves.add(moves);
-//			if (moves.size() > 0) {
+//				movehand.remove(i);
+				
+			for (Block block : movehand) {
+				for (int i = moveboard.minX(); i <= moveboard.maxX(); i++) {
+					for (int j = moveboard.minY(); j <= moveboard.maxY(); j++) {
+						move = new PlayMove(block, i, j, player);
+						if (moveboard.isLegalMove(move)) {
+							moves.add(move);
+							for (List<PlayMove> all : allmoves) {
+								all.add(move);
+								if (!board.isLegalMoveList(all)) {
+									moves.remove(move);
+								} else {
+									moveboard.setField(i, j, block);
+								}
+							}
+						}
+					}
+				}
+			}
+			allmoves.add(moves);
+			if (moves.size() > 0) {
 //				// TODO LOOP?
 //				moves = new ArrayList<PlayMove>();
 //				Board b = moveboard.deepCopy();
@@ -95,7 +98,7 @@ public List<Move> getMove(Board board, List<Block> hand, Player player, int stac
 //				}
 //				if (moves.size() > 0) {
 //					allmoves.add(moves);
-//				// TODO
+				// TODO
 				}
 	//					moves = new ArrayList<PlayMove>();
 	//					Board b = moveboard.deepCopy();

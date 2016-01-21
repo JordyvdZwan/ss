@@ -1,4 +1,9 @@
 package model;
+/**
+ * het speelbord en de spelregels voor qwirkle.
+ *
+ * @author Jordy van der Zwan & Reinier Stribos
+ */
 
 import java.util.*;
 
@@ -6,16 +11,31 @@ import player.*;
 import strategy.*;
 
 public class Board {
-	private Block[][] blocks;
-	private static final int DIM = 183;
-	private static final int MID = 92;
-	private ComputerPlayer player = new ComputerPlayer("retard", new RetardedStrategy());
-	RetardedStrategy retard = new RetardedStrategy();
+	public Block[][] blocks;
+	public static final int DIM = 183;
+	public static final int MID = 92;
+	public ComputerPlayer player = new ComputerPlayer("AI", new RetardedStrategy());
+	RetardedStrategy ai = new RetardedStrategy();
 
+	/**
+	 * maakt een nieuw, leeg speelbord.
+	 */
+	 //@ ensures  (\forall int i; 0 <= i & i < DIM * DIM; this.getBlock(i) == null);
 	public Board() {
 		blocks = new Block[DIM][DIM];
 	}
 	
+//	public Board(Block[][] blocks) {
+//		this.blocks = blocks;
+//	}
+
+	
+    /**
+     * maakt een copy van een speelbord.
+     */
+    /*@ ensures (\forall int i; 0 <= i & i < DIM * DIM;
+                               getBlock(i) == this.getBlock(i));
+      @*/
 	public Board(Board b) {
 		blocks = new Block[DIM][DIM];
 		for (int x = 0; x < b.getBlock().length; x++) {
@@ -24,19 +44,95 @@ public class Board {
 			}
 		}
 	}
-	
+	/**
+	 * laat zien welke steen op een veld ligt.
+	 * @return blocks
+	 */
+	/* @ requires this.isField(x, y);
+	 */
+	/*@pure*/
 	public Block[][] getBlock() {
 		return blocks;
 	}
 	
-	public String hint(List<Block> hand, int stacksize) {
-		return retard.getMove(this, player.getHand(), player, stacksize).toString();
+	/**
+	 * geeft de steen die op de gegeven plek ligt.
+	 * @param x 
+	 * 			x-coördinaat
+	 * @param y 
+	 * 			y-coördinaat
+	 * @return Block
+	 */
+	/*@ requires index <= DIM * DIM;
+	   	ensures \result == this.getBlock()[index / DIM][index % DIM];*/
+	/*@pure*/
+	public Block getBlock(int index) {
+		Block result = null;
+		for (int x = 0; x < DIM; x++) {
+			for (int y = 0; y < DIM; y++) {
+				if (index == y + (DIM * x)) {
+					result = blocks[x][y];
+				}
+			}
+		}
+		return result;
 	}
 	
-	public Board(Block[][] blocks) {
-		this.blocks = blocks;
+	/**
+	 * laat zien welke steen wordt neergelegd.
+	 * @param move
+	 * 			de zet die gespeeld wordt
+	 * @return de steen die neergelegd wordt
+	 */
+	/*@ requires isLegalMove(move);
+	  @ requires getBlock(move) instanceof Block;
+	  @ ensures \result instanceof Block;
+	  @ ensures \result == getBlock(move);
+	 */
+	/*@pure*/
+	public Block getBlock(PlayMove move) {
+		return move.block;
+	}
+
+	/**
+	 * geeft de x-coördinaat van een zet.
+	 * @param move
+	 * 				de zet
+	 * @return de x-coördinaat
+	 */
+	/*@ requires isLegalMove(move);
+	  @ ensures \result <= DIM; 
+	  @ ensures \result >= 0;
+	 */
+	/*@pure*/
+	public int getX(PlayMove move) {
+		return move.x;
+	}
+
+	/**
+	 * geeft de y-coördinaat van een zet.
+	 * @param move
+	 * 				de zet
+	 * @return de y-coördinaat
+	 */
+	/*@ requires isLegalMove(move);
+	  @ ensures \result <= DIM; 
+	  @ ensures \result >= 0;
+	 */
+	/*@pure*/
+	public int getY(PlayMove move) {
+		return move.y;
 	}
 	
+	/**
+	 * checkt of een zet maar uit 1 rij bestaat.
+	 * @param move
+	 * 				de zet die gedaan wordt
+	 * @return true als alle x-coördinaten gelijk zijn
+	 */
+	/*@ requires (\forall int x; 0 <= x & x < move.size(); 
+					    	getX(move.get(x)) < DIM);
+	 */
 	public boolean isOnlyX(List<PlayMove> move) {
 		boolean onlyX = true;
 		int x = move.get(0).x;
@@ -48,7 +144,16 @@ public class Board {
 		}
 		return onlyX;
 	}
-	
+
+	/**
+	 * checkt of een zet maar uit 1 kolom bestaat.
+	 * @param move
+	 * 				de steen die neer gelegd wordt
+	 * @return true als alle y-coördinaten gelijk zijn
+	 */
+	/*@ requires (\forall int y; 0 <= y & y < move.size(); 
+					    	getX(move.get(y)) < DIM);
+	 */
 	public boolean isOnlyY(List<PlayMove> move) {
 		boolean onlyY = true;
 		int y = move.get(0).y;
@@ -60,13 +165,41 @@ public class Board {
 		}
 		return onlyY;
 	}
-	
-	// A move is not legal if the block is placed next to a line it does not belong to.
+
+	/**
+	 * kijkt of een steen neergelegd mag worden.
+	 * @param move
+	 * 				de steen die neer gelegd wordt
+	 * @return true als de zet aan alle regels voldoet
+	 */
+	/*@ requires getX(move) < DIM;
+	  @ requires getY(move) < DIM;
+	  @ requires getBlock(move) instanceof Block;
+	  @ ensures \result == isLegalXRow(move) && isLegalYRow(move) 
+						   && !isLonelyStone(move) && isEmptyField(getX(move), getY(move));
+	 */
+	/*@pure*/
 	public boolean isLegalMove(PlayMove move) {
 		return isLegalXRow(move) && isLegalYRow(move) 
 						&& !isLonelyStone(move) && isEmptyField(move.x, move.y);
 	}
 
+	/**
+	 * kijkt of alle stenen van een zet verbonden zijn met elkaar.
+	 * @param moveslist
+	 * 					de zet die gedaan wordt.
+	 * @return true als alle stenen verbonden zijn
+	 */
+	/*@ requires (\forall int i; 0 <= i & i <= moveslist.size();
+	  											getX(moveslist.get(i)) <= DIM
+	  												& getX(moveslist.get(i)) >= 0);
+	  @ requires (\forall int i; 0 <= i & i <= moveslist.size();
+	  											getY(moveslist.get(i)) <= DIM
+	  												& getY(moveslist.get(i)) >= 0);
+	  @ requires (\forall int i; 0 <= i & i <= moveslist.size();
+	  											getBlock(moveslist.get(i)) instanceof Block);
+	 */
+	/*@pure*/
 	public boolean allConnected(List<PlayMove> moveslist) {
 		boolean result = false;
 		int lenght = 0;
@@ -115,6 +248,22 @@ public class Board {
 		return result;
 	}
 
+	/**
+	 * kijkt of een lijst met zetten volgens de spelregels zijn.
+	 * @param moveslist
+	 * 				de lijst met zetten
+	 * @return true als er volgens de spelregels wordt gespeeld
+	 */
+	/*@ requires (\forall int i; 0 <= i & i <= moveslist.size();
+	  											getX(moveslist.get(i)) <= DIM
+	  												& getX(moveslist.get(i)) >= 0);
+	  @ requires (\forall int i; 0 <= i & i <= moveslist.size();
+	  											getY(moveslist.get(i)) <= DIM
+	  												& getY(moveslist.get(i)) >= 0);
+	  @ requires (\forall int i; 0 <= i & i <= moveslist.size();
+	  											getBlock(moveslist.get(i)) instanceof Block);
+	 */
+	/*@pure*/
 	public boolean isLegalMoveList(List<PlayMove> moveslist) {
 		boolean legal = true;
 		Board board = deepCopy();
@@ -150,7 +299,17 @@ public class Board {
 	}
 
 
-	//Checks for each block in the x row if the color of shape of the blocks match the moveblock
+	/**
+	 * kijkt of een zet in deze rij gezet mag worden.
+	 * @param move
+	 * 			de zet die gespeeld wordt
+	 * @return true als er volgens de regels gespeeld wordt
+	 */
+	/*@ requires getBlock(move) instanceof Block;
+	  @ requires 0 <= getX(move) & getX(move) <= DIM;
+	  @ requires 0 <= getY(move) & getY(move) <= DIM;
+	 */
+	/*@pure*/
 	public boolean isLegalXRow(PlayMove move) {
 		boolean result = true;
 		int counter = 1;
@@ -201,8 +360,18 @@ public class Board {
 		}
 		return result;		
 	}
-	
-	//Checks for each block in the x row if the color of shape of the blocks match the moveblock
+
+	/**
+	 * kijkt of een in deze kolom geplaatst mag worden.
+	 * @param move
+	 * 			de zet die gespeeld wordt
+	 * @return true als er volgens de regels gespeeld wordt
+	 */
+	/*@ requires getBlock(move) instanceof Block;
+	  @ requires 0 <= getX(move) & getX(move) <= DIM;
+	  @ requires 0 <= getY(move) & getY(move) <= DIM;
+	 */
+	/*@pure*/
 	public boolean isLegalYRow(PlayMove move) {
 		boolean result = true;
 		int counter = 1;
@@ -253,8 +422,22 @@ public class Board {
 		}
 		return result;		
 	}
-	
-	//checks if stone has no other stone surrounding him
+
+	/**
+	 * kijkt of een steen die op het bord wordt gezet aangrenzende stenen heeft.
+	 * @param move
+	 * 			de zet die gespeeld gaat worden
+	 * @return true als de steen geen aangrenzende stenen heeft
+	 */
+	/*@ requires getBlock(move) instanceof Block;
+	  @ requires 0 <= getX(move) & getX(move) <= DIM;
+	  @ requires 0 <= getY(move) & getY(move) <= DIM;
+	  @ ensures this.getBlock()[getX(move) + 1][getY(move)] != null || 
+	 			this.getBlock()[getX(move) - 1][getY(move)] != null || 
+	 			this.getBlock()[getX(move)][getY(move) + 1] != null || 
+	 			this.getBlock()[getX(move)][getY(move) - 1] != null ==> \result == false;
+	 */
+	/*@pure*/
 	public boolean isLonelyStone(PlayMove move) {
 		boolean islonely = true;
 		if (move.x == MID && move.y == MID) {
@@ -274,50 +457,117 @@ public class Board {
 		}
 		return islonely;
 	}
-	
+
+	/**
+     * maakt een copy van een speelbord.
+     */
+    /*@ ensures (\forall int i; 0 <= i & i < DIM * DIM;
+                               getBlock(i) == this.getBlock(i));
+      @*/
 	public Board deepCopy(Board b) {
 		Board board = new Board(b);
 		return board;
 	}
-	
+
+	/**
+     * maakt een copy van een speelbord.
+     */
+    /*@ ensures (\forall int i; 0 <= i & i < DIM * DIM;
+                               getBlock(i) == this.getBlock(i));
+      @*/
 	public Board deepCopy() { 
 		Board board = new Board(this);
 		return board;
 	}
-	
-	//puts a stone on the board
+
+	/**
+	 * zet een steen op het speelbord.
+	 * @param x
+	 * 			de x-coördinaat van de zet
+	 * @param y
+	 * 			de y-coördinaat van de zet
+	 * @param block
+	 * 			de steen die gezet wordt
+	 */
+	/*@ requires isField(x, y);
+	  @ requires block instanceof Block;
+	  @ ensures getField(x, y) == block;
+	 */
 	public void setField(int x, int y, Block block) {
 		blocks[x][y] = block;
 	}
-	
+
+	/**
+	 * haalt een steen van het bord af.
+	 * @param x
+	 * 			de x-coördinaat
+	 * @param y
+	 * 			de y-coördinaat
+	 */
+	/*@ requires isField(x, y);
+	  @ ensures getField(x, y) == null;
+	 */
 	public void emptyField(int x, int y) {
 		blocks[x][y] = null;
 	}
-	
-	//shows the stone on the board
+
+	/**
+	 * laat zien welke steen op een punt ligt.
+	 * @param x
+	 * 			de x-coördinaat
+	 * @param y
+	 * 			de y-coördinaat
+	 */
+	/*@ requires isField(x, y);
+	  @ ensures \result instanceof Block || \result == null;
+	 */
+	/*@pure*/
 	public Block getField(int x, int y) {
 	    return blocks[x][y];
 	}
-	
-	//says if a field is empty
+
+	/**
+	 * laat zien of een veld leeg is.
+	 * @param x
+	 * 			de x-coördinaat
+	 * @param y
+	 * 			de y-coördinaat
+	 * @return true als het veld leeg is
+	 */
+	/*@ requires isField(x, y);
+	  @ ensures \result == (getField(x, y) == null);
+	 */
+	/*@pure*/
 	public Boolean isEmptyField(int x, int y) {
-		boolean result = false;
-		if (getField(x, y) == null) {
-			result = true;
-		}
-		return result;
+		return getField(x, y) == null;
 	}
-	
-	//indicates when the stack is empty
-	public boolean emptyStack(int stackSize) { //TODO
-		if (stackSize == 0) {
-			return true;
-		} else {
-			return false;
-		}
+
+	/**
+	 * laat zien of de pot leeg is.
+	 * @param stackSize
+	 * 				de grote van de pot
+	 * @return true als de pot leeg is
+	 */
+	/*@ ensures \result == (stackSize == 0); 
+	 */
+	/*@pure*/
+	public boolean emptyStack(int stackSize) {
+		return stackSize == 0;
 	}
-	
-	//calculates the score of 1 move
+
+	/**
+	 * berekent de score van 1 steen.
+	 * @param move
+	 * 			de steen en waar hij wordt neergelegd
+	 * @return de score 
+	 */
+	/*@ requires 0 <= getY(move) & getY(move) <= DIM;
+	  @ requires 0 <= getY(move) & getY(move) <= DIM;
+	  @ requires getBlock(move) instanceof Block;
+	  @ ensures \result > 0;
+	  @ ensures \result == xScore(move) + yScore(move);
+	 */
+	/*@pure*/
 	public int moveScore(PlayMove move) { 
 		int score = 0;
 		score = xScore(move) + yScore(move);
@@ -327,7 +577,20 @@ public class Board {
 		return score;
 	
 	}
-	
+
+	/**
+	 * de score van alleen de rij.
+	 * @param move
+	 * 			de steen die gelegd wordt en waar hij gelegd wordt
+	 * @return de score
+	 */
+	/*@ requires 0 <= getY(move) & getY(move) <= DIM;
+	  @ requires 0 <= getY(move) & getY(move) <= DIM;
+	  @ requires getBlock(move) instanceof Block;
+	  @ requires isLegalMove(move);
+	  @ ensures \result > 0;
+	 */
+	/*@pure*/
 	public int xScore(PlayMove move) {
 		int scorex = 0;
 		int counter = 1;
@@ -348,7 +611,20 @@ public class Board {
 		}
 		return scorex;
 	}
-	
+
+	/**
+	 * de score van alleen de kolom.
+	 * @param move
+	 * 			de steen die gelegd wordt en waar hij gelegd wordt
+	 * @return de score
+	 */
+	/*@ requires 0 <= getY(move) & getY(move) <= DIM;
+	  @ requires 0 <= getY(move) & getY(move) <= DIM;
+	  @ requires getBlock(move) instanceof Block;
+	  @ requires isLegalMove(move);
+	  @ ensures \result > 0;
+	 */
+	/*@pure*/
 	public int yScore(PlayMove move) {
 		int counter = 1;
 		int scorey = 0;
@@ -369,7 +645,25 @@ public class Board {
 		}
 		return scorey;
 	}
-	
+
+	/**
+	 * de score van meerdere stenen tegelijk.
+	 * @param move
+	 * 			de zet die gespeeld wordt.
+	 * @return de score.
+	 */
+	/*@ requires (\forall int i; 0 <= i & i <= move.size();
+	  											getX(move.get(i)) <= DIM
+	  												& getX(move.get(i)) >= 0);
+	  @ requires (\forall int i; 0 <= i & i <= move.size();
+	  											getY(move.get(i)) <= DIM
+	  												& getY(move.get(i)) >= 0);
+	  @ requires (\forall int i; 0 <= i & i <= move.size();
+	  											getBlock(move.get(i)) instanceof Block);
+	  @ requires isLegalMoveList(move);
+	  @ ensures \result > 0;
+	 */
+	/*@pure*/
 	public int legitMoveScore(List<PlayMove> move) {
 		int result = 0;
 		if (move.size() > 1) {
@@ -400,17 +694,41 @@ public class Board {
 		return result;
 	
 	} 
-	
+
+    /**
+     * berekent de index van een veld.
+     * @return de index die bij een veld hoort
+     */
+    //@ requires 0 <= x & x < DIM;
+    //@ requires 0 <= y & y < DIM;
+    /*@pure*/
 	public int index(int x, int y) {
 		return (x * DIM) + y;
 	}
-	
+
+	/**
+     * laat zien of het veld op het speelbord ligt.
+     *
+     * @return true als het veld op het bord ligt
+     */
+    //@ ensures \result == (0 <= x && x < DIM && 0 <= y && y < DIM);
+    /*@pure*/
 	public boolean isField(int x, int y) {
 		return 0 < x && x < DIM && 0 < y && y < DIM;
 		
 	}
-	
-	//is true if the game is over
+
+	/**
+	 * geeft true als de game voorbij is.
+	 * @param hand
+	 * 			alle stenen die in een spelers hand zijn
+	 * @param stackSize
+	 * 			de grote van de pot
+	 * @return true als de game voorbij is
+	 */
+	/*@ ensures \result == this.emptyStack(stackSize) && this.noValidMoves(hand);
+	 */
+	/*@pure*/
 	public boolean gameOver(List<Block> hand, int stackSize) { 
 		if (emptyStack(stackSize) && noValidMoves(hand)) {
 			return true;
@@ -418,8 +736,17 @@ public class Board {
 			return false;
 		}
 	}	
-	
-	//checks if there are no more valid moves
+
+	/**
+	 * geeft true als een speler niks meer kan.
+	 * @param hand
+	 * 			alle stenen die in de hand van een speler zijn.
+	 * @return true als een speler niks meer kan
+	 */
+	/*@ requires (\forall int i; 0 <= i & i <= hand.size();
+	  											hand.get(i) instanceof Block);
+	 */
+	/*@pure*/
 	public boolean noValidMoves(List<Block> hand) { 
 		boolean illegal = true;
 		if (hand.size() == 0) {
@@ -439,8 +766,18 @@ public class Board {
 		}
 		return illegal;
 	}
-	
-	//checks if Xrow is empty
+
+	/**
+	 * geeft true als een rij helemaal leeg is.
+	 * @param x
+	 * 			geeft aan welke rij je bekijkt.
+	 * @return true als een rij helemaal leeg is.
+	 */
+	/*@ requires 0 <= x & x <= DIM;
+	  @ ensures (\forall int y; 0 <= y & y < DIM; 
+	   					this.getBlock()[x][y] == null ==> \result == true);
+	 */
+	/*@pure*/
 	public boolean emptyXRow(int x) {
 		boolean empty = true;
 		for (int i = 0; i < DIM; i++) {
@@ -451,8 +788,18 @@ public class Board {
 		}
 		return empty;
 	}
-	
-	//checks if Yrow is empty
+
+	/**
+	 * geeft true als een rij helemaal leeg is.
+	 * @param y
+	 * 			geeft aan welke rij je bekijkt.
+	 * @return true als een rij helemaal leeg is.
+	 */
+	/*@ requires 0 <= y & y <= DIM;
+	  @ ensures (\forall int x; 0 <= x & x < DIM; 
+	   					this.getBlock()[x][y] == null ==> \result == true);
+	 */
+	/*@pure*/
 	public boolean emptyYRow(int y) {
 		boolean empty = true;
 		for (int i = 0; i < DIM; i++) {
@@ -463,14 +810,47 @@ public class Board {
 		}
 		return empty;
 	}
-	
+
+	/**
+	 * maakt een zet op het speelbord.
+	 * @param moves
+	 * 			de zet die gespeeld wordt.
+	 */
+	/*@ requires (\forall int i; 0 <= i & i <= moves.size();
+													getX(moves.get(i)) <= DIM
+														& getX(moves.get(i)) >= 0);
+		@ requires (\forall int i; 0 <= i & i <= moves.size();
+													getY(moves.get(i)) <= DIM
+														& getY(moves.get(i)) >= 0);
+		@ requires (\forall int i; 0 <= i & i <= moves.size();
+													getBlock(moves.get(i)) instanceof Block);
+		@ requires isLegalMoveList(moves);
+		@ ensures (\forall int i; 0 <= i & i <= moves.size();
+												getField(getX(moves.get(i)), getY(moves.get(i)))
+													== getBlock(moves.get(i)));
+	 */
 	public void makeMove(List<PlayMove> moves) { 
 		for (PlayMove move : moves) {
 			setField(move.x, move.y, move.block);
 		}
-	} 
+	} 	
 	
-	//prints out the board
+	/**
+	 * geeft de speler een hint.
+	 * @param stacksize
+	 * 			de grote van de pot
+	 * @return een hint
+	 */
+	/*@ requires player.getHand().size() > 0;
+	 */
+	public String hint(int stacksize) {
+		return ai.getMove(this, player.getHand(), player, stacksize).toString();
+	}
+
+	/**
+	 * print het huidige bord uit.
+	 * @return de huidige speel situatie
+	 */
 	public String toString() {
 		int maxX = maxX();
 		int minX = minX();
@@ -498,17 +878,21 @@ public class Board {
 		}
 		return index + "\n" + swag + "\n" + colum;
 	}
-	
+
+	/**
+	 * print het huidige bord uit in kleur.
+	 * @return de huidige speel situatie in kleur
+	 */
 	public String toColorString() {
 		int maxX = maxX();
 		int minX = minX();
 		int maxY = maxY();
 		int minY = minY();
 		String colum = "";
-		String index = "\\x ";
-		String swag = "y\\ ";
+		String index = " \\x ";
+		String swag = "y \\ ";
 		for (int i = minX; i <= maxX; i++) {
-			index = index + " " + i + "|";
+			index = index + String.format("%03d", i) + "|";
 		}
 		for (int i = minX; i <= maxX; i++) {
 			swag = swag + "___" + "|";
@@ -522,11 +906,15 @@ public class Board {
 					row = row + "  " + "_" + "|";
 				}
 			}
-			colum = colum + i + "|" + row + "\n";
+			colum = colum + String.format("%03d", i) + "|" + row + "\n";
 		}
 		return index + "\n" + swag + "\n" + colum;
     }
     
+	/*@ requires (\forall int i; 1 <= i & i <= MID);
+      @ ensures \result >= MID + 1;
+      @ ensures \result <= MID + MID;
+      @*/	
     public int maxX() {
     	int maxX = 0;
     	for (int i = 1; i < MID; i++) {
@@ -538,6 +926,10 @@ public class Board {
     	return maxX;
     }
     	
+    /*@ requires (\forall int i; 1 <= i & i <= MID);
+      @ ensures \result >= 0;
+      @ ensures \result <= MID - 1;
+      @*/
     public int minX() {
         int minX = 0;
         for (int i = 1; i < MID; i++) {
@@ -549,7 +941,10 @@ public class Board {
         return minX;
     }
 
-    	
+    /*@ requires (\forall int i; 1 <= i & i <= MID);
+      @ ensures \result >= MID + 1;
+      @ ensures \result <= MID + MID;
+      @*/	
     public int maxY() {
     	int maxY = 0;
     	for (int i = 1; i < MID; i++) {
@@ -561,6 +956,10 @@ public class Board {
     	return maxY;
     }
 
+    /*@ requires (\forall int i; 1 <= i & i <= MID);
+      @ ensures \result >= 0;
+      @ ensures \result <= MID - 1;
+      @*/
     public int minY() {
     	int minY = 0;
     	for (int i = 1; i < MID; i++) {
