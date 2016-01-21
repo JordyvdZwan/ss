@@ -11,19 +11,14 @@ import model.SwapMove;
 import player.Player;
 
 public class MirandaStrategy implements Strategy {
+	public static final int EDGE = 5;
 	
-	
-
-	public MirandaStrategy() {
-		
-	}
-
 	private List<List<PlayMove>> getMove(Board b, List<Block> hand, Player player, int stackSize, List<List<PlayMove>> moves, List<PlayMove> move) {
 		List<List<PlayMove>> allPossibleMoves = new ArrayList<List<PlayMove>>();
 		allPossibleMoves.addAll(moves);
 		for (Block block : hand) {
-			for (int x = b.minX(); x < b.maxX(); x++) {
-				for (int y = b.minY(); y < b.maxY(); y++) {
+			for (int x = b.minX() - EDGE; x < b.maxX() + EDGE; x++) {
+				for (int y = b.minY() - EDGE; y < b.maxY() + EDGE; y++) {
 					PlayMove move2 = new PlayMove(block, x, y, player);
 					List<PlayMove> movelist2 = new ArrayList<PlayMove>();
 					movelist2.addAll(move);
