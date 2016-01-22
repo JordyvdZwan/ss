@@ -1,6 +1,7 @@
 package controller;
 
 import java.net.*;
+import java.util.Observable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -10,7 +11,7 @@ import model.*;
 import player.*;
 import view.*;
 
-public class Client {
+public class Client extends Observable {
 
 	private int aiThinkTime;
 	private UI ui;
@@ -22,7 +23,6 @@ public class Client {
 	private int stackSize;
 	
 	public Client(UI uiArg, Socket sockArg, Player player) {
-		//TODO maak er localplayer van
 		board = new Board();
 		ui = uiArg;
 		this.player = player;
@@ -124,9 +124,7 @@ public class Client {
 				for (PlayMove playMove : playMoves) {
 					move = move.concat(" " + playMove.getBlock().toString() + //TODO fuck dit
 										" " + playMove.y + " " + playMove.x);
-					synchronized (player) {
-						player.removeFromHand(playMove);
-					}
+					player.removeFromHand(playMove);
 				}
 				conn.sendString("MOVE" + move);
 			} else {
@@ -140,9 +138,7 @@ public class Client {
 				for (SwapMove swapMove : swapMoves) {
 					move = move.concat(" " + swapMove.getBlock().toString());
 					tempHand.add(swapMove.getBlock());
-					synchronized (player) {
-						player.removeFromHand(swapMove);
-					}
+					player.removeFromHand(swapMove);
 				}
 				conn.sendString("SWAP" + move);	
 			} else {
@@ -173,6 +169,8 @@ public class Client {
 				speler.setScore(speler.getScore() + board.legitMoveScore(moves));
 				stackSize -= moves.size();
 				board.makeMove(moves);
+				setChanged();
+				notifyObservers("BOARD");
 			}
 		} catch (NumberFormatException e) {
 			fatalError("invalid Turn command from server! (" + msg + ")");
@@ -279,6 +277,10 @@ public class Client {
 		return result;
 	}
 
+	public Board getBoard() {
+		return board;
+	}
+	
 	public Player getPlayer() {
 		return player;
 	}

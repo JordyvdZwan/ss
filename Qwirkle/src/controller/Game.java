@@ -4,6 +4,8 @@ import model.*;
 import model.Stack;
 import player.NetworkPlayer;
 import player.Player;
+import view.UI;
+
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
@@ -23,8 +25,12 @@ public class Game extends Thread {
 	
 	private boolean moveAvailable = false;
 	private Queue<List<Move>> nextMove = new ArrayBlockingQueue<List<Move>>(1);
+	private UI ui;
 	
-	public Game(Server controllerArg, int aiThinkTimeArg) {
+	
+	
+	public Game(Server controllerArg, int aiThinkTimeArg, UI ui) {
+		this.ui = ui;
 		aiThinkTime = aiThinkTimeArg;
 		connections = new ArrayList<Connection>();
 		players = new ArrayList<NetworkPlayer>();
@@ -63,7 +69,7 @@ public class Game extends Thread {
 	 * 
 	 */
 	public void sendMessage(Connection conn, String msg) {
-		System.out.println("[SERVER]: Sending message to " + 
+		ui.displayServerMessage("[SERVER]: Sending message to " + 
 						conn.getPlayer().getName() + " : \"" + msg + "\"");
 		conn.sendString(msg);
 	}
@@ -93,102 +99,16 @@ public class Game extends Thread {
 	}
 
 	public void processMessage(Connection conn, String msg) {
-		System.out.println("[SERVER]: Getting message from " + 
+		ui.displayServerMessage("[SERVER]: Getting message from " + 
 						conn.getPlayer().getName() + " : \"" + msg + "\"");
 		Scanner reader = new Scanner(msg);
 		String command = reader.next();
 		if (command.equals("HELLO") && reader.hasNext()) {
-			String playerName = reader.next();
-			if (isValidName(playerName)) {
-				conn.getPlayer().setName(playerName);
-				if (connections.size() == Controller.MAX_PLAYERS) {
-					controller.nextGame();
-				}
-				sendMessage(conn, "WELCOME " + playerName + " " + conn.getPlayer().getNumber());
-			} else {
-				kickPlayer(conn, conn.getPlayer().getNumber(), 
-								conn.getPlayer().getHand(), 
-								"Invalid userName! (processMessage/Welcome)");
-			}
+			handleHello(conn, reader);
 		} else if (command.equals("MOVE")) {
-			if (!moveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
-				try {
-					boolean cycleDone = false;				
-					List<Move> moves = new ArrayList<Move>();
-					while (reader.hasNext()) {
-						
-						
-						cycleDone = false;
-						String blockString = reader.next();
-						char[] chars = blockString.toCharArray();
-						if (!(chars.length == 2)) break;
-						Block block = new Block(chars[0], chars[1]);
-						
-						
-						if (!reader.hasNext()) break;
-						String yString = reader.next();
-						if (!yString.matches("^-?\\d+$")) break;
-						int y = Integer.parseInt(yString);
-						
-						
-						if (!reader.hasNext()) break;
-						String xString = reader.next();
-						if (!xString.matches("^-?\\d+$")) break;
-						int x = Integer.parseInt(xString); 
-						
-						
-						PlayMove move = new PlayMove(block, x, y, conn.getPlayer());
-						moves.add(move);
-						cycleDone = true;
-						
-					}
-					if (cycleDone && !moves.isEmpty()) {
-						nextMove.add(moves);
-						moveAvailable = true;
-						nextMoveAvailable.countDown();
-					} else {
-						kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), 
-										"Invalid move command! (processMessage/Move)");
-					}
-				} catch (NumberFormatException e) {
-					kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), 
-									"Invalid move command! ((numbers) processMessage/Move)");
-				}
-			} else {
-				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), 
-								"Invalid move command, "
-										+ "not your turn or one has already "
-										+ "been send! (processMessage/Move)");
-			}
+			readMove(conn, reader);
 		} else if (command.equals("SWAP")) {
-			if (!moveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
-				
-				
-				List<Move> moves = new ArrayList<Move>();
-				while (reader.hasNext()) {
-					String blockString = reader.next();
-					if (Block.isValidBlockString(blockString)) {
-						char[] chars = blockString.toCharArray();
-						SwapMove move = new SwapMove(new Block(chars[0], 
-										chars[1]), conn.getPlayer());
-						moves.add(move);
-					}
-				}
-				if (!moves.isEmpty()) {
-					nextMove.add(moves);
-					moveAvailable = true;
-					nextMoveAvailable.countDown();
-				} else {
-					kickPlayer(conn, conn.getPlayer().getNumber(), 
-									conn.getPlayer().getHand(), "Invalid swap command! "
-											+ "(processMessage/Swap)");
-				}
-			} else {
-				kickPlayer(conn, conn.getPlayer().getNumber(), 
-								conn.getPlayer().getHand(), "Invalid swap command, "
-								+ "not your turn or one has already been send ("
-								+ "processMessage/Swap)");
-			}
+			readSwap(conn, reader);
 		} else if (command.equals("LOSSOFCONNECTION")) {
 			kickPlayer(conn, conn.getPlayer().getNumber(), 
 							conn.getPlayer().getHand(), "Player lost connection");
@@ -197,6 +117,117 @@ public class Game extends Thread {
 							conn.getPlayer().getHand(), "Command not recognized (processMessage");
 		}
 		reader.close();
+	}
+
+
+	private void handleHello(Connection conn, Scanner reader) {
+		String playerName = reader.next();
+		if (isValidName(playerName)) {
+			conn.getPlayer().setName(playerName);
+			if (connections.size() == Controller.MAX_PLAYERS) {
+				controller.nextGame();
+			}
+			sendMessage(conn, "WELCOME " + playerName + " " + conn.getPlayer().getNumber());
+		} else {
+			kickPlayer(conn, conn.getPlayer().getNumber(), 
+							conn.getPlayer().getHand(), 
+							"Invalid userName! (processMessage/Welcome)");
+		}
+	}
+
+
+	private void readSwap(Connection conn, Scanner reader) {
+		if (!moveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
+			
+			
+			List<Move> moves = new ArrayList<Move>();
+			while (reader.hasNext()) {
+				String blockString = reader.next();
+				if (Block.isValidBlockString(blockString)) {
+					char[] chars = blockString.toCharArray();
+					SwapMove move = new SwapMove(new Block(chars[0], 
+									chars[1]), conn.getPlayer());
+					moves.add(move);
+				}
+			}
+			if (!moves.isEmpty()) {
+				nextMove.add(moves);
+				moveAvailable = true;
+				nextMoveAvailable.countDown();
+			} else {
+				kickPlayer(conn, conn.getPlayer().getNumber(), 
+								conn.getPlayer().getHand(), "Invalid swap command! "
+										+ "(processMessage/Swap)");
+			}
+		} else {
+			kickPlayer(conn, conn.getPlayer().getNumber(), 
+							conn.getPlayer().getHand(), "Invalid swap command, "
+							+ "not your turn or one has already been send ("
+							+ "processMessage/Swap)");
+		}
+	}
+
+
+	private void readMove(Connection conn, Scanner reader) {
+		if (!moveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
+			try {
+				boolean cycleDone = false;				
+				List<Move> moves = new ArrayList<Move>();
+				while (reader.hasNext()) {
+					
+					
+					cycleDone = false;
+					String blockString = reader.next();
+					char[] chars = blockString.toCharArray();
+					if (!(chars.length == 2)) {
+						break;
+					}
+					Block block = new Block(chars[0], chars[1]);
+					
+					
+					if (!reader.hasNext()) {
+						break;
+					}
+					String yString = reader.next();
+					if (!yString.matches("^-?\\d+$")) {
+						break;
+					}
+					int y = Integer.parseInt(yString);
+					
+					
+					if (!reader.hasNext()) {
+						break;
+					}
+					String xString = reader.next();
+					if (!xString.matches("^-?\\d+$")) {
+						break;
+					}
+					int x = Integer.parseInt(xString); 
+					
+					
+					PlayMove move = new PlayMove(block, x, y, conn.getPlayer());
+					moves.add(move);
+					cycleDone = true;
+					
+				}
+				if (cycleDone && !moves.isEmpty()) {
+					nextMove.add(moves);
+					moveAvailable = true;
+					nextMoveAvailable.countDown();
+				} else {
+					kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), 
+									"Invalid move command! (processMessage/Move)");
+				}
+			} catch (NumberFormatException e) {
+				kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), 
+								"Invalid move command! ((numbers) processMessage/Move)");
+			}
+		} else {
+			kickPlayer(conn, conn.getPlayer().getNumber(), conn.getPlayer().getHand(), 
+							"Invalid move command, "
+									+ "not your turn or one has already "
+									+ "been send! (processMessage/Move)");
+		}
 	}
 
 	private List<Move> waitForNextMove() {
@@ -223,9 +254,6 @@ public class Game extends Thread {
 				board.makeMove(playMoves);
 				swapStones(player.getConnection(), moves, playMoves.size());
 				broadcastPlayMove(playMoves, player.getNumber());
-				for (Block block : player.getHand()) {
-					System.out.println(block.toColorString());
-				}
 			} else {
 				Connection conn = moves.get(0).getPlayer().getConnection();
 				kickPlayer(conn, conn.getPlayer().getNumber(), 
@@ -299,6 +327,13 @@ public class Game extends Thread {
 		}
 	}
 
+	
+	/**
+	 * 
+	 * @param blocks
+	 * @return
+	 */
+	//@ requires blocks.size() == 6;
 	private int maxScore(List<Block> blocks) {
 		int score = 0;
 		int[] points = new int[12];
@@ -349,7 +384,7 @@ public class Game extends Thread {
 			if (getPlayer(turn) == null) {
 				nextTurn();
 			}
-			if (!board.noValidMoves(getPlayer(turn).getHand()) && stack.size() == 0) {
+			if (!(board.noValidMoves(getPlayer(turn).getHand()) && stack.size() == 0)) {
 				sendMessage(getPlayer(turn).getConnection(), "NEXT " + getPlayer(turn).getNumber());
 			} else {
 				playerWins(detectWinner());
