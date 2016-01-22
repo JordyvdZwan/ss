@@ -40,7 +40,7 @@ public class Connector extends Thread {
 	}
 	
 	public void lossOfConnection(Exception e) {
-		ui.errorOccured("could not bind to port");
+		ui.errorOccured("port already in use.");
 		Controller.chooseServerClient();
 	}
 }

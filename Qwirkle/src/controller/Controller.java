@@ -32,6 +32,8 @@ public class Controller extends Thread {
 			startLocalServer(DEFAULT_PORT);
 		} else if (choice.equals("LOCALAI")) {
 			startLocalAI(DEFAULT_PORT);
+		} else if (choice.equals("AI")) {
+			startAI();
 		} else {
 			ui.errorOccured("wrong input");
 			chooseServerClient();

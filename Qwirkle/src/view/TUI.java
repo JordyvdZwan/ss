@@ -161,7 +161,7 @@ public class TUI implements UI {
 		System.out.println("Do you want to start a server of client? press corresponding number.");
 		System.out.println("1. start Server          // 2. start Client");
 		System.out.println("3. start Default Server // 4. start local Client");
-		System.out.println("5. start local AI      //");
+		System.out.println("5. start local AI      // 6. start AI");
 		String input = in.nextLine();
 		String result = "";
 		if (input.equals("1")) {
@@ -174,6 +174,8 @@ public class TUI implements UI {
 			result = "LOCALCLIENT";
 		} else if (input.equals("5")) {
 			result = "LOCALAI";
+		} else if (input.equals("6")) {
+			result = "AI";
 		} else {
 			System.out.println("Invalid input, please try again.");
 			result = getChoiceServerClient();

@@ -20,22 +20,16 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
-<<<<<<< HEAD
 		<buildCommand>
 			<name>net.sourceforge.metrics.builder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
-=======
->>>>>>> branch 'master' of https://github.com/JordyvdZwan/ss
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>net.sf.eclipsecs.core.CheckstyleNature</nature>
 		<nature>org.jmlspecs.OpenJMLUI.JMLNatureID</nature>
-<<<<<<< HEAD
 		<nature>net.sourceforge.metrics.nature</nature>
-=======
->>>>>>> branch 'master' of https://github.com/JordyvdZwan/ss
 	</natures>
 </projectDescription>
