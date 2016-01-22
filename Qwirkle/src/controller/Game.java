@@ -14,7 +14,7 @@ public class Game extends Thread {
 	
 	private List<Connection> connections;
 	private List<NetworkPlayer> players;
-	private Server controller;
+	private Server server;
 	
 	private int turn;
 	private int numberOfPlayers;
@@ -28,13 +28,14 @@ public class Game extends Thread {
 	private UI ui;
 	
 	
+	//@private invariant board != null;
 	
 	public Game(Server controllerArg, int aiThinkTimeArg, UI ui) {
 		this.ui = ui;
 		aiThinkTime = aiThinkTimeArg;
 		connections = new ArrayList<Connection>();
 		players = new ArrayList<NetworkPlayer>();
-		controller = controllerArg;
+		server = controllerArg;
 	}
 	
 
@@ -125,7 +126,7 @@ public class Game extends Thread {
 		if (isValidName(playerName)) {
 			conn.getPlayer().setName(playerName);
 			if (connections.size() == Controller.MAX_PLAYERS) {
-				controller.nextGame();
+				server.nextGame();
 			}
 			sendMessage(conn, "WELCOME " + playerName + " " + conn.getPlayer().getNumber());
 		} else {
@@ -275,10 +276,12 @@ public class Game extends Thread {
 	public void kickPlayer(Connection conn, int playerNumber, List<Block> blocks, String reason) {
 		players.remove(conn.getPlayer());
 		connections.remove(conn);
-		stack.giveBack(blocks);
+		if (blocks != null && stack != null) {
+			stack.giveBack(blocks);
+		}
 		numberOfPlayers--;
 		broadcastMessage("KICK " + playerNumber + " " + blocks.size() + " " + reason);
-		if (numberOfPlayers == 1) {
+		if (connections.size() == 1) {
 			playerWins(connections.get(0).getPlayer().getNumber());
 		}
 	}
@@ -288,7 +291,11 @@ public class Game extends Thread {
 		players.add(conn.getPlayer());
 		numberOfPlayers++;
 		conn.getPlayer().setConnection(conn);
-		connections.get(connections.size() - 1).getPlayer().setNumber(connections.size() - 1);
+		for (int i = 0; i < Controller.MAX_PLAYERS; i++) {
+			if (getPlayer(i) != null) {
+				connections.get(connections.size() - 1).getPlayer().setNumber(i);
+			}
+		}
 	}
 
 	private void createGameEnviroment() {
@@ -385,7 +392,7 @@ public class Game extends Thread {
 				nextTurn();
 			}
 			if (!(board.noValidMoves(getPlayer(turn).getHand()) && stack.size() == 0)) {
-				sendMessage(getPlayer(turn).getConnection(), "NEXT " + getPlayer(turn).getNumber());
+				broadcastMessage("NEXT " + getPlayer(turn).getNumber());
 			} else {
 				playerWins(detectWinner());
 			}

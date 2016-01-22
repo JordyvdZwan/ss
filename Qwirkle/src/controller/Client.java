@@ -32,6 +32,14 @@ public class Client extends Observable {
 		conn.sendString("HELLO " + player.getName());
 	}
 	
+	/**
+	 * calls the correct method that then handles the message.
+	 * when a incorrect command is given, it will give a Fatal Error.
+	 * @param connection
+	 * @param msg
+	 */
+	//@ requires connection != null;
+	//@ requires msg != null;
 	public void processMessage(Connection connection, String msg) {
 		try {
 			Scanner reader = new Scanner(msg);
@@ -63,6 +71,12 @@ public class Client extends Observable {
 		}
 	}
 
+	/**
+	 * handles the WELCOME command from the server.
+	 * reads the player number gotten from the server and writes it to the player.
+	 * when given a wrong number, it will give a fatal error.
+	 * @param msg
+	 */
 	private void handleWelcome(String msg) {
 		Scanner reader = new Scanner(msg);
 		try {
@@ -75,6 +89,9 @@ public class Client extends Observable {
 		reader.close();
 	}
 
+	
+	
+	//@ requires msg != null;
 	private void handleNames(String msg) { 
 		Scanner reader = new Scanner(msg);
 		try {
@@ -117,36 +134,45 @@ public class Client extends Observable {
 	}
 	
 	private void handleNext(String msg) {
-		List<Move> moves = player.determineMove(ui, board, player.getHand(), stackSize, opponents);
-		String move = "";
-		if (isInstanceOfPlayMoves(moves)) {
-			List<PlayMove> playMoves = toPlayMove(moves);
-			if (board.isLegalMoveList(playMoves)) {
-				for (PlayMove playMove : playMoves) {
-					move = move.concat(" " + playMove.getBlock().toString() + //TODO fuck dit
-										" " + playMove.y + " " + playMove.x);
-					player.removeFromHand(playMove);
+		Scanner reader = new Scanner(msg);
+		try {
+			if (player == getPlayer(Integer.parseInt(reader.next()))) {
+				List<Move> moves = player.determineMove(ui, board, player.getHand(),
+								stackSize, opponents);
+				String move = "";
+				if (isInstanceOfPlayMoves(moves)) {
+					List<PlayMove> playMoves = toPlayMove(moves);
+					if (board.isLegalMoveList(playMoves)) {
+						for (PlayMove playMove : playMoves) {
+							move = move.concat(" " + playMove.getBlock().toString() + 
+												" " + playMove.y + " " + playMove.x);
+							player.removeFromHand(playMove);
+						}
+						conn.sendString("MOVE" + move);
+					} else {
+						error("invalid move command");
+						handleNext(msg);
+					}
+				} else {
+					List<SwapMove> swapMoves = toSwapMove(moves);
+					if (stackSize >= swapMoves.size()) {
+						tempHand = new ArrayList<Block>();
+						for (SwapMove swapMove : swapMoves) {
+							move = move.concat(" " + swapMove.getBlock().toString());
+							tempHand.add(swapMove.getBlock());
+							player.removeFromHand(swapMove);
+						}
+						conn.sendString("SWAP" + move);	
+					} else {
+						error("no enough blocks in stack: " + stackSize);
+						handleNext(msg);
+					}
 				}
-				conn.sendString("MOVE" + move);
-			} else {
-				error("invalid move command");
-				handleNext(msg);
 			}
-		} else {
-			List<SwapMove> swapMoves = toSwapMove(moves);
-			if (stackSize >= swapMoves.size()) {
-				tempHand = new ArrayList<Block>();
-				for (SwapMove swapMove : swapMoves) {
-					move = move.concat(" " + swapMove.getBlock().toString());
-					tempHand.add(swapMove.getBlock());
-					player.removeFromHand(swapMove);
-				}
-				conn.sendString("SWAP" + move);	
-			} else {
-				error("no enough blocks in stack: " + stackSize);
-				handleNext(msg);
-			}
+		} catch (NumberFormatException e) {
+			fatalError("invalid Next command from server! (" + msg + ")");
 		}
+		reader.close();
 	}
 
 	private void handleTurn(String msg) {
@@ -237,7 +263,7 @@ public class Client extends Observable {
 		System.exit(0);
 	}
 
-	public List<PlayMove> toPlayMove(List<Move> moves) {
+	private List<PlayMove> toPlayMove(List<Move> moves) {
 		List<PlayMove> result = new ArrayList<PlayMove>();
 		for (Move move : moves) {
 			result.add((PlayMove) move);
@@ -245,7 +271,7 @@ public class Client extends Observable {
 		return result;
 	}
 
-	public List<SwapMove> toSwapMove(List<Move> moves) {
+	private List<SwapMove> toSwapMove(List<Move> moves) {
 		List<SwapMove> result = new ArrayList<SwapMove>();
 		for (Move move : moves) {
 			result.add((SwapMove) move);
@@ -275,13 +301,18 @@ public class Client extends Observable {
 				}
 			}
 		}
+		if (result == null) {
+			result = new HumanPlayer("User not found", number);
+		}
 		return result;
 	}
 
+	//@ pure
 	public Board getBoard() {
 		return board;
 	}
 	
+	//@ pure
 	public Player getPlayer() {
 		return player;
 	}

@@ -18,7 +18,7 @@ import player.Player;
 //NOTE: only works when console has ANSI escape 
 
 public class CTUI implements UI {
-	private Client client = null;
+	private Client client;
 	private Server servercontroller;
 	private Scanner in = new Scanner(System.in);
 	private boolean localGame;
