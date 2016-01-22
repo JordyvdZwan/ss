@@ -26,7 +26,8 @@ public class TUI implements UI {
 	 * returns a list of moves, if a valid input has been given.
 	 */
 	public List<Move> getMove(Board b) {
-		System.out.println("Please enter a move (in a protocol manner [TILE ROW COLLUM]");
+		System.out.println("Please enter a move (in a protocol manner "
+						+ "MOVE [TILE ROW COLLUM] / SWAP [TILE])");
 		List<Move> result = null;
 		if (in.hasNextLine()) {
 			String msg = in.nextLine();	

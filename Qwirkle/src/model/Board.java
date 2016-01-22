@@ -11,10 +11,10 @@ import player.*;
 import strategy.*;
 
 public class Board {
-	public Block[][] blocks;
+	private Block[][] blocks;
 	public static final int DIM = 183;
 	public static final int MID = 92;
-	public ComputerPlayer player = new ComputerPlayer("AI", new RetardedStrategy());
+	private ComputerPlayer player = new ComputerPlayer("AI", new RetardedStrategy());
 	RetardedStrategy ai = new RetardedStrategy();
 
 	/**
