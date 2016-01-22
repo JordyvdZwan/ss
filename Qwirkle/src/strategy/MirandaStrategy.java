@@ -11,7 +11,7 @@ import model.SwapMove;
 import player.Player;
 
 public class MirandaStrategy implements Strategy {
-	public static final int EDGE = 5;
+	public static final int EDGE = 1;
 	
 	private List<List<PlayMove>> getMove(Board b, List<Block> hand, Player player, int stackSize, List<List<PlayMove>> moves, List<PlayMove> move) {
 		List<List<PlayMove>> allPossibleMoves = new ArrayList<List<PlayMove>>();

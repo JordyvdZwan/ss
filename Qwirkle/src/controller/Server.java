@@ -16,15 +16,15 @@ public class Server {
 		uiThread.start();
 		aiThinkTime = aiThinkTimeArg;
 		gameList = new ArrayList<Game>();
-		Game game = new Game(this, aiThinkTime);
+		Game game = new Game(this, aiThinkTime, ui);
 		gameList.add(game);
 		
-		connector = new Connector(game, portArg);
+		connector = new Connector(ui, game, portArg);
 	}
 	
 	public void nextGame() {
 		(gameList.get(gameList.size() - 1)).start();
-		Game game = new Game(this, aiThinkTime);
+		Game game = new Game(this, aiThinkTime, ui);
 		connector.newServer(game);
 		gameList.add(game);
 	}
@@ -35,7 +35,6 @@ public class Server {
 	}
 	
 	public void handleInput(String command) {
-		
 		if (command.equals("start")) {
 			nextGame();
 		} else {

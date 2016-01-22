@@ -31,7 +31,7 @@ public List<Move> getMove(Board board, List<Block> hand, Player player, int stac
 		Board moveboard = board.deepCopy();
 		List<Block> movehand = new ArrayList<Block>();
 		movehand.addAll(hand);
-		List<List<PlayMove>> allmoves = new ArrayList<>();
+		List<List<PlayMove>> allmoves = new ArrayList<List<PlayMove>>();
 		List<PlayMove> moves = new ArrayList<PlayMove>();
 		PlayMove move = null;
 		if (movehand.size() > 0) {

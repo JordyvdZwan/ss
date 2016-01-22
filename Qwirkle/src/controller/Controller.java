@@ -11,9 +11,9 @@ import view.*;
 
 public class Controller extends Thread {	
 	public static final int MAX_PLAYERS = 4;
-	static UI ui = new CTUI();
+	static UI ui = new CTUI(false);
 	public static final int DEFAULT_PORT = 25565;
-	public static final int DEFAULT_AITHINKTIME = 2000;
+	public static final int DEFAULTAITHINKTIME = 2000;
 	
 	
 	public static void main(String[] args) {
@@ -40,14 +40,15 @@ public class Controller extends Thread {
 	
 	@SuppressWarnings("unused")
 	public static void startServer() {
-		int aiThinkTime = ui.getAIThinkTime();
-		int port = ui.getPort();
+		
+		int aiThinkTime = getAiThinkTime();
+		int port = getPort();
 		Server server = new Server(port, ui, aiThinkTime);
 	}
 	
 	@SuppressWarnings("unused")
 	public static void startLocalServer(int port) {
-		Server server = new Server(port, ui, DEFAULT_AITHINKTIME);
+		Server server = new Server(port, ui, DEFAULTAITHINKTIME);
 	}
 	
 	@SuppressWarnings("unused")
@@ -72,9 +73,9 @@ public class Controller extends Thread {
 			Socket sock;
 			InetAddress address;
 			
-			address = ui.getHost();
-			int port = ui.getPort();
-			String userName = ui.getUserName();
+			address = getHost();
+			int port = getPort();
+			String userName = getUserName();
 			
 			sock = new Socket(address, port);
 			Client client = new Client(ui, sock, new ComputerPlayer(new MirandaStrategy()));
@@ -91,12 +92,12 @@ public class Controller extends Thread {
 			InetAddress address;
 			
 			address = InetAddress.getByName("localhost");
-			String userName = ui.getUserName();
+			String userName = getUserName();
 			
 			sock = new Socket(address, port);
 			Client client = new Client(ui, sock, new HumanPlayer(userName));
 		} catch (IOException e) {
-			ui.errorOccured("Could not start Client.");
+			ui.errorOccured("Could not start Client. Please try again");
 			chooseServerClient();
 		}
 	}
@@ -107,9 +108,9 @@ public class Controller extends Thread {
 			Socket sock;
 			InetAddress address;
 			
-			address = ui.getHost();
-			int port = ui.getPort();
-			String userName = ui.getUserName();
+			address = getHost();
+			int port = getPort();
+			String userName = getUserName();
 			
 			sock = new Socket(address, port);
 			Client client = new Client(ui, sock, new HumanPlayer(userName));
@@ -119,5 +120,60 @@ public class Controller extends Thread {
 		}
 	}
 	
+	private static InetAddress getHost() {
+		InetAddress host = null;
+		try {
+			host = InetAddress.getByName(ui.getHost());
+		} catch (UnknownHostException e) {
+			ui.errorOccured("Invalid host name, please try again.");
+			host = getHost();
+		}
+		return host;
+	}
+	
+	private static int getPort() {
+		int port = 0;
+		try {
+			port = Integer.parseInt(ui.getPort());
+		} catch (NumberFormatException e) {
+			ui.errorOccured("Invalid host name, please try again.");
+			port = getPort();
+		}
+		return port;
+	}
+	
+	private static String getUserName() {
+		String name = ui.getUserName();
+		if (!isValidName(name)) {
+			ui.errorOccured("Invalid username, please try again.");
+			name = getUserName();
+		}
+		return name;
+	}
+	
+	private static int getAiThinkTime() {
+		int time = 0;
+		try {
+			time = Integer.parseInt(ui.getAIThinkTime());
+		} catch (NumberFormatException e) {
+			ui.errorOccured("Invalid aiThinkTime, please try again.");
+			time = getAiThinkTime();
+		}
+		return time;
+	}
+	
+	private static boolean isValidName(String name) {
+		boolean result = true;
+		if (name.length() > 16) {
+			result = false;
+		}
+		char[] chars = name.toCharArray();
+		for (char c : chars) {
+			if (!Character.isLetterOrDigit(c)) {
+				result = false;
+			}
+		}
+		return result;
+	}
 }
 
