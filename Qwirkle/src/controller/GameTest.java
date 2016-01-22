@@ -4,11 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import model.*;
-import player.ComputerPlayer;
-import player.NetworkPlayer;
-import strategy.RetardedStrategy;
+import player.*;
+import strategy.*;
 import view.UI;
-import strategy.MirandaStrategy;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -20,10 +18,12 @@ import java.util.List;
 
 public class GameTest {
 	private Server server;
+	private Socket sock;
 	private Connection conn;
 	private UI ui;
 	private Board board;
 	private Game game;
+	private NetworkPlayer networkplayer = new NetworkPlayer();
 	private ComputerPlayer player = new ComputerPlayer("retard", new RetardedStrategy());
 	private ComputerPlayer XVII = new ComputerPlayer("miranda", 
 						new MirandaStrategy());
@@ -36,8 +36,7 @@ public class GameTest {
 		board = new Board();
 		stack = new Stack();
 		game = new Game(server, 1000, ui);
-		player.setHand(stack.give(6));
-		XVII.setHand(stack.give(6));
+		conn = new Connection(game, sock, networkplayer);
 	}
 	
 	@Test
@@ -53,6 +52,11 @@ public class GameTest {
 		moves.add(move2);
 		moves.add(move3);
 		assertTrue(game.isInstanceOfPlaymoves(moves));
+	}
+	
+	@Test
+	public void testRun() {
+		game.run();
 	}
 
 }
