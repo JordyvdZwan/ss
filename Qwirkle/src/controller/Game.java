@@ -284,18 +284,22 @@ public class Game extends Thread {
 		if (connections.size() == 1) {
 			playerWins(connections.get(0).getPlayer().getNumber());
 		}
+		if (turn == playerNumber) {
+			nextTurn();
+		}
 	}
 
 	public void addConnection(Connection conn) {
-		connections.add(conn);
-		players.add(conn.getPlayer());
 		numberOfPlayers++;
+		connections.add(conn);
 		conn.getPlayer().setConnection(conn);
 		for (int i = 0; i < Controller.MAX_PLAYERS; i++) {
-			if (getPlayer(i) != null) {
+			if (getPlayer(i) == conn.getPlayer() || getPlayer(i) == null) {
 				connections.get(connections.size() - 1).getPlayer().setNumber(i);
+				break;
 			}
 		}
+		players.add(conn.getPlayer());
 	}
 
 	private void createGameEnviroment() {

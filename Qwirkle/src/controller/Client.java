@@ -16,13 +16,13 @@ public class Client extends Observable {
 	private int aiThinkTime;
 	private UI ui;
 	private Connection conn;
-	private Player player;
+	private LocalPlayer player;
 	private List<Player> opponents = new ArrayList<Player>();
 	private Board board;
 	private List<Block> tempHand = new ArrayList<Block>();
 	private int stackSize;
 	
-	public Client(UI uiArg, Socket sockArg, Player player) {
+	public Client(UI uiArg, Socket sockArg, LocalPlayer player) {
 		board = new Board();
 		ui = uiArg;
 		this.player = player;
@@ -217,6 +217,7 @@ public class Client extends Observable {
 			} else {
 				ui.displayKick(speler, reason);
 				stackSize += tilesBack;
+				opponents.remove(getPlayer(player.getNumber()));
 			}
 		} catch (NumberFormatException e) {
 			fatalError("invalid Kick command received from server. (" + msg + ")");

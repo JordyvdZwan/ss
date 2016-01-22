@@ -9,7 +9,7 @@ import model.Board;
 import model.Move;
 import view.UI;
 
-public class HumanPlayer implements Player {
+public class HumanPlayer implements LocalPlayer {
 
 	private int score;
 	private int number;

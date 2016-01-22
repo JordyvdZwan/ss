@@ -20,11 +20,6 @@ public class NetworkPlayer implements Player{
 		hand = new ArrayList<Block>();
 	}
 	
-	@Override
-	public List<Move> determineMove(UI ui, Board board, List<Block> hand, int stackSize, List<Player> opponents) {
-		return null;
-	}
-		
 	public NetworkPlayer(String name, int number) {
 		this.number = number;
 		this.name = name;

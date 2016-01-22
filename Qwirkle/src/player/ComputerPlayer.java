@@ -10,7 +10,7 @@ import model.Move;
 import strategy.Strategy;
 import view.UI;
 
-public class ComputerPlayer implements Player {
+public class ComputerPlayer implements LocalPlayer {
 
 	private int score;
 	private int number;
