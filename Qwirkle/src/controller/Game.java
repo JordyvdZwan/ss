@@ -349,7 +349,7 @@ public class Game extends Thread {
 			if (getPlayer(turn) == null) {
 				nextTurn();
 			}
-			if (!board.noValidMoves(getPlayer(turn).getHand()) && stack.size() == 0) {
+			if (!board.noValidMoves(getPlayer(turn).getHand())) {
 				sendMessage(getPlayer(turn).getConnection(), "NEXT " + getPlayer(turn).getNumber());
 			} else {
 				playerWins(detectWinner());
