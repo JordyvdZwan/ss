@@ -83,4 +83,5 @@ public class AITest {
 		System.out.println(alladeen.getMove(board, supremeleader.getHand(), 
 						supremeleader, stack.size()).toString());
 	}
+	
 }
