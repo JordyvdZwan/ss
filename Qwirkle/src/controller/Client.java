@@ -28,7 +28,7 @@ public class Client extends Observable {
 		this.player = player;
 		ui.setClient(this);
 		conn = new Connection(this, sockArg);
-		
+		this.addObserver(ui);
 		conn.sendString("HELLO " + player.getName());
 	}
 	
@@ -93,6 +93,7 @@ public class Client extends Observable {
 		} catch (NumberFormatException e) {
 			fatalError("invalid Names command was given by server! (" + msg + ")");
 		}
+		ui.displayBoard(board);
 		reader.close();
 	}
 

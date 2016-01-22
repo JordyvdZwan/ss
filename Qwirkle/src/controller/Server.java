@@ -19,7 +19,7 @@ public class Server {
 		Game game = new Game(this, aiThinkTime, ui);
 		gameList.add(game);
 		
-		connector = new Connector(game, portArg);
+		connector = new Connector(ui, game, portArg);
 	}
 	
 	public void nextGame() {

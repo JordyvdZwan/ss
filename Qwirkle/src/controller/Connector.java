@@ -5,22 +5,25 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import player.NetworkPlayer;
+import view.UI;
 
 public class Connector extends Thread {
 
 	private Game game;
 	private int port;
+	private UI ui;
 	
-	public Connector(Game serverArg, int portArg) {
+	public Connector(UI uiArg, Game serverArg, int portArg) {
 		game = serverArg;
 		port = portArg;
+		ui = uiArg;
 		this.start();
 	}
 	
 	public void run() {
     	ServerSocket serverSocket = null;
     	try {
-    		System.out.println("[SERVER]: starting server socket"); //TODO
+    		ui.displayServerMessage("[SERVER]: starting server socket");
     		serverSocket = new ServerSocket(port);
     		while (true) {
     			Socket sock = serverSocket.accept();
@@ -37,6 +40,7 @@ public class Connector extends Thread {
 	}
 	
 	public void lossOfConnection(Exception e) {
-		System.out.println(e.getMessage()); //TODO
+		ui.errorOccured("could not bind to port");
+		Controller.chooseServerClient();
 	}
 }

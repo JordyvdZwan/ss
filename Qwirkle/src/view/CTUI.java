@@ -197,6 +197,7 @@ public class CTUI implements UI {
 			Player person = highestPlayer(scores);
 			System.out.println(counter + ". " + person.getName() +
 							" (" + person.getNumber() + "): " + person.getScore());
+			scores.remove(person);
 			counter++;
 		}
 	}
@@ -236,7 +237,7 @@ public class CTUI implements UI {
 	}
 	
 	public void displayServerMessage(String msg) {
-		if (localGame) {
+		if (!localGame) {
 			System.out.println(msg);
 		}
 	}
@@ -276,7 +277,7 @@ public class CTUI implements UI {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (arg.equals("board")) {
+		if (arg.equals("BOARD")) {
 			displayBoard(client.getBoard());
 		}		
 	}

@@ -22,12 +22,12 @@ public class HumanPlayer implements Player {
 	}
 	
 	@Override
-	public List<Move> determineMove(UI ui, Board board, List<Block> hand, int stackSize, List<Player> opponents) {
-		ui.displayBoard(board);
+	public List<Move> determineMove(UI ui, Board board, List<Block> hand, 
+					int stackSize, List<Player> opponents) {
 		ui.displayScore(this, opponents);
 		ui.displayHand(hand);
 		return ui.getMove(board);
-}
+	}
 	
 	public HumanPlayer(String name, int number) {
 		this.number = number;

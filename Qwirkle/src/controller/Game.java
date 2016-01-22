@@ -426,7 +426,8 @@ public class Game extends Thread {
 		if (name.length() > 16) {
 			result = false;
 		}
-		for (char c : name.toCharArray()) {
+		char[] chars = name.toCharArray();
+		for (char c : chars) {
 			if (!Character.isLetterOrDigit(c)) {
 				result = false;
 			}
