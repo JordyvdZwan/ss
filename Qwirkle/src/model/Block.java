@@ -17,6 +17,16 @@ public class Block {
 		this.shape = shape;
 	}
 	
+	/*@pure*/
+	public static Color getColor(Block block) {
+		return block.color;
+	}
+	
+	/*@pure*/
+	public static Shape getShape(Block block) {
+		return block.shape;
+	}
+	
 	 //prints out a block
     public String toColorString() {
     	String localcolor = "";

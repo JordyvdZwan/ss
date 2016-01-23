@@ -38,8 +38,9 @@ public class Client extends Observable {
 	 * @param connection
 	 * @param msg
 	 */
-	//@ requires connection != null;
-	//@ requires msg != null;
+	/*@ requires connection != null;
+	  @ requires msg != null;
+	 */
 	public void processMessage(Connection connection, String msg) {
 		try {
 			Scanner reader = new Scanner(msg);
@@ -76,6 +77,9 @@ public class Client extends Observable {
 	 * reads the player number gotten from the server and writes it to the player.
 	 * when given a wrong number, it will give a fatal error.
 	 * @param msg
+	 */
+	/*@ requires msg != null;
+	  @ ensures player.getNumber() == Integer.parseInt(new Scanner(msg).next());
 	 */
 	private void handleWelcome(String msg) {
 		Scanner reader = new Scanner(msg);
