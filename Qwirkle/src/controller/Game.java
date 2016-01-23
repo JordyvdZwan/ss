@@ -38,9 +38,18 @@ public class Game extends Thread {
 		server = controllerArg;
 	}
 	
+	public Game(int aiThinkTimeArg, UI ui) {
+		this.ui = ui;
+		aiThinkTime = aiThinkTimeArg;
+		connections = new ArrayList<Connection>();
+		players = new ArrayList<NetworkPlayer>();
+	}
+	
 
 	/**
-	 * 
+	 * Als de thread gestart word, start het spel.
+	 * eerst wordt het spel opgestart en vervolgens gespeeld todat het spel over is.
+	 * als het spel over is wordy de winnaar gebroadcast.
 	 */
 	public void run() { 
 		createGameEnviroment();
@@ -54,6 +63,10 @@ public class Game extends Thread {
 		playerWins(detectWinner());
 	}
 	
+	/**
+	 * met de stack, het bord en de handen van de spelers, kijkt de methode of er nog mogelijke moves zijn.
+	 * @return true als de game over is, false als de game nog niet over is
+	 */
 	private boolean notGameOver() {
 		int stackSize = stack.size();
 		boolean result = false;
@@ -68,6 +81,8 @@ public class Game extends Thread {
  
 	/**
 	 * 
+	 * @param conn to which connection to send this message
+	 * @param msg the string that needs to be send to the 
 	 */
 	public void sendMessage(Connection conn, String msg) {
 		ui.displayServerMessage("[SERVER]: Sending message to " + 
@@ -398,7 +413,7 @@ public class Game extends Thread {
 			if (!(board.noValidMoves(getPlayer(turn).getHand()) && stack.size() == 0)) {
 				broadcastMessage("NEXT " + getPlayer(turn).getNumber());
 			} else {
-				playerWins(detectWinner());
+				nextTurn();
 			}
 		}
 	}
@@ -473,7 +488,10 @@ public class Game extends Thread {
 	}
 
 	private int detectWinner() {
-		int result = -1;
+		int result = 0;
+		if (getPlayer(turn).getHand().isEmpty()) {
+			getPlayer(turn).setScore(getPlayer(turn).getScore() + 6);
+		}
 		if (players.size() > 0) {
 			result = players.get(0).getNumber();
 			for (Player player : players) {
@@ -504,6 +522,7 @@ public class Game extends Thread {
 		return result;
 	}
 
+	////@ ensures (\forall SwapMove i; 0 <= i & i < ps.size(); this.isValidMove(ps.get(i))) ==> \result == true;
 	public List<SwapMove> toSwapMove(List<Move> moves) {
 		List<SwapMove> result = new ArrayList<SwapMove>();
 		for (Move move : moves) {

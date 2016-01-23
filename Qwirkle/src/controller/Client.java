@@ -262,9 +262,13 @@ public class Client extends Observable {
 	private void error(String msg) {
 		System.out.println("ERROR " + msg);
 	}
+	
+	public void stopConnection() {
+		conn.stopConnection();
+	}
 
 	private void shutdown() {
-		conn.stopConnection();
+		stopConnection();
 		System.exit(0);
 	}
 
@@ -322,6 +326,7 @@ public class Client extends Observable {
 		return player;
 	}
 
+	
 	public List<Block> getHand() {
 		return player.getHand();
 	}
