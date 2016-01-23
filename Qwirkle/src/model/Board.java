@@ -620,8 +620,11 @@ public class Board {
 	  @ requires 0 <= getY(move) & getY(move) <= DIM;
 	  @ requires getBlock(move) instanceof Block;
 	  @ requires isLegalMove(move);
-	  //TODO
-	 */
+	  @ ensures this.isEmptyField(getX(move) + 1, getY(move)) == null 
+	  				&& this.isEmptyField(getX(move) - 1, getY(move)) == null ==> \result == 1;
+  	  @ ensures this.isEmptyField(getX(move) + 1, getY(move)) == null 
+  					&& this.isEmptyField(getX(move) - 2, getY(move)) == null ==> \result == 2;
+	  //TODO 
 	/*@pure*/
 	public int xScore(PlayMove move) {
 		int scorex = 0;
