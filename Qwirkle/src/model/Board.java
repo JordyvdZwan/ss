@@ -132,6 +132,7 @@ public class Board {
 	 */
 	/*@ requires (\forall int x; 0 <= x & x < move.size(); 
 					    	getX(move.get(x)) < DIM);
+	  @ ensures (\forall int i; 0 <= i & i < move.size(); getX(move.get(0)) == getX(move.get(i)) ==> \result == true);
 	 */
 	/*@pure*/
 	public boolean isOnlyX(List<PlayMove> move) {
@@ -154,6 +155,7 @@ public class Board {
 	 */
 	/*@ requires (\forall int y; 0 <= y & y < move.size(); 
 					    	getX(move.get(y)) < DIM);
+	  @ ensures (\forall int i; 0 <= i & i < move.size(); getY(move.get(0)) == getY(move.get(i)) ==> \result == true);
 	 */
 	/*@pure*/
 	public boolean isOnlyY(List<PlayMove> move) {
