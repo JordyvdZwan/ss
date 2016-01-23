@@ -841,8 +841,8 @@ public class Board {
 	 * 			de grote van de pot
 	 * @return een hint
 	 */
-	/*@ requires player.getHand().size() > 0;
-	 */
+	///*@ requires player.getHand().size() > 0;
+	// */
 	public String hint(int stacksize) {
 		return ai.getMove(this, player.getHand(), player, stacksize).toString();
 	}
