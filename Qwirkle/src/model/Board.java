@@ -265,6 +265,8 @@ public class Board {
 	  												& getY(moveslist.get(i)) >= 0);
 	  @ requires (\forall int i; 0 <= i & i <= moveslist.size();
 	  											getBlock(moveslist.get(i)) instanceof Block);
+	  @ ensures moveslist.size() > 0 ==> allConnected(moveslist) ==> isOnlyX(moveslist) || isOnlyY(moveslist) ==>
+	  						(\forall int i; 0 <= i & i < moveslist.size(); this.isLegalMove(moveslist.get(i)) ==> \result == true);
 	 */
 	/*@pure*/
 	public boolean isLegalMoveList(List<PlayMove> moveslist) {
@@ -272,9 +274,7 @@ public class Board {
 		Board board = deepCopy();
 		List<PlayMove> moves = new ArrayList<PlayMove>();
 		moves.addAll(moveslist);
-		if (moveslist.size() == 0) {
-			legal = false;
-		} else {
+		if (moveslist.size() > 0) {
 			if (allConnected(moveslist)) {
 				if (isOnlyX(moveslist) || isOnlyY(moveslist)) {
 					while (moves.size() > 0) {
@@ -297,7 +297,9 @@ public class Board {
 			} else {
 				legal = false;
 			}
-		} 
+		} else {
+			legal = false;
+		}
 		return legal;
 	}
 
@@ -311,6 +313,19 @@ public class Board {
 	/*@ requires getBlock(move) instanceof Block;
 	  @ requires 0 <= getX(move) & getX(move) <= DIM;
 	  @ requires 0 <= getY(move) & getY(move) <= DIM;
+	  @ ensures ((\forall int i; (\forall int j; 0 <= j & j < i; 
+	  			this.getField(getX(move) + j, getY(move)) != null && getX(move) + j < DIM);
+	  			(Block.getColor(getField(getX(move) + i, getY(move))) != Block.getColor(getBlock(move))) &&
+	  			!(Block.getShape(getField(getX(move) + i, getY(move))) != Block.getShape(getBlock(move))) ||
+	  			!(Block.getColor(getField(getX(move) + i, getY(move))) != Block.getColor(getBlock(move))) &&
+	  			(Block.getShape(getField(getX(move) + i, getY(move))) != Block.getShape(getBlock(move))) ||
+	  			i == getX(move))) && ((\forall int i; (\forall int j; 0 <= j & j < i; 
+	  			this.getField(getX(move) - j, getY(move)) != null && getX(move) - j > 0);
+	  			(Block.getColor(getField(getX(move) - i, getY(move))) != Block.getColor(getBlock(move))) &&
+	  			!(Block.getShape(getField(getX(move) - i, getY(move))) != Block.getShape(getBlock(move))) ||
+	  			!(Block.getColor(getField(getX(move) - i, getY(move))) != Block.getColor(getBlock(move))) &&
+	  			(Block.getShape(getField(getX(move) - i, getY(move))) != Block.getShape(getBlock(move))) ||
+	  			i == getX(move))) ==> \result == true; 
 	 */
 	/*@pure*/
 	public boolean isLegalXRow(PlayMove move) {
@@ -373,6 +388,19 @@ public class Board {
 	/*@ requires getBlock(move) instanceof Block;
 	  @ requires 0 <= getX(move) & getX(move) <= DIM;
 	  @ requires 0 <= getY(move) & getY(move) <= DIM;
+	  @ ensures ((\forall int i; (\forall int j; 0 <= j & j < i; 
+	  			this.getField(getX(move), getY(move) + j) != null && getY(move) + j < DIM);
+	  			(Block.getColor(getField(getX(move), getY(move) + i)) != Block.getColor(getBlock(move))) &&
+	  			!(Block.getShape(getField(getX(move), getY(move) + i)) != Block.getShape(getBlock(move))) ||
+	  			!(Block.getColor(getField(getX(move), getY(move) + i)) != Block.getColor(getBlock(move))) &&
+	  			(Block.getShape(getField(getX(move), getY(move) + i)) != Block.getShape(getBlock(move))) ||
+	  			i == getY(move))) && ((\forall int i; (\forall int j; 0 <= j & j < i; 
+	  			this.getField(getX(move), getY(move) - j) != null && getY(move) - j > 0);
+	  			(Block.getColor(getField(getX(move), getY(move) - i)) != Block.getColor(getBlock(move))) &&
+	  			!(Block.getShape(getField(getX(move), getY(move) - i)) != Block.getShape(getBlock(move))) ||
+	  			!(Block.getColor(getField(getX(move), getY(move) - i)) != Block.getColor(getBlock(move))) &&
+	  			(Block.getShape(getField(getX(move), getY(move) - i)) != Block.getShape(getBlock(move))) ||
+	  			i == getY(move))) ==> \result == true; 
 	 */
 	/*@pure*/
 	public boolean isLegalYRow(PlayMove move) {
