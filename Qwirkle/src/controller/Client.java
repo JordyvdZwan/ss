@@ -94,7 +94,10 @@ public class Client extends Observable {
 	}
 
 	
-	
+	/**
+	 * TODO
+	 * @param msg
+	 */
 	//@ requires msg != null;
 	private void handleNames(String msg) { 
 		Scanner reader = new Scanner(msg);
@@ -118,6 +121,10 @@ public class Client extends Observable {
 		reader.close();
 	}
 
+	/**
+	 * TODO
+	 * @param msg
+	 */
 	private void handleNew(String msg) {
 		Scanner reader = new Scanner(msg);
 		while (reader.hasNext()) {
@@ -137,6 +144,7 @@ public class Client extends Observable {
 		reader.close();
 	}
 	
+	// TODO
 	private void handleNext(String msg) {
 		Scanner reader = new Scanner(msg);
 		try {
@@ -179,6 +187,7 @@ public class Client extends Observable {
 		reader.close();
 	}
 
+	// TODO
 	private void handleTurn(String msg) {
 		Scanner reader = new Scanner(msg);
 		try {
@@ -209,6 +218,7 @@ public class Client extends Observable {
 		reader.close();
 	}
 	
+	// TODO
 	private void handleKick(String msg) {
 		Scanner reader = new Scanner(msg);
 		try {
@@ -229,6 +239,7 @@ public class Client extends Observable {
 		reader.close();
 	}
 	
+	// TODO
 	private void handleWinner(String msg) {
 		Scanner reader = new Scanner(msg);
 		try {
@@ -246,10 +257,12 @@ public class Client extends Observable {
 		reader.close();
 	}
 	
+	// TODO
 	private void handleLossOfConnection() {
 		fatalError("Connection with server was lost");
 	}
 
+	// TODO
 	private void fatalError(String msg) {
 		System.out.println("[FATAL ERROR]: " + msg);
 		if (ui.newGame()) {
@@ -259,19 +272,31 @@ public class Client extends Observable {
 		}
 	}
 
+	// TODO
 	private void error(String msg) {
 		System.out.println("ERROR " + msg);
 	}
 	
+	// TODO
 	public void stopConnection() {
 		conn.stopConnection();
 	}
 
+	// TODO
 	private void shutdown() {
 		stopConnection();
 		System.exit(0);
 	}
 
+	/**
+	 * zet een lijst met Moves om in een lijst met PlayMoves
+	 * @param moves de lijst met moves
+	 * @return de lijst met PMoves
+	 */
+	/*@ requires (\forall int i; 0 <= i & i < moves.size(); Board.getBlock(moves.get(i)) instanceof Block);
+	  @ ensures (\forall int i; 0 <= i & i < moves.size(); \result.get(i) == moves.get(i));
+	 */
+	/*@pure*/
 	private List<PlayMove> toPlayMove(List<Move> moves) {
 		List<PlayMove> result = new ArrayList<PlayMove>();
 		for (Move move : moves) {
@@ -280,6 +305,15 @@ public class Client extends Observable {
 		return result;
 	}
 
+	/**
+	 * zet een lijst met Moves om in een lijst met SwapMoves
+	 * @param moves de lijst met moves
+	 * @return de lijst met SwapMoves
+	 */
+	/*@ requires (\forall int i; 0 <= i & i < moves.size(); Board.getBlock(moves.get(i)) instanceof Block);
+	  @ ensures (\forall int i; 0 <= i & i < moves.size(); \result.get(i) == moves.get(i));
+	 */
+	/*@pure*/
 	private List<SwapMove> toSwapMove(List<Move> moves) {
 		List<SwapMove> result = new ArrayList<SwapMove>();
 		for (Move move : moves) {
@@ -288,6 +322,15 @@ public class Client extends Observable {
 		return result;
 	}
 
+	/**
+	 * laat zien of een lijst met Moves enkel bestaat uit PlayMoves.
+	 * @param moves de lijst met moves
+	 * @return true als de lijst enkel uit PlayMoves bestaat
+	 */
+	/*@ requires (\forall int i; 0 <= i & i < moves.size(); Board.getBlock(moves.get(i)) instanceof Block);
+	  @ ensures (\forall int i; 0 <= i & i < moves.size(); moves.get(i) instanceof PlayMove ==> \result == true);
+	 */
+	/*@pure*/
 	private boolean isInstanceOfPlayMoves(List<Move> moves) {
 		boolean result = true;
 		for (Move move : moves) {
@@ -299,6 +342,17 @@ public class Client extends Observable {
 		return result;
 	}
 
+	/**
+	 * geeft de speler die dit nummer heeft.
+	 * @param number het nummer van de speler
+	 * @return de speler.
+	 */
+	/*@ requires number < opponents.size();
+	  @ ensures player.getNumber() == number ==> \result == player;
+	  @ ensures player.getNumber() != number ==> (\forall int i; 0 <= i & i < opponents.size(); opponents.get(i).getNumber() == number
+	  						==> \result == opponents.get(i));
+	 */
+	/*@ pure*/
 	private Player getPlayer(int number) {
 		Player result = null;
 		if (player.getNumber() == number) {
@@ -316,17 +370,20 @@ public class Client extends Observable {
 		return result;
 	}
 
-	//@ pure
+	// TODO
+	/*@ pure*/
 	public Board getBoard() {
 		return board;
 	}
 	
-	//@ pure
+	// TODO
+	/*@ pure*/
 	public Player getPlayer() {
 		return player;
 	}
 
-	
+	// TODO
+	/*@ pure*/
 	public List<Block> getHand() {
 		return player.getHand();
 	}

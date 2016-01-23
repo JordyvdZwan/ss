@@ -22,6 +22,7 @@ public interface Player {
 	public void setName(String nameArg);
 	public String getName();
 	public void setNumber(int numberArg);
+	/*@pure*/
 	public int getNumber();
 	public Connection getConnection();
 	public void setConnection(Connection conn);

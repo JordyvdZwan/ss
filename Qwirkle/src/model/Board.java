@@ -32,6 +32,7 @@ public class Board {
 	
     /**
      * maakt een copy van een speelbord.
+     * @param b dit is het bord waarvan hij een kopie maakt.
      */
     /*@ ensures (\forall int i; 0 <= i & i < DIM * DIM;
                                getBlock(i) == this.getBlock(i));
@@ -57,10 +58,7 @@ public class Board {
 	
 	/**
 	 * geeft de steen die op de gegeven plek ligt.
-	 * @param x 
-	 * 			x-coördinaat
-	 * @param y 
-	 * 			y-coördinaat
+	 * @param index de index van de plek
 	 * @return Block
 	 */
 	/*@ requires index <= DIM * DIM;
@@ -84,14 +82,13 @@ public class Board {
 	 * 			de zet die gespeeld wordt
 	 * @return de steen die neergelegd wordt
 	 */
-	/*@ requires isLegalMove(move);
-	  @ requires getBlock(move) instanceof Block;
+	/*@ requires getBlock(move) instanceof Block;
 	  @ ensures \result instanceof Block;
 	  @ ensures \result == getBlock(move);
 	 */
 	/*@pure*/
-	public Block getBlock(PlayMove move) {
-		return move.block;
+	public static Block getBlock(Move move) {
+		return move.getBlock();
 	}
 
 	/**
@@ -620,10 +617,6 @@ public class Board {
 	  @ requires 0 <= getY(move) & getY(move) <= DIM;
 	  @ requires getBlock(move) instanceof Block;
 	  @ requires isLegalMove(move);
-	  @ ensures this.isEmptyField(getX(move) + 1, getY(move)) == null 
-	  				&& this.isEmptyField(getX(move) - 1, getY(move)) == null ==> \result == 1;
-  	  @ ensures this.isEmptyField(getX(move) + 1, getY(move)) == null 
-  					&& this.isEmptyField(getX(move) - 2, getY(move)) == null ==> \result == 2;
 	  //TODO 
 	/*@pure*/
 	public int xScore(PlayMove move) {
@@ -646,7 +639,7 @@ public class Board {
 		}
 		return scorex;
 	}
-
+	
 	/**
 	 * de score van alleen de kolom.
 	 * @param move
