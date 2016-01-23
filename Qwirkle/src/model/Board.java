@@ -14,7 +14,7 @@ public class Board {
 	private Block[][] blocks;
 	public static final int DIM = 183;
 	public static final int MID = 92;
-	private ComputerPlayer player = new ComputerPlayer("AI", new RetardedStrategy());
+	public ComputerPlayer player = new ComputerPlayer("AI", new RetardedStrategy());
 	RetardedStrategy ai = new RetardedStrategy();
 
 	/**
@@ -133,6 +133,7 @@ public class Board {
 	/*@ requires (\forall int x; 0 <= x & x < move.size(); 
 					    	getX(move.get(x)) < DIM);
 	 */
+	/*@pure*/
 	public boolean isOnlyX(List<PlayMove> move) {
 		boolean onlyX = true;
 		int x = move.get(0).x;
@@ -154,6 +155,7 @@ public class Board {
 	/*@ requires (\forall int y; 0 <= y & y < move.size(); 
 					    	getX(move.get(y)) < DIM);
 	 */
+	/*@pure*/
 	public boolean isOnlyY(List<PlayMove> move) {
 		boolean onlyY = true;
 		int y = move.get(0).y;
@@ -196,8 +198,7 @@ public class Board {
 	  @ requires (\forall int i; 0 <= i & i <= moveslist.size();
 	  											getY(moveslist.get(i)) <= DIM
 	  												& getY(moveslist.get(i)) >= 0);
-	  @ requires (\forall int i; 0 <= i & i <= moveslist.size();
-	  											getBlock(moveslist.get(i)) instanceof Block);
+	  @ requires (\forall int i; 0 <= i & i <= moveslist.size());
 	 */
 	/*@pure*/
 	public boolean allConnected(List<PlayMove> moveslist) {
@@ -565,7 +566,8 @@ public class Board {
 	  @ requires 0 <= getY(move) & getY(move) <= DIM;
 	  @ requires getBlock(move) instanceof Block;
 	  @ ensures \result > 0;
-	  @ ensures \result == xScore(move) + yScore(move);
+	  @ ensures xScore(move) + yScore(move) > 0 ==> \result == xScore(move) + yScore(move);
+	  @ ensures xScore(move) + yScore(move) == 0 ==> \result == 1;
 	 */
 	/*@pure*/
 	public int moveScore(PlayMove move) { 
@@ -588,7 +590,7 @@ public class Board {
 	  @ requires 0 <= getY(move) & getY(move) <= DIM;
 	  @ requires getBlock(move) instanceof Block;
 	  @ requires isLegalMove(move);
-	  @ ensures \result > 0;
+	  //TODO
 	 */
 	/*@pure*/
 	public int xScore(PlayMove move) {
@@ -622,7 +624,7 @@ public class Board {
 	  @ requires 0 <= getY(move) & getY(move) <= DIM;
 	  @ requires getBlock(move) instanceof Block;
 	  @ requires isLegalMove(move);
-	  @ ensures \result > 0;
+	  // TODO
 	 */
 	/*@pure*/
 	public int yScore(PlayMove move) {
@@ -652,16 +654,21 @@ public class Board {
 	 * 			de zet die gespeeld wordt.
 	 * @return de score.
 	 */
-	/*@ requires (\forall int i; 0 <= i & i <= move.size();
+	/*@ requires (\forall int i; 0 <= i & i < move.size();
 	  											getX(move.get(i)) <= DIM
 	  												& getX(move.get(i)) >= 0);
-	  @ requires (\forall int i; 0 <= i & i <= move.size();
+	  @ requires (\forall int i; 0 <= i & i < move.size();
 	  											getY(move.get(i)) <= DIM
 	  												& getY(move.get(i)) >= 0);
-	  @ requires (\forall int i; 0 <= i & i <= move.size();
+	  @ requires (\forall int i; 0 <= i & i < move.size();
 	  											getBlock(move.get(i)) instanceof Block);
 	  @ requires isLegalMoveList(move);
 	  @ ensures \result > 0;
+	  @ ensures move.size() > 1 ==> this.isOnlyX(move) ==> (\forall int k; 0 <= k & k < move.size() - 1;
+	  											\result == moveScore(move.get(move.size() - 1)) + xScore(move.get(k)));
+	  @ ensures move.size() > 1 ==> this.isOnlyY(move) ==> (\forall int k; 0 <= k & k < move.size() - 1;
+	  											\result == moveScore(move.get(move.size() - 1)) + yScore(move.get(k)));
+	  @ ensures move.size() == 1 ==> \result == moveScore(move.get(0));
 	 */
 	/*@pure*/
 	public int legitMoveScore(List<PlayMove> move) {
@@ -743,8 +750,12 @@ public class Board {
 	 * 			alle stenen die in de hand van een speler zijn.
 	 * @return true als een speler niks meer kan
 	 */
-	/*@ requires (\forall int i; 0 <= i & i <= hand.size();
+	/*@ requires (\forall int i; 0 <= i & i < hand.size();
 	  											hand.get(i) instanceof Block);
+	  @ ensures (\forall int i; 0 <= i & i < hand.size();
+	  				\forall int j; 0 <= j & j < DIM;
+	  					\forall int k; 0 <= k & k < DIM;
+	  						this.isLegalMove(new PlayMove(hand.get(i), j, k, new NetworkPlayer())) == true ==> \result == true);
 	 */
 	/*@pure*/
 	public boolean noValidMoves(List<Block> hand) { 
@@ -790,7 +801,7 @@ public class Board {
 	}
 
 	/**
-	 * geeft true als een rij helemaal leeg is.
+	 * geeft true als een kolom helemaal leeg is.
 	 * @param y
 	 * 			geeft aan welke rij je bekijkt.
 	 * @return true als een rij helemaal leeg is.
