@@ -15,10 +15,10 @@ public class Client extends Observable {
 
 	private int aiThinkTime;
 	private UI ui;
-	private Connection conn;
-	private LocalPlayer player;
+	public Connection conn;
+	public LocalPlayer player;
 	private List<Player> opponents = new ArrayList<Player>();
-	private Board board;
+	public Board board;
 	private List<Block> tempHand = new ArrayList<Block>();
 	private int stackSize;
 	private int numberOfPlayers = opponents.size() + 1;
@@ -248,6 +248,12 @@ public class Client extends Observable {
 	}
 	
 	// TODO
+	/**
+	 * zegt wie er gewonnen heeft. 
+	 * @param msg het nummer van de speler
+	 */
+	/*@ 
+	 */
 	private void handleWinner(String msg) {
 		Scanner reader = new Scanner(msg);
 		try {
@@ -265,7 +271,11 @@ public class Client extends Observable {
 		reader.close();
 	}
 	
-	// TODO
+	/**
+	 * geeft een foutmelding als de connectie met de server verloren gaat.
+	 */
+	/*@ ensures conn.active == false;
+	 */
 	private void handleLossOfConnection() {
 		fatalError("Connection with server was lost");
 	}
@@ -280,17 +290,33 @@ public class Client extends Observable {
 		}
 	}
 
-	// TODO
+	/**
+	 * print een foutmelding.
+	 * @param msg de foutmelding
+	 */
+	/*@ requires msg != null;
+	 */
 	private void error(String msg) {
 		System.out.println("ERROR " + msg);
 	}
 	
 	// TODO
+	/**
+	 * beëindigt een connectie.
+	 */
+	/*@ ensures conn.active == false;
+	 */
 	public void stopConnection() {
 		conn.stopConnection();
 	}
 
 	// TODO
+	/**
+	 * beëndigt het spel.
+	 */
+	/*@ ensures numberOfPlayers == 0;
+	  @ ensures conn.active == false;
+	 */
 	private void shutdown() {
 		stopConnection();
 		System.exit(0);
@@ -378,19 +404,34 @@ public class Client extends Observable {
 		return result;
 	}
 
-	// TODO
+	/**
+	 * laat het speelbord zien.
+	 * @return het speelbord
+	 */
+	/*@ ensures \result == board;
+	 */
 	/*@ pure*/
 	public Board getBoard() {
 		return board;
 	}
 	
-	// TODO
+	/**
+	 * geeft de speler.
+	 * @return de speler
+	 */
+	/*@ ensures \result == player;
+	 */
 	/*@ pure*/
 	public Player getPlayer() {
 		return player;
 	}
 
-	// TODO
+	/**
+	 * laat de hand van een speler zien.
+	 * @return de hand van een speler
+	 */
+	/*@ ensures \result == player.getHand();
+	 */
 	/*@ pure*/
 	public List<Block> getHand() {
 		return player.getHand();

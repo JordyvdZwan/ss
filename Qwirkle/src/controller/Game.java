@@ -17,10 +17,10 @@ public class Game extends Thread {
 	private Server server;
 	
 	private int turn;
-	private int numberOfPlayers;
+	public int numberOfPlayers;
 	private int aiThinkTime;
 	private Board board;
-	private Stack stack;
+	public Stack stack;
 	private CountDownLatch nextMoveAvailable = new CountDownLatch(1);
 	
 	private boolean moveAvailable = false;
@@ -189,6 +189,16 @@ public class Game extends Thread {
 	}
 
 	//TODO
+	/**
+	 * leest de zet van een speler als hij iets ruilt met de pot.
+	 * @param conn de connectie met de speler
+	 * @param reader
+	 */
+	/*@ requires reader != null;
+	  @ requires conn != null;
+	  @ ensures moveAvailable || !reader.hasNext() || conn.getPlayer().getNumber() != turn ==> 
+	   																numberOfPlayers == (\old(numberOfPlayers) - 1);
+	 */
 	private void readSwap(Connection conn, Scanner reader) {
 		if (!moveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
 			
@@ -221,6 +231,17 @@ public class Game extends Thread {
 	}
 
 	//TODO
+	/**
+	 * leest de zet die de speler stuurt als de speler iets op het bord speelt.
+	 * @param conn de connectie van de speler
+	 * @param reader
+	 */
+	/*@ requires reader != null;
+	  @ requires conn != null;
+	  @ ensures moveAvailable || !reader.hasNext() || conn.getPlayer().getNumber() != turn ==> 
+	   																numberOfPlayers == (\old(numberOfPlayers) - 1); 
+	  
+	 */
 	private void readMove(Connection conn, Scanner reader) {
 		if (!moveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
 			try {
@@ -299,7 +320,13 @@ public class Game extends Thread {
 		return result;
 	}
 
-	//TODO
+	/**
+	 * speelt een beurt.
+	 * @param moves de zet van de beurt
+	 */
+	/*@ requires (\forall int i; 0 <= i & i < moves.size(); Board.getBlock(moves.get(i)) instanceof Block);
+	  @ ensures stack.size() == (\old(stack.size()) - moves.size());
+	 */
 	private void handleNextMove(List<Move> moves) {
 		if (isInstanceOfPlaymoves(moves)) {
 			List<PlayMove> playMoves = toPlayMove(moves);
@@ -327,7 +354,16 @@ public class Game extends Thread {
 		}
 	}
 
-	//TODO
+	/**
+	 * kickt een speler uit het spel.
+	 * @param conn de connectie van de speler
+	 * @param playerNumber het nummer van de speler
+	 * @param blocks de stenen die hij nog in zijn hand had
+	 * @param reason de reden waarvoor hij gekickt wordt
+	 */
+	/*@ ensures numberOfPlayers == (\old(numberOfPlayers) - 1);
+	  @ ensures blocks != null && stack != null ==> stack.size() == (\old(stack.size()) + blocks.size());
+	 */
 	public void kickPlayer(Connection conn, int playerNumber, List<Block> blocks, String reason) {
 		players.remove(conn.getPlayer());
 		connections.remove(conn);
@@ -344,7 +380,13 @@ public class Game extends Thread {
 		}
 	}
 
-	//TODO
+	/**
+	 *  voegt een nieuwe connectie toe.
+	 * @param conn de connectie die wordt toegevoegd
+	 */
+	/*@ ensures numberOfPlayers == (\old(numberOfPlayers) + 1);
+	  @ ensures connections.size() == (\old(connections.size()) + 1);
+	 */
 	public void addConnection(Connection conn) {
 		numberOfPlayers++;
 		connections.add(conn);
@@ -358,7 +400,12 @@ public class Game extends Thread {
 		players.add(conn.getPlayer());
 	}
 
-	//TODO
+	/**
+	 * maakt een nieuw speelbord en een nieuwe pot aan.
+	 */
+	/*@ ensures (\forall int i; 0 <= i & i < players.size(); players.get(i).getNumber() == i);
+	  @ ensures stack.size() == 108;
+	 */
 	private void createGameEnviroment() {
 		board = new Board();
 		stack = new Stack();
@@ -368,9 +415,10 @@ public class Game extends Thread {
 		}
 	}
 	
-	//TODO
 	/**
 	 * verteld aan iedereen wie er mee doet en welk nummer ze hebben.
+	 */
+	/*@ requires (\forall int i; 0 <= i & i < players.size(); isValidName(players.get(i).getName()));
 	 */
 	private void broadcastNames() {
 		String names = "";
@@ -588,7 +636,6 @@ public class Game extends Thread {
 		broadcastMessage("WINNER " + win);
 	}
 
-	//TODO
 	/**
 	 * sluit alle connecties
 	 */
