@@ -369,6 +369,9 @@ public class Game extends Thread {
 	}
 	
 	//TODO
+	/**
+	 * verteld aan iedereen wie er mee doet en welk nummer ze hebben.
+	 */
 	private void broadcastNames() {
 		String names = "";
 		for (Connection conn: connections) {
@@ -378,7 +381,13 @@ public class Game extends Thread {
 		broadcastMessage("NAMES" + names + " " + aiThinkTime);
 	}	
 	
-	//TODO
+	/**
+	 * geeft elke speler 6 stenen.
+	 */
+	/*@ requires players.size() < 0;
+	  @ requires stack.size() == 108;
+	  @ ensures (\forall int i; 0 <= i & i < players.size(); players.get(i).getHand().size() == 6);
+	 */
 	private void giveOutStones() {
 		for (Player player : players) {
 			player.setHand(stack.give(6));
@@ -391,6 +400,11 @@ public class Game extends Thread {
 	}
 
 	//TODO
+	/**
+	 * berekent wie de eerste zet mag zetten.
+	 */
+	/*@ 
+	 */
 	private void determineFirstMove() {
 		int[] scores = new int[players.size()];
 		for (Player player : players) {
@@ -446,7 +460,12 @@ public class Game extends Thread {
 		return score;
 	}
 
-	//TODO
+	/**
+	 * zegt wie er aan de beurt is.
+	 */
+	/*@ ensures players.size() == 1 ==> detectWinner() == players.get(0).getNumber();
+	  @ ensures players.size() > 1 ==> turn == (\old(turn + 1 % players.size()));
+	 */
 	private void nextTurn() {
 		if (players.size() == 1) {
 			playerWins(players.get(0).getNumber());
@@ -465,7 +484,14 @@ public class Game extends Thread {
 		}
 	}
 
-	//TODO
+	/**
+	 * ruilt stenen met de pot.
+	 * @param conn de connectie met een speler
+	 * @param moves de stenen die geruild gaan worden
+	 * @param amount het aantal stenen die worden geruild
+	 */
+	/*@ requires (\forall int i; 0 <= i & i < moves.size(); Board.getBlock(moves.get(i)) instanceof Block);
+	 */
 	private void swapStones(Connection conn, List<Move> moves, int amount) {
 		List<Block> blocks = stack.give(amount);
 		if (blocks.isEmpty()) {
@@ -485,7 +511,17 @@ public class Game extends Thread {
 		}
 	}
 	
-	//TODO
+	/**
+	 * laat zien welke speler bij dit nummer hoort.
+	 * @param playerNumber het nummer van de speler
+	 * @return de speler
+	 */
+	/*@ requires 0 <= playerNumber & playerNumber < numberOfPlayers;
+	  @ ensures (\forall int i; 0 <= i & i < players.size(); 
+	  					players.get(i).getNumber() == playerNumber ==> \result == players.get(i));
+	  @ ensures \result.getNumber() == playerNumber;
+	 */
+	/*@pure*/
 	private NetworkPlayer getPlayer(int playerNumber) {
 		NetworkPlayer player = null;
 		for (NetworkPlayer netPlayer : players) {
@@ -496,7 +532,16 @@ public class Game extends Thread {
 		return player;
 	}
 	
-	//TODO
+	/**
+	 * checkt of een naam aan de regels voldoet
+	 * @param name de naam 
+	 * @return true als hij aan alle regels voldoet
+	 */
+	/*@ requires name != null;
+	  @ ensures name.length() <= 16 ==> (\forall int i; 0 <= i & i < name.length();
+	  										Character.isLetterOrDigit(name.charAt(i)) ==> \result == true);
+	 */
+	/*@pure*/
 	private boolean isValidName(String name) {
 		boolean result = true;
 		if (name.length() > 16) {
@@ -512,6 +557,12 @@ public class Game extends Thread {
 	}
 
 	//TODO
+	/**
+	 * 
+	 * @param win
+	 */
+	/*@ requires 0 <= win & win < players.size();
+	 */
 	private void playerWins(int win) {
 		if (win >= 0) {
 			broadcastWinner(win);
@@ -525,7 +576,7 @@ public class Game extends Thread {
 	 * laat zien wie er gewonnen heeft
 	 * @param winner de winner
 	 */
-	/*@ requires winner < players.size();
+	/*@ requires 0 <= winner & winner < players.size();
 	 */
 	private void broadcastWinner(int winner) {
 		int win = 0;
