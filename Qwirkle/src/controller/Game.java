@@ -12,7 +12,7 @@ import java.util.concurrent.CountDownLatch;
 
 public class Game extends Thread {
 	
-	private List<Connection> connections;
+	public List<Connection> connections;
 	private List<NetworkPlayer> players;
 	private Server server;
 	
@@ -86,11 +86,12 @@ public class Game extends Thread {
 	}
  
 	/**
-	 * 
-	 * @param conn to which connection to send this message
-	 * @param msg the string that needs to be send to the 
+	 * stuurt een boodschap naar een speler.
+	 * @param conn naar welke speler de boodschap wordt gestuurd
+	 * @param msg de boodschap die wordt verstuurd 
 	 */
-	//TODO
+	/*@ requires conn != null;
+	 */
 	public void sendMessage(Connection conn, String msg) {
 		ui.displayServerMessage("[SERVER]: Sending message to " + 
 						conn.getPlayer().getName() + " : \"" + msg + "\"");
@@ -98,9 +99,11 @@ public class Game extends Thread {
 	}
 
 	/**
-	 * 
+	 * stuurt een boodschap naar alle spelers.
+	 * @param msg de boodschap die wordt verstuurd
 	 */
-	//TODO
+	/*@ requires connections.size() > 0;
+	 */
 	public void broadcastMessage(String msg) {
 		for (int i = 0; i < connections.size(); i++) {
 			sendMessage(connections.get(i), msg);
@@ -108,9 +111,13 @@ public class Game extends Thread {
 	}
 
 	/**
-	 * 
+	 * stuurt de laatste zet door.
+	 * @param playMoves de zet die is gezet
+	 * @param nr het nummer van de speler
 	 */
-	//TODO
+	/*@ requires board.isLegalMoveList(playMoves);
+	  @ requires nr <= numberOfPlayers;
+	 */
 	private void broadcastPlayMove(List<PlayMove> playMoves, int nr) {
 		String moves = "";
 		for (PlayMove move : playMoves) {
