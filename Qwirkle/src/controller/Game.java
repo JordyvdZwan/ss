@@ -521,7 +521,12 @@ public class Game extends Thread {
 		}
 	}
 
-	//TODO
+	/**
+	 * laat zien wie er gewonnen heeft
+	 * @param winner de winner
+	 */
+	/*@ requires winner < players.size();
+	 */
 	private void broadcastWinner(int winner) {
 		int win = 0;
 		if (winner == 0) {
@@ -533,6 +538,11 @@ public class Game extends Thread {
 	}
 
 	//TODO
+	/**
+	 * sluit alle connecties
+	 */
+	/*@ ensures connections.size() == 0;
+	 */
 	private void endGame() {
 		for (int i = 0; i < connections.size(); i++) {
 			connections.get(i).stopConnection();
@@ -540,13 +550,11 @@ public class Game extends Thread {
 		this.interrupt();
 	}
 
-	//TODO
 	/**
 	 * kijkt welke speler heeft gewonnen
 	 * @return de speler met de meeste punten.
 	 */
-	/*@ 
-	  @ ensures \result == playerOfScore((\max int i; 0 <= i & i < players.size(); players.get(i).getScore())); 
+	/*@ ensures \result == playerOfScore((\max int i; 0 <= i & i < players.size(); players.get(i).getScore())); 
 	 */
 	/*@pure*/
 	private int detectWinner() {
