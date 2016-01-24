@@ -21,6 +21,7 @@ public class Client extends Observable {
 	private Board board;
 	private List<Block> tempHand = new ArrayList<Block>();
 	private int stackSize;
+	private int numberOfPlayers = opponents.size() + 1;
 	
 	public Client(UI uiArg, Socket sockArg, LocalPlayer player) {
 		board = new Board();
@@ -218,7 +219,14 @@ public class Client extends Observable {
 		reader.close();
 	}
 	
-	// TODO
+	/**
+	 * kickt een speler uit de server
+	 * @param msg
+	 */
+	/*@ requires numberOfPlayers > 1;
+	  @ ensures stackSize == stackSize + getPlayer(Integer.parseInt(new Scanner(msg).next())).getHand().size();
+	  @ ensures numberOfPlayers == (\old(numberOfPlayers - 1));
+	 */
 	private void handleKick(String msg) {
 		Scanner reader = new Scanner(msg);
 		try {

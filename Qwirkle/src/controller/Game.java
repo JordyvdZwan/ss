@@ -51,6 +51,7 @@ public class Game extends Thread {
 	 * eerst wordt het spel opgestart en vervolgens gespeeld todat het spel over is.
 	 * als het spel over is wordy de winnaar gebroadcast.
 	 */
+	//TODO
 	public void run() { 
 		createGameEnviroment();
 		broadcastNames();
@@ -65,8 +66,13 @@ public class Game extends Thread {
 	
 	/**
 	 * met de stack, het bord en de handen van de spelers, kijkt de methode of er nog mogelijke moves zijn.
-	 * @return true als de game over is, false als de game nog niet over is
+	 * @return true als de game niet over is, false als de game over is
 	 */
+	/*@ requires players.size() > 0;
+	  @ ensures (\forall int i; 0 <= i & i < players.size(); 
+	  						!board.gameOver(players.get(i).getHand(), stack.size()) ==> \result == true);
+	 */
+	/*@pure*/
 	private boolean notGameOver() {
 		int stackSize = stack.size();
 		boolean result = false;
@@ -84,6 +90,7 @@ public class Game extends Thread {
 	 * @param conn to which connection to send this message
 	 * @param msg the string that needs to be send to the 
 	 */
+	//TODO
 	public void sendMessage(Connection conn, String msg) {
 		ui.displayServerMessage("[SERVER]: Sending message to " + 
 						conn.getPlayer().getName() + " : \"" + msg + "\"");
@@ -93,6 +100,7 @@ public class Game extends Thread {
 	/**
 	 * 
 	 */
+	//TODO
 	public void broadcastMessage(String msg) {
 		for (int i = 0; i < connections.size(); i++) {
 			sendMessage(connections.get(i), msg);
@@ -102,6 +110,7 @@ public class Game extends Thread {
 	/**
 	 * 
 	 */
+	//TODO
 	private void broadcastPlayMove(List<PlayMove> playMoves, int nr) {
 		String moves = "";
 		for (PlayMove move : playMoves) {
@@ -110,10 +119,12 @@ public class Game extends Thread {
 		broadcastMessage("TURN " + nr + moves);
 	}
 
+	//TODO
 	private void broadcastSwapMove(List<SwapMove> swapMoves, int nr) {
 		broadcastMessage("TURN " + nr + " empty");
 	}
 
+	//TODO
 	public void processMessage(Connection conn, String msg) {
 		ui.displayServerMessage("[SERVER]: Getting message from " + 
 						conn.getPlayer().getName() + " : \"" + msg + "\"");
@@ -135,7 +146,7 @@ public class Game extends Thread {
 		reader.close();
 	}
 
-
+	//TODO
 	private void handleHello(Connection conn, Scanner reader) {
 		String playerName = reader.next();
 		if (isValidName(playerName)) {
@@ -151,7 +162,7 @@ public class Game extends Thread {
 		}
 	}
 
-
+	//TODO
 	private void readSwap(Connection conn, Scanner reader) {
 		if (!moveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
 			
@@ -183,7 +194,7 @@ public class Game extends Thread {
 		}
 	}
 
-
+	//TODO
 	private void readMove(Connection conn, Scanner reader) {
 		if (!moveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
 			try {
@@ -246,6 +257,7 @@ public class Game extends Thread {
 		}
 	}
 
+	//TODO
 	private List<Move> waitForNextMove() {
 		List<Move> result;
 		while (!moveAvailable) {
@@ -261,6 +273,7 @@ public class Game extends Thread {
 		return result;
 	}
 
+	//TODO
 	private void handleNextMove(List<Move> moves) {
 		if (isInstanceOfPlaymoves(moves)) {
 			List<PlayMove> playMoves = toPlayMove(moves);
@@ -288,6 +301,7 @@ public class Game extends Thread {
 		}
 	}
 
+	//TODO
 	public void kickPlayer(Connection conn, int playerNumber, List<Block> blocks, String reason) {
 		players.remove(conn.getPlayer());
 		connections.remove(conn);
@@ -304,6 +318,7 @@ public class Game extends Thread {
 		}
 	}
 
+	//TODO
 	public void addConnection(Connection conn) {
 		numberOfPlayers++;
 		connections.add(conn);
@@ -317,6 +332,7 @@ public class Game extends Thread {
 		players.add(conn.getPlayer());
 	}
 
+	//TODO
 	private void createGameEnviroment() {
 		board = new Board();
 		stack = new Stack();
@@ -326,6 +342,7 @@ public class Game extends Thread {
 		}
 	}
 	
+	//TODO
 	private void broadcastNames() {
 		String names = "";
 		for (Connection conn: connections) {
@@ -335,6 +352,7 @@ public class Game extends Thread {
 		broadcastMessage("NAMES" + names + " " + aiThinkTime);
 	}	
 	
+	//TODO
 	private void giveOutStones() {
 		for (Player player : players) {
 			player.setHand(stack.give(6));
@@ -346,6 +364,7 @@ public class Game extends Thread {
 		}
 	}
 
+	//TODO
 	private void determineFirstMove() {
 		int[] scores = new int[players.size()];
 		for (Player player : players) {
@@ -360,6 +379,7 @@ public class Game extends Thread {
 	 * @return
 	 */
 	//@ requires blocks.size() == 6;
+	//TODO
 	private int maxScore(List<Block> blocks) {
 		int score = 0;
 		int[] points = new int[12];
@@ -400,6 +420,7 @@ public class Game extends Thread {
 		return score;
 	}
 
+	//TODO
 	private void nextTurn() {
 		if (players.size() == 1) {
 			playerWins(players.get(0).getNumber());
@@ -418,6 +439,7 @@ public class Game extends Thread {
 		}
 	}
 
+	//TODO
 	private void swapStones(Connection conn, List<Move> moves, int amount) {
 		List<Block> blocks = stack.give(amount);
 		if (blocks.isEmpty()) {
@@ -437,6 +459,7 @@ public class Game extends Thread {
 		}
 	}
 	
+	//TODO
 	private NetworkPlayer getPlayer(int playerNumber) {
 		NetworkPlayer player = null;
 		for (NetworkPlayer netPlayer : players) {
@@ -447,6 +470,7 @@ public class Game extends Thread {
 		return player;
 	}
 	
+	//TODO
 	private boolean isValidName(String name) {
 		boolean result = true;
 		if (name.length() > 16) {
@@ -461,6 +485,7 @@ public class Game extends Thread {
 		return result;
 	}
 
+	//TODO
 	private void playerWins(int win) {
 		if (win >= 0) {
 			broadcastWinner(win);
@@ -470,6 +495,7 @@ public class Game extends Thread {
 		}
 	}
 
+	//TODO
 	private void broadcastWinner(int winner) {
 		int win = 0;
 		if (winner == 0) {
@@ -480,6 +506,7 @@ public class Game extends Thread {
 		broadcastMessage("WINNER " + win);
 	}
 
+	//TODO
 	private void endGame() {
 		for (int i = 0; i < connections.size(); i++) {
 			connections.get(i).stopConnection();
@@ -487,6 +514,7 @@ public class Game extends Thread {
 		this.interrupt();
 	}
 
+	//TODO
 	private int detectWinner() {
 		int result = 0;
 		if (getPlayer(turn).getHand().isEmpty()) {
@@ -503,6 +531,7 @@ public class Game extends Thread {
 		return result;
 	}
 
+	//TODO
 	public boolean isInstanceOfPlaymoves(List<Move> moves) {
 		boolean result = true;
 		for (Move move : moves) {
@@ -514,6 +543,7 @@ public class Game extends Thread {
 		return result;
 	}
 
+	//TODO
 	public List<PlayMove> toPlayMove(List<Move> moves) {
 		List<PlayMove> result = new ArrayList<PlayMove>();
 		for (Move move : moves) {
@@ -523,6 +553,7 @@ public class Game extends Thread {
 	}
 
 	////@ ensures (\forall SwapMove i; 0 <= i & i < ps.size(); this.isValidMove(ps.get(i))) ==> \result == true;
+	//TODO
 	public List<SwapMove> toSwapMove(List<Move> moves) {
 		List<SwapMove> result = new ArrayList<SwapMove>();
 		for (Move move : moves) {

@@ -752,12 +752,12 @@ public class Board {
 	}
 
 	/**
-	 * geeft true als de game voorbij is.
+	 * geeft true als een speler niks meer kan.
 	 * @param hand
 	 * 			alle stenen die in een spelers hand zijn
 	 * @param stackSize
 	 * 			de grote van de pot
-	 * @return true als de game voorbij is
+	 * @return true als een speler niks meer kan
 	 */
 	/*@ ensures \result == this.emptyStack(stackSize) && this.noValidMoves(hand);
 	 */
