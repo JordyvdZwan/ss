@@ -111,7 +111,7 @@ public class Game extends Thread {
 	}
 
 	/**
-	 * stuurt de laatste zet door.
+	 * stuurt de laatste zet door als de speler iets neerlegt.
 	 * @param playMoves de zet die is gezet
 	 * @param nr het nummer van de speler
 	 */
@@ -126,11 +126,23 @@ public class Game extends Thread {
 		broadcastMessage("TURN " + nr + moves);
 	}
 
-	//TODO
+	/**
+	 * stuurt de laatste zet door als de speler ruilt met de pot.
+	 * @param swapMoves de stenen die de speler gaat ruilen
+	 * @param nr het nummer van de speler
+	 */
+	/*@ requires (\forall int i; 0 <= i & i < swapMoves.size(); Board.getBlock(swapMoves.get(i)) instanceof Block);
+	  @ ensures nr <= numberOfPlayers;
+	 */
 	private void broadcastSwapMove(List<SwapMove> swapMoves, int nr) {
 		broadcastMessage("TURN " + nr + " empty");
 	}
 
+	/**
+	 * 
+	 * @param conn
+	 * @param msg
+	 */
 	//TODO
 	public void processMessage(Connection conn, String msg) {
 		ui.displayServerMessage("[SERVER]: Getting message from " + 
@@ -153,7 +165,14 @@ public class Game extends Thread {
 		reader.close();
 	}
 
-	//TODO
+	/**
+	 * begroet een speler, slaat zijn naam op en geeft hem een nummer.
+	 * @param conn de connectie van de speler
+	 * @param reader
+	 */
+	/*@ requires reader != null;
+	  @ requires conn != null;
+	 */
 	private void handleHello(Connection conn, Scanner reader) {
 		String playerName = reader.next();
 		if (isValidName(playerName)) {
@@ -522,6 +541,14 @@ public class Game extends Thread {
 	}
 
 	//TODO
+	/**
+	 * kijkt welke speler heeft gewonnen
+	 * @return de speler met de meeste punten.
+	 */
+	/*@ 
+	  @ ensures \result == playerOfScore((\max int i; 0 <= i & i < players.size(); players.get(i).getScore())); 
+	 */
+	/*@pure*/
 	private int detectWinner() {
 		int result = 0;
 		if (getPlayer(turn).getHand().isEmpty()) {
@@ -537,8 +564,34 @@ public class Game extends Thread {
 		}
 		return result;
 	}
+	
+	/**
+	 * kijkt welke speler bij deze score hoort
+	 * @param score de score
+	 * @return de speler
+	 */
+	/*@ ensures getPlayer(\result).getScore() == score;
+	 */
+	/*@pure*/
+	private int playerOfScore(int score) {
+		int result = 0;
+		for (Player player : players) {
+			if (player.getScore() == score) {
+				result = player.getNumber();
+			}
+		}
+		return result;
+	}
 
-	//TODO
+	/**
+	 * laat zien of een lijst met Moves enkel bestaat uit PlayMoves.
+	 * @param moves de lijst met moves
+	 * @return true als de lijst enkel uit PlayMoves bestaat
+	 */
+	/*@ requires (\forall int i; 0 <= i & i < moves.size(); Board.getBlock(moves.get(i)) instanceof Block);
+	  @ ensures (\forall int i; 0 <= i & i < moves.size(); moves.get(i) instanceof PlayMove ==> \result == true);
+	 */
+	/*@pure*/
 	public boolean isInstanceOfPlaymoves(List<Move> moves) {
 		boolean result = true;
 		for (Move move : moves) {
@@ -550,7 +603,15 @@ public class Game extends Thread {
 		return result;
 	}
 
-	//TODO
+	/**
+	 * zet een lijst met Moves om in een lijst met PlayMoves
+	 * @param moves de lijst met moves
+	 * @return de lijst met PMoves
+	 */
+	/*@ requires (\forall int i; 0 <= i & i < moves.size(); Board.getBlock(moves.get(i)) instanceof Block);
+	  @ ensures (\forall int i; 0 <= i & i < moves.size(); \result.get(i) == moves.get(i));
+	 */
+	/*@pure*/
 	public List<PlayMove> toPlayMove(List<Move> moves) {
 		List<PlayMove> result = new ArrayList<PlayMove>();
 		for (Move move : moves) {
@@ -559,8 +620,15 @@ public class Game extends Thread {
 		return result;
 	}
 
-	////@ ensures (\forall SwapMove i; 0 <= i & i < ps.size(); this.isValidMove(ps.get(i))) ==> \result == true;
-	//TODO
+	/**
+	 * zet een lijst met Moves om in een lijst met SwapMoves
+	 * @param moves de lijst met moves
+	 * @return de lijst met SwapMoves
+	 */
+	/*@ requires (\forall int i; 0 <= i & i < moves.size(); Board.getBlock(moves.get(i)) instanceof Block);
+	  @ ensures (\forall int i; 0 <= i & i < moves.size(); \result.get(i) == moves.get(i));
+	 */
+	/*@pure*/
 	public List<SwapMove> toSwapMove(List<Move> moves) {
 		List<SwapMove> result = new ArrayList<SwapMove>();
 		for (Move move : moves) {
