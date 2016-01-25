@@ -32,6 +32,7 @@ public class Board {
 	
     /**
      * maakt een copy van een speelbord.
+     * @param b dit is het bord waarvan hij een kopie maakt.
      */
     /*@ ensures (\forall int i; 0 <= i & i < DIM * DIM;
                                getBlock(i) == this.getBlock(i));
@@ -57,10 +58,7 @@ public class Board {
 	
 	/**
 	 * geeft de steen die op de gegeven plek ligt.
-	 * @param x 
-	 * 			x-coördinaat
-	 * @param y 
-	 * 			y-coördinaat
+	 * @param index de index van de plek
 	 * @return Block
 	 */
 	/*@ requires index <= DIM * DIM;
@@ -84,14 +82,13 @@ public class Board {
 	 * 			de zet die gespeeld wordt
 	 * @return de steen die neergelegd wordt
 	 */
-	/*@ requires isLegalMove(move);
-	  @ requires getBlock(move) instanceof Block;
+	/*@ requires getBlock(move) instanceof Block;
 	  @ ensures \result instanceof Block;
 	  @ ensures \result == getBlock(move);
 	 */
 	/*@pure*/
-	public Block getBlock(PlayMove move) {
-		return move.block;
+	public static Block getBlock(Move move) {
+		return move.getBlock();
 	}
 
 	/**
@@ -620,8 +617,7 @@ public class Board {
 	  @ requires 0 <= getY(move) & getY(move) <= DIM;
 	  @ requires getBlock(move) instanceof Block;
 	  @ requires isLegalMove(move);
-	  //TODO
-	 */
+	  //TODO 
 	/*@pure*/
 	public int xScore(PlayMove move) {
 		int scorex = 0;
@@ -643,7 +639,7 @@ public class Board {
 		}
 		return scorex;
 	}
-
+	
 	/**
 	 * de score van alleen de kolom.
 	 * @param move
@@ -756,12 +752,12 @@ public class Board {
 	}
 
 	/**
-	 * geeft true als de game voorbij is.
+	 * geeft true als een speler niks meer kan.
 	 * @param hand
 	 * 			alle stenen die in een spelers hand zijn
 	 * @param stackSize
 	 * 			de grote van de pot
-	 * @return true als de game voorbij is
+	 * @return true als een speler niks meer kan
 	 */
 	/*@ ensures \result == this.emptyStack(stackSize) && this.noValidMoves(hand);
 	 */

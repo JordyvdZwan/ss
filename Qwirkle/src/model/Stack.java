@@ -87,10 +87,12 @@ public class Stack {
 		shuffleStack();
 	}
 	
+	/*@pure*/
 	public int size() {
 		return stack.size();
 	}
 	
+	/*@pure*/
 	public boolean isValidSwap(List<SwapMove> swaps) {
 		boolean result = true;
 		if (swaps.size() > stack.size()) {
@@ -109,6 +111,7 @@ public class Stack {
 		}
 	}
 	
+	/*@pure*/
 	public List<Block> give(int x) {
 		List<Block> hand = new ArrayList<Block>();
 		for (int i = x; i > 0; i--) {

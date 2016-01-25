@@ -9,7 +9,7 @@ public class Connection extends Thread {
 	private Game game;
 	private Client client;
 	private Socket sock;
-	private boolean active = true;
+	public boolean active = true;
 	
 	private NetworkPlayer player;
 	
