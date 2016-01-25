@@ -59,11 +59,11 @@ public class ComputerPlayer implements LocalPlayer {
 	 * 
 	 */
 	@Override
-	public List<Move> determineMove(UI ui, Board board, List<Block> hand, int stackSize, List<Player> opponents) {
+	public List<Move> determineMove(UI ui, Board board, int stackSize, List<Player> opponents, int thinkTime) {
 		ui.displayBoard(board);
 		ui.displayScore(this, opponents);
 		ui.displayHand(hand);
-		return strategy.getMove(board, hand, this, stackSize);
+		return strategy.getMove(board, this, stackSize, thinkTime);
 	}
 		
 	@Override

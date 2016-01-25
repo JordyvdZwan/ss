@@ -38,9 +38,12 @@ public class MirandaStrategy implements Strategy {
 		return allPossibleMoves;
 	}
 	
+	
+	
 	@Override
-	public List<Move> getMove(Board b, List<Block> hand, Player player, int stackSize) {
+	public List<Move> getMove(Board b, Player player, int stackSize, int thinkTime) {
 		List<List<PlayMove>> allPossibleMoves = new ArrayList<List<PlayMove>>();
+		List<Block> hand = player.getHand();
 		for (Block block : hand) {
 			for (int x = b.minX(); x < b.maxX(); x++) {
 				for (int y = b.minY(); y < b.maxY(); y++) {

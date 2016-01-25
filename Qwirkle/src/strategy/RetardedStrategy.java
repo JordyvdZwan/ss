@@ -10,7 +10,8 @@ public class RetardedStrategy implements Strategy {
 	public RetardedStrategy() {
 	}
 	
-	public List<Move> getMove(Board board, List<Block> hand, Player player, int stackSize) {
+	public List<Move> getMove(Board board, Player player, int stackSize, int thinkTime) {
+		List<Block> hand = player.getHand();
 		List<PlayMove> playmove = new ArrayList<PlayMove>();
 		List<SwapMove> swapmove = new ArrayList<SwapMove>();
 		List<Move> result = new ArrayList<Move>();

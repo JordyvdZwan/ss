@@ -22,8 +22,7 @@ public class HumanPlayer implements LocalPlayer {
 	}
 	
 	@Override
-	public List<Move> determineMove(UI ui, Board board, List<Block> hand, 
-					int stackSize, List<Player> opponents) {
+	public List<Move> determineMove(UI ui, Board board,	int stackSize, List<Player> opponents, int thinkTime) {
 		ui.displayScore(this, opponents);
 		ui.displayHand(hand);
 		return ui.getMove(board);
