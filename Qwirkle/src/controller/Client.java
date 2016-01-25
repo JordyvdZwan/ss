@@ -99,7 +99,9 @@ public class Client extends Observable {
 	 * TODO
 	 * @param msg
 	 */
-	//@ requires msg != null;
+	/*@ requires msg != null;
+	  @ ensures stackSize == 108 - (6 * (opponents.size() + 1)); 
+ 	  */
 	private void handleNames(String msg) { 
 		Scanner reader = new Scanner(msg);
 		try {
@@ -246,12 +248,9 @@ public class Client extends Observable {
 		reader.close();
 	}
 	
-	// TODO
 	/**
 	 * stuurt een bericht naar alle spelers wie er gewonnen heeft.
 	 * @param msg het nummer van de speler
-	 */
-	/*
 	 */
 	private void handleWinner(String msg) {
 		Scanner reader = new Scanner(msg);
@@ -273,13 +272,10 @@ public class Client extends Observable {
 	/**
 	 * geeft een foutmelding als de connectie met de server verloren gaat.
 	 */
-	/*@ //TODO
-	 */
 	private void handleLossOfConnection() {
 		fatalError("Connection with server was lost");
 	}
 
-	// TODO
 	/**
 	 * geeft een foutmelding waardoor verbinding met de server verbreekt.
 	 * @param msg het bericht dat wordt meegestuurd
@@ -303,7 +299,6 @@ public class Client extends Observable {
 		System.out.println("ERROR " + msg);
 	}
 	
-	// TODO
 	/**
 	 * beëindigt een connectie.
 	 */
