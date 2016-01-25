@@ -329,7 +329,7 @@ public class Game extends Thread {
 		for (Move move : moves) {
 			innerResult = false;
 			for (Block block : hand) {
-				if (move.getBlock().color == block.color ) {
+				if (move.getBlock().color == block.color && move.getBlock().shape == block.shape) {
 					result = true;
 				}
 			}
