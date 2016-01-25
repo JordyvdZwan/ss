@@ -20,7 +20,7 @@ public class SwapMove implements Move {
 	}
 	
 	public String toString() {
-		return block.toString();
+		return " SWAP " + block.toString();
 		
 	}
 

@@ -21,6 +21,7 @@ public class MultiThreadStrategy extends Thread implements Strategy {
 	List<Block> hand;
 	List<PlayMove> moveList = new ArrayList<PlayMove>();
 	
+	
 	int thinktime = 5000;
 	
 	public List<PlayMove> playResult = new ArrayList<PlayMove>();

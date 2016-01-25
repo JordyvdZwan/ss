@@ -28,6 +28,6 @@ public class PlayMove implements Move {
 	}
 
 	public String toString() {
-		return block.toString() + " " + x + " " + y;
+		return " MOVE " + block.toString() + " " + y + " " + x;
 	}
 }

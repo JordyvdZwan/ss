@@ -147,6 +147,24 @@ public class Client extends Observable {
 		reader.close();
 	}
 	
+	
+	private boolean blocksInHand(List<Move> moves, List<Block> hand) {
+		boolean result = true;
+		boolean innerResult = false;
+		for (Move move : moves) {
+			innerResult = false;
+			for (Block block : hand) {
+				if (move.getBlock().color == block.color ) {
+					result = true;
+				}
+			}
+			if (innerResult == false) {
+				result = false;
+				break;
+			}
+		}
+		return result;
+	}
 	// TODO
 	private void handleNext(String msg) {
 		Scanner reader = new Scanner(msg);
@@ -156,7 +174,7 @@ public class Client extends Observable {
 				String move = "";
 				if (isInstanceOfPlayMoves(moves)) {
 					List<PlayMove> playMoves = toPlayMove(moves);
-					if (board.isLegalMoveList(playMoves)) {
+					if (board.isLegalMoveList(playMoves) && blocksInHand(moves, player.getHand())) {
 						for (PlayMove playMove : playMoves) {
 							move = move.concat(" " + playMove.getBlock().toString() + 
 												" " + playMove.y + " " + playMove.x);
@@ -169,7 +187,7 @@ public class Client extends Observable {
 					}
 				} else {
 					List<SwapMove> swapMoves = toSwapMove(moves);
-					if (stackSize >= swapMoves.size()) {
+					if (stackSize >= swapMoves.size() && blocksInHand(moves, player.getHand())) {
 						tempHand = new ArrayList<Block>();
 						for (SwapMove swapMove : swapMoves) {
 							move = move.concat(" " + swapMove.getBlock().toString());
@@ -433,5 +451,10 @@ public class Client extends Observable {
 	/*@ pure*/
 	public List<Block> getHand() {
 		return player.getHand();
+	}
+	
+	//TODO
+	public int getStackSize() {
+		return stackSize;
 	}
 }
