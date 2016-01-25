@@ -15,12 +15,12 @@ public class Client extends Observable {
 
 	private int aiThinkTime;
 	private UI ui;
-	public Connection conn;
-	public LocalPlayer player;
+	private /*@ spec_public @*/ Connection conn;
+	private /*@ spec_public @*/ LocalPlayer player;
 	private List<Player> opponents = new ArrayList<Player>();
-	public Board board;
+	private /*@ spec_public @*/ Board board;
 	private List<Block> tempHand = new ArrayList<Block>();
-	private int stackSize;
+	private /*@ spec_public @*/ int stackSize;
 	private int numberOfPlayers = opponents.size() + 1;
 	
 	public Client(UI uiArg, Socket sockArg, LocalPlayer player) {
@@ -147,7 +147,22 @@ public class Client extends Observable {
 		reader.close();
 	}
 	
+	/**
+	 * kijkt of alle stenen van de zet wel in de hand van de speler zitten.
+	 * @param moves de zet 
+	 * @param hand de hand van de speler
+	 * @return true als alle stenen in de hand zitten
+	 */
+	/*@ requires (\forall int i; 0 <= i & i < moves.size(); 
+	   									Board.getBlock(moves.get(i)) instanceof Block);
+	  @ requires (\forall int i; 0 <= i & i < hand.size();
+	  									hand.get(i) instanceof Block);
+	  @ ensures (\forall int i; 0 <= i & i < moves.size();
+	  			(\forall int j; 0 <= j & j < hand.size();
+	  			Board.getBlock(moves.get(i)) == hand.get(j)) ==> \result == true);
+	 */
 	
+	/*@pure*/
 	private boolean blocksInHand(List<Move> moves, List<Block> hand) {
 		boolean result = true;
 		boolean innerResult = false;
@@ -343,7 +358,8 @@ public class Client extends Observable {
 	 * @param moves de lijst met moves
 	 * @return de lijst met PMoves
 	 */
-	/*@ requires (\forall int i; 0 <= i & i < moves.size(); Board.getBlock(moves.get(i)) instanceof Block);
+	/*@ requires (\forall int i; 0 <= i & i < moves.size(); 
+	  					Board.getBlock(moves.get(i)) instanceof Block);
 	  @ ensures (\forall int i; 0 <= i & i < moves.size(); \result.get(i) == moves.get(i));
 	 */
 	/*@pure*/
@@ -360,7 +376,8 @@ public class Client extends Observable {
 	 * @param moves de lijst met moves
 	 * @return de lijst met SwapMoves
 	 */
-	/*@ requires (\forall int i; 0 <= i & i < moves.size(); Board.getBlock(moves.get(i)) instanceof Block);
+	/*@ requires (\forall int i; 0 <= i & i < moves.size(); 
+	  				Board.getBlock(moves.get(i)) instanceof Block);
 	  @ ensures (\forall int i; 0 <= i & i < moves.size(); \result.get(i) == moves.get(i));
 	 */
 	/*@pure*/
@@ -377,8 +394,10 @@ public class Client extends Observable {
 	 * @param moves de lijst met moves
 	 * @return true als de lijst enkel uit PlayMoves bestaat
 	 */
-	/*@ requires (\forall int i; 0 <= i & i < moves.size(); Board.getBlock(moves.get(i)) instanceof Block);
-	  @ ensures (\forall int i; 0 <= i & i < moves.size(); moves.get(i) instanceof PlayMove ==> \result == true);
+	/*@ requires (\forall int i; 0 <= i & i < moves.size(); 
+	  					Board.getBlock(moves.get(i)) instanceof Block);
+	  @ ensures (\forall int i; 0 <= i & i < moves.size(); 
+	  					moves.get(i) instanceof PlayMove ==> \result == true);
 	 */
 	/*@pure*/
 	private boolean isInstanceOfPlayMoves(List<Move> moves) {
@@ -399,8 +418,9 @@ public class Client extends Observable {
 	 */
 	/*@ requires number < opponents.size();
 	  @ ensures player.getNumber() == number ==> \result == player;
-	  @ ensures player.getNumber() != number ==> (\forall int i; 0 <= i & i < opponents.size(); opponents.get(i).getNumber() == number
-	  						==> \result == opponents.get(i));
+	  @ ensures player.getNumber() != number ==> 
+	  	(\forall int i; 0 <= i & i < opponents.size(); opponents.get(i).getNumber() == number
+	  															==> \result == opponents.get(i));
 	 */
 	/*@ pure*/
 	private Player getPlayer(int number) {
@@ -453,7 +473,13 @@ public class Client extends Observable {
 		return player.getHand();
 	}
 	
-	//TODO
+	/**
+	 * laat zien hoeveel er nog in de pot zit.
+	 * @return de grootte van de pot
+	 */
+	/*@ ensures \result == stackSize;
+	 */
+	/*@pure*/
 	public int getStackSize() {
 		return stackSize;
 	}

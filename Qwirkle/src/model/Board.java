@@ -129,7 +129,8 @@ public class Board {
 	 */
 	/*@ requires (\forall int x; 0 <= x & x < move.size(); 
 					    	getX(move.get(x)) < DIM);
-	  @ ensures (\forall int i; 0 <= i & i < move.size(); getX(move.get(0)) == getX(move.get(i)) ==> \result == true);
+	  @ ensures (\forall int i; 0 <= i & i < move.size(); getX(move.get(0)) == getX(move.get(i)) 
+	  																		==> \result == true);
 	 */
 	/*@pure*/
 	public boolean isOnlyX(List<PlayMove> move) {
@@ -152,7 +153,8 @@ public class Board {
 	 */
 	/*@ requires (\forall int y; 0 <= y & y < move.size(); 
 					    	getX(move.get(y)) < DIM);
-	  @ ensures (\forall int i; 0 <= i & i < move.size(); getY(move.get(0)) == getY(move.get(i)) ==> \result == true);
+	  @ ensures (\forall int i; 0 <= i & i < move.size(); getY(move.get(0)) == getY(move.get(i))
+	   																		==> \result == true);
 	 */
 	/*@pure*/
 	public boolean isOnlyY(List<PlayMove> move) {
@@ -262,8 +264,10 @@ public class Board {
 	  												& getY(moveslist.get(i)) >= 0);
 	  @ requires (\forall int i; 0 <= i & i <= moveslist.size();
 	  											getBlock(moveslist.get(i)) instanceof Block);
-	  @ ensures moveslist.size() > 0 ==> allConnected(moveslist) ==> isOnlyX(moveslist) || isOnlyY(moveslist) ==>
-	  						(\forall int i; 0 <= i & i < moveslist.size(); this.isLegalMove(moveslist.get(i)) ==> \result == true);
+	  @ ensures moveslist.size() > 0 ==> allConnected(moveslist) ==> 
+								isOnlyX(moveslist) || isOnlyY(moveslist) ==>
+									(\forall int i; 0 <= i & i < moveslist.size(); 
+										this.isLegalMove(moveslist.get(i)) ==> \result == true);
 	 */
 	/*@pure*/
 	public boolean isLegalMoveList(List<PlayMove> moveslist) {
@@ -692,10 +696,12 @@ public class Board {
 	  											getBlock(move.get(i)) instanceof Block);
 	  @ requires isLegalMoveList(move);
 	  @ ensures \result > 0;
-	  @ ensures move.size() > 1 ==> this.isOnlyX(move) ==> (\forall int k; 0 <= k & k < move.size() - 1;
-	  											\result == moveScore(move.get(move.size() - 1)) + xScore(move.get(k)));
-	  @ ensures move.size() > 1 ==> this.isOnlyY(move) ==> (\forall int k; 0 <= k & k < move.size() - 1;
-	  											\result == moveScore(move.get(move.size() - 1)) + yScore(move.get(k)));
+	  @ ensures move.size() > 1 ==> this.isOnlyX(move) ==> 
+	  				(\forall int k; 0 <= k & k < move.size() - 1;
+							\result == moveScore(move.get(move.size() - 1)) + xScore(move.get(k)));
+	  @ ensures move.size() > 1 ==> this.isOnlyY(move) ==> 
+	  				(\forall int k; 0 <= k & k < move.size() - 1;
+							\result == moveScore(move.get(move.size() - 1)) + yScore(move.get(k)));
 	  @ ensures move.size() == 1 ==> \result == moveScore(move.get(0));
 	 */
 	/*@pure*/
@@ -783,7 +789,8 @@ public class Board {
 	  @ ensures (\forall int i; 0 <= i & i < hand.size();
 	  				\forall int j; 0 <= j & j < DIM;
 	  					\forall int k; 0 <= k & k < DIM;
-	  						this.isLegalMove(new PlayMove(hand.get(i), j, k, new NetworkPlayer())) == true ==> \result == true);
+	  						this.isLegalMove(new PlayMove(hand.get(i), j, k, new NetworkPlayer()))
+	  						 			== true ==> \result == true);
 	 */
 	/*@pure*/
 	public boolean noValidMoves(List<Block> hand) { 
