@@ -17,10 +17,10 @@ public class Game extends Thread {
 	private Server server;
 	
 	private int turn;
-	public int numberOfPlayers;
+	private /*@ spec_public @*/ int numberOfPlayers;
 	private int aiThinkTime;
 	private Board board;
-	public Stack stack;
+	private /*@ spec_public @*/ Stack stack;
 	private CountDownLatch nextMoveAvailable = new CountDownLatch(1);
 	
 	private boolean moveAvailable = false;
@@ -64,12 +64,13 @@ public class Game extends Thread {
 	}
 	
 	/**
-	 * met de stack, het bord en de handen van de spelers, kijkt de methode of er nog mogelijke moves zijn.
+	 * met de stack, het bord en de handen van de spelers, 
+	 * kijkt de methode of er nog mogelijke moves zijn.
 	 * @return true als de game niet over is, false als de game over is
 	 */
 	/*@ requires players.size() > 0;
 	  @ ensures (\forall int i; 0 <= i & i < players.size(); 
-	  						!board.gameOver(players.get(i).getHand(), stack.size()) ==> \result == true);
+					!board.gameOver(players.get(i).getHand(), stack.size()) ==> \result == true);
 	 */
 	/*@pure*/
 	private boolean notGameOver() {
@@ -130,7 +131,8 @@ public class Game extends Thread {
 	 * @param swapMoves de stenen die de speler gaat ruilen
 	 * @param nr het nummer van de speler
 	 */
-	/*@ requires (\forall int i; 0 <= i & i < swapMoves.size(); Board.getBlock(swapMoves.get(i)) instanceof Block);
+	/*@ requires (\forall int i; 0 <= i & i < swapMoves.size(); 
+	  							Board.getBlock(swapMoves.get(i)) instanceof Block);
 	  @ ensures nr <= numberOfPlayers;
 	 */
 	private void broadcastSwapMove(List<SwapMove> swapMoves, int nr) {
@@ -194,7 +196,7 @@ public class Game extends Thread {
 	/*@ requires reader != null;
 	  @ requires conn != null;
 	  @ ensures moveAvailable || !reader.hasNext() || conn.getPlayer().getNumber() != turn ==> 
-	   																numberOfPlayers == (\old(numberOfPlayers) - 1);
+													numberOfPlayers == (\old(numberOfPlayers) - 1);
 	 */
 	private void readSwap(Connection conn, Scanner reader) {
 		if (!moveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
@@ -236,7 +238,7 @@ public class Game extends Thread {
 	/*@ requires reader != null;
 	  @ requires conn != null;
 	  @ ensures moveAvailable || !reader.hasNext() || conn.getPlayer().getNumber() != turn ==> 
-	   																numberOfPlayers == (\old(numberOfPlayers) - 1); 
+													numberOfPlayers == (\old(numberOfPlayers) - 1); 
 	  
 	 */
 	private void readMove(Connection conn, Scanner reader) {
@@ -341,8 +343,10 @@ public class Game extends Thread {
 	 * speelt een beurt.
 	 * @param moves de zet van de beurt
 	 */
-	/*@ requires (\forall int i; 0 <= i & i < moves.size(); Board.getBlock(moves.get(i)) instanceof Block);
-	  @ ensures stack.size() >= moves.size() ==> stack.size() == (\old(stack.size()) - moves.size());
+	/*@ requires (\forall int i; 0 <= i & i < moves.size(); 
+	  											Board.getBlock(moves.get(i)) instanceof Block);
+	  @ ensures stack.size() >= moves.size() ==> 
+	  										stack.size() == (\old(stack.size()) - moves.size());
 	 */
 	private void handleNextMove(List<Move> moves) {
 		if (isInstanceOfPlaymoves(moves)) {
@@ -379,7 +383,8 @@ public class Game extends Thread {
 	 * @param reason de reden waarvoor hij gekickt wordt
 	 */
 	/*@ ensures numberOfPlayers == (\old(numberOfPlayers) - 1);
-	  @ ensures blocks != null && stack != null ==> stack.size() == (\old(stack.size()) + blocks.size());
+	  @ ensures blocks != null && stack != null ==> 
+	  									stack.size() == (\old(stack.size()) + blocks.size());
 	 */
 	public void kickPlayer(Connection conn, int playerNumber, List<Block> blocks, String reason) {
 		players.remove(conn.getPlayer());
@@ -435,7 +440,8 @@ public class Game extends Thread {
 	/**
 	 * verteld aan iedereen wie er mee doet en welk nummer ze hebben.
 	 */
-	/*@ requires (\forall int i; 0 <= i & i < players.size(); isValidName(players.get(i).getName()));
+	/*@ requires (\forall int i; 0 <= i & i < players.size(); 
+	 												isValidName(players.get(i).getName()));
 	 */
 	private void broadcastNames() {
 		String names = "";
@@ -476,7 +482,8 @@ public class Game extends Thread {
 
 	
 	/**
-	 * kijkt wat je maximale score is bij het begin van het spel, dit gebeurt door te tellen hoeveel je van elke soort hebt.
+	 * kijkt wat je maximale score is bij het begin van het spel, 
+	 * dit gebeurt door te tellen hoeveel je van elke soort hebt.
 	 * @param blocks de lijst met stenen die de speler heeft
 	 * @return het maximale aantal punten
 	 */
@@ -562,7 +569,8 @@ public class Game extends Thread {
 	 * @param moves de stenen die geruild gaan worden
 	 * @param amount het aantal stenen die worden geruild
 	 */
-	/*@ requires (\forall int i; 0 <= i & i < moves.size(); Board.getBlock(moves.get(i)) instanceof Block);
+	/*@ requires (\forall int i; 0 <= i & i < moves.size(); 
+	 										Board.getBlock(moves.get(i)) instanceof Block);
 	 */
 	private void swapStones(Connection conn, List<Move> moves, int amount) {
 		List<Block> blocks = stack.give(amount);
@@ -623,7 +631,7 @@ public class Game extends Thread {
 	 */
 	/*@ requires name != null;
 	  @ ensures name.length() <= 16 ==> (\forall int i; 0 <= i & i < name.length();
-	  										Character.isLetterOrDigit(name.charAt(i)) ==> \result == true);
+	  							Character.isLetterOrDigit(name.charAt(i)) ==> \result == true);
 	 */
 	/*@pure*/
 	private boolean isValidName(String name) {
@@ -687,7 +695,8 @@ public class Game extends Thread {
 	 * kijkt welke speler heeft gewonnen
 	 * @return de speler met de meeste punten.
 	 */
-	/*@ ensures \result == playerOfScore((\max int i; 0 <= i & i < players.size(); players.get(i).getScore())); 
+	/*@ ensures \result == playerOfScore((\max int i; 0 <= i & i < players.size(); 
+	  													players.get(i).getScore())); 
 	 */
 	/*@pure*/
 	private int detectWinner() {
@@ -729,8 +738,10 @@ public class Game extends Thread {
 	 * @param moves de lijst met moves
 	 * @return true als de lijst enkel uit PlayMoves bestaat
 	 */
-	/*@ requires (\forall int i; 0 <= i & i < moves.size(); Board.getBlock(moves.get(i)) instanceof Block);
-	  @ ensures (\forall int i; 0 <= i & i < moves.size(); moves.get(i) instanceof PlayMove ==> \result == true);
+	/*@ requires (\forall int i; 0 <= i & i < moves.size(); 
+	 									Board.getBlock(moves.get(i)) instanceof Block);
+	  @ ensures (\forall int i; 0 <= i & i < moves.size();
+	   									moves.get(i) instanceof PlayMove ==> \result == true);
 	 */
 	/*@pure*/
 	public boolean isInstanceOfPlaymoves(List<Move> moves) {
@@ -749,7 +760,8 @@ public class Game extends Thread {
 	 * @param moves de lijst met moves
 	 * @return de lijst met PMoves
 	 */
-	/*@ requires (\forall int i; 0 <= i & i < moves.size(); Board.getBlock(moves.get(i)) instanceof Block);
+	/*@ requires (\forall int i; 0 <= i & i < moves.size(); 
+	 										Board.getBlock(moves.get(i)) instanceof Block);
 	  @ ensures (\forall int i; 0 <= i & i < moves.size(); \result.get(i) == moves.get(i));
 	 */
 	/*@pure*/
@@ -766,7 +778,8 @@ public class Game extends Thread {
 	 * @param moves de lijst met moves
 	 * @return de lijst met SwapMoves
 	 */
-	/*@ requires (\forall int i; 0 <= i & i < moves.size(); Board.getBlock(moves.get(i)) instanceof Block);
+	/*@ requires (\forall int i; 0 <= i & i < moves.size(); 
+	 										Board.getBlock(moves.get(i)) instanceof Block);
 	  @ ensures (\forall int i; 0 <= i & i < moves.size(); \result.get(i) == moves.get(i));
 	 */
 	/*@pure*/
