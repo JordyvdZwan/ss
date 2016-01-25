@@ -92,6 +92,9 @@ public class TUI implements UI {
 				} else {
 					result = invalidMove(b);
 				}
+			} else if (command.equals("HINT")) {
+				System.out.println(client.getBoard().hint(client.getStackSize(), client.getPlayer()));
+				result = getMove(b);
 			} else {
 				result = invalidMove(b);
 			}

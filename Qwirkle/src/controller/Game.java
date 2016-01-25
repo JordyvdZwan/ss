@@ -326,6 +326,24 @@ public class Game extends Thread {
 		return result;
 	}
 
+	private boolean blocksInHand(List<Move> moves, List<Block> hand) {
+		boolean result = true;
+		boolean innerResult = false;
+		for (Move move : moves) {
+			innerResult = false;
+			for (Block block : hand) {
+				if (move.getBlock().color == block.color ) {
+					result = true;
+				}
+			}
+			if (innerResult == false) {
+				result = false;
+				break;
+			}
+		}
+		return result;
+	}
+	
 	/**
 	 * speelt een beurt.
 	 * @param moves de zet van de beurt
@@ -336,7 +354,7 @@ public class Game extends Thread {
 	private void handleNextMove(List<Move> moves) {
 		if (isInstanceOfPlaymoves(moves)) {
 			List<PlayMove> playMoves = toPlayMove(moves);
-			if (board.isLegalMoveList(playMoves)) {
+			if (board.isLegalMoveList(playMoves) && blocksInHand(moves, playMoves.get(0).getPlayer().getHand())) {
 				Player player = playMoves.get(0).getPlayer();
 				player.setScore(player.getScore() + board.legitMoveScore(playMoves));
 				board.makeMove(playMoves);
@@ -349,7 +367,7 @@ public class Game extends Thread {
 			}
 		} else {
 			List<SwapMove> swapMoves = toSwapMove(moves);
-			if (stack.isValidSwap(swapMoves)) {
+			if (stack.isValidSwap(swapMoves) && blocksInHand(moves, swapMoves.get(0).getPlayer().getHand())) {
 				swapStones(swapMoves.get(0).getPlayer().getConnection(), moves, swapMoves.size());
 				broadcastSwapMove(swapMoves, swapMoves.get(0).getPlayer().getNumber());
 			} else {
@@ -526,15 +544,20 @@ public class Game extends Thread {
 		} else if (players.size() == 0) {
 			endGame();
 		} else {
+			turn = (turn + 1) % players.size();
+			System.out.println(getPlayer(turn).getHand().isEmpty());
+			System.out.println(stack.size());
 			if (getPlayer(turn).getHand().isEmpty() && stack.size() == 0) {
 				playerWins(detectWinner());
 			}
-			turn = (turn + 1) % players.size();
 			if (getPlayer(turn) == null) {
 				nextTurn();
 			}
 			if (!(board.noValidMoves(getPlayer(turn).getHand()) && stack.size() == 0)) {
 				broadcastMessage("NEXT " + getPlayer(turn).getNumber());
+				for (Block block : getPlayer(turn).getHand()) {
+					System.out.println(block.toString());
+				}
 			} else {
 				nextTurn();
 			}

@@ -117,7 +117,7 @@ public class Stack {
 	
 	public List<Block> give(int x) {
 		List<Block> hand = new ArrayList<Block>();
-		for (int i = x; i > 0; i--) {
+		for (int i = x - 1; i >= 0; i--) {
 			if (stack.size() > i) {
 				hand.add(stack.get(i));
 				stack.remove(i);

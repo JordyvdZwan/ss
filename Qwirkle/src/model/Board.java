@@ -14,7 +14,6 @@ public class Board {
 	private Block[][] blocks;
 	public static final int DIM = 183;
 	public static final int MID = 92;
-	public ComputerPlayer player = new ComputerPlayer("AI", new RetardedStrategy());
 	RetardedStrategy ai = new RetardedStrategy();
 
 	/**
@@ -882,8 +881,14 @@ public class Board {
 	 */
 	///*@ requires player.getHand().size() > 0;
 	// */
-	public String hint(int stacksize) {
-		return ai.getMove(this, player, stacksize, 5000).toString();
+	public String hint(int stacksize, Player player) {
+		List<Move> moves = ai.getMove(this, player, stacksize, 5000);
+		String result;
+		result = "HINT!!! (loser...) ";
+		for (Move move : moves) {
+			result = result.concat(move.toString());
+		}
+		return result;
 	}
 
 	/**
