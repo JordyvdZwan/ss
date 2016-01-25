@@ -62,7 +62,7 @@ public class Controller extends Thread {
 			address = InetAddress.getByName("localhost");
 			
 			sock = new Socket(address, port);
-			Client client = new Client(ui, sock, new ComputerPlayer("AI", new MirandaStrategy()));
+			Client client = new Client(ui, sock, new ComputerPlayer("AI", new RetardedStrategy()));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
 			chooseServerClient();
@@ -80,7 +80,7 @@ public class Controller extends Thread {
 			String userName = getUserName();
 			
 			sock = new Socket(address, port);
-			Client client = new Client(ui, sock, new ComputerPlayer(new MirandaStrategy()));
+			Client client = new Client(ui, sock, new ComputerPlayer(new RetardedStrategy()));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
 			chooseServerClient();
