@@ -950,8 +950,7 @@ public class Board {
 		return index + "\n" + swag + "\n" + colum;
     }
     
-	/*@ requires (\forall int i; 1 <= i & i <= MID);
-      @ ensures \result >= MID + 1;
+	/*@ ensures \result >= MID + 1;
       @ ensures \result <= MID + MID;
       @*/	
     public int maxX() {
@@ -965,8 +964,7 @@ public class Board {
     	return maxX;
     }
     	
-    /*@ requires (\forall int i; 1 <= i & i <= MID);
-      @ ensures \result >= 0;
+    /*@ ensures \result >= 0;
       @ ensures \result <= MID - 1;
       @*/
     public int minX() {
@@ -980,8 +978,7 @@ public class Board {
         return minX;
     }
 
-    /*@ requires (\forall int i; 1 <= i & i <= MID);
-      @ ensures \result >= MID + 1;
+    /*@ ensures \result >= MID + 1;
       @ ensures \result <= MID + MID;
       @*/	
     public int maxY() {
@@ -995,8 +992,7 @@ public class Board {
     	return maxY;
     }
 
-    /*@ requires (\forall int i; 1 <= i & i <= MID);
-      @ ensures \result >= 0;
+    /*@ ensures \result >= 0;
       @ ensures \result <= MID - 1;
       @*/
     public int minY() {

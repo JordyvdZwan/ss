@@ -248,7 +248,7 @@ public class Client extends Observable {
 	
 	// TODO
 	/**
-	 * zegt wie er gewonnen heeft. 
+	 * stuurt een bericht naar alle spelers wie er gewonnen heeft.
 	 * @param msg het nummer van de speler
 	 */
 	/*
@@ -280,6 +280,10 @@ public class Client extends Observable {
 	}
 
 	// TODO
+	/**
+	 * geeft een foutmelding waardoor verbinding met de server verbreekt.
+	 * @param msg het bericht dat wordt meegestuurd
+	 */
 	private void fatalError(String msg) {
 		System.out.println("[FATAL ERROR]: " + msg);
 		if (ui.newGame()) {

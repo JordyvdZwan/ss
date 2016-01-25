@@ -111,7 +111,7 @@ public class Stack {
 		}
 	}
 	
-	/*@pure*/
+	
 	public List<Block> give(int x) {
 		List<Block> hand = new ArrayList<Block>();
 		for (int i = x; i > 0; i--) {

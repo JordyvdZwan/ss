@@ -51,7 +51,6 @@ public class Game extends Thread {
 	 * eerst wordt het spel opgestart en vervolgens gespeeld todat het spel over is.
 	 * als het spel over is wordy de winnaar gebroadcast.
 	 */
-	//TODO
 	public void run() { 
 		createGameEnviroment();
 		broadcastNames();
@@ -139,11 +138,10 @@ public class Game extends Thread {
 	}
 
 	/**
-	 * 
-	 * @param conn
-	 * @param msg
+	 * leest een bericht en kijkt wat de opdracht was van de speler.
+	 * @param conn de connectie van de speler
+	 * @param msg het bericht dat werd meegegeven
 	 */
-	//TODO
 	public void processMessage(Connection conn, String msg) {
 		ui.displayServerMessage("[SERVER]: Getting message from " + 
 						conn.getPlayer().getName() + " : \"" + msg + "\"");
@@ -188,7 +186,6 @@ public class Game extends Thread {
 		}
 	}
 
-	//TODO
 	/**
 	 * leest de zet van een speler als hij iets ruilt met de pot.
 	 * @param conn de connectie met de speler
@@ -230,7 +227,7 @@ public class Game extends Thread {
 		}
 	}
 
-	//TODO
+
 	/**
 	 * leest de zet die de speler stuurt als de speler iets op het bord speelt.
 	 * @param conn de connectie van de speler
@@ -331,7 +328,7 @@ public class Game extends Thread {
 	 * @param moves de zet van de beurt
 	 */
 	/*@ requires (\forall int i; 0 <= i & i < moves.size(); Board.getBlock(moves.get(i)) instanceof Block);
-	  @ ensures stack.size() == (\old(stack.size()) - moves.size());
+	  @ ensures stack.size() >= moves.size() ==> stack.size() == (\old(stack.size()) - moves.size());
 	 */
 	private void handleNextMove(List<Move> moves) {
 		if (isInstanceOfPlaymoves(moves)) {
@@ -453,7 +450,6 @@ public class Game extends Thread {
 		}
 	}
 
-	//TODO
 	/**
 	 * berekent wie de eerste zet mag zetten.
 	 */

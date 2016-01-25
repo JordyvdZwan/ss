@@ -82,6 +82,7 @@ public class Connection extends Thread {
 		sendStringToParent("LOSSOFCONNECTION");
 	}
 	
+	/*@pure*/
 	public NetworkPlayer getPlayer() {
 		return player;
 	}
