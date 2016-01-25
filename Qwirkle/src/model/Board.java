@@ -617,6 +617,7 @@ public class Board {
 	  @ requires 0 <= getY(move) & getY(move) <= DIM;
 	  @ requires getBlock(move) instanceof Block;
 	  @ requires isLegalMove(move);
+	  @ ensures 0 <= \result & \result <= 12;
 	  //TODO 
 	/*@pure*/
 	public int xScore(PlayMove move) {
@@ -650,6 +651,7 @@ public class Board {
 	  @ requires 0 <= getY(move) & getY(move) <= DIM;
 	  @ requires getBlock(move) instanceof Block;
 	  @ requires isLegalMove(move);
+	  @ ensures 0 <= \result & \result <= 12;
 	  // TODO
 	 */
 	/*@pure*/

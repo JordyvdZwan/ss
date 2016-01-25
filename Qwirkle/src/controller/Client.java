@@ -251,7 +251,7 @@ public class Client extends Observable {
 	 * zegt wie er gewonnen heeft. 
 	 * @param msg het nummer van de speler
 	 */
-	/*@ 
+	/*
 	 */
 	private void handleWinner(String msg) {
 		Scanner reader = new Scanner(msg);
@@ -273,7 +273,7 @@ public class Client extends Observable {
 	/**
 	 * geeft een foutmelding als de connectie met de server verloren gaat.
 	 */
-	/*@ ensures conn.active == false;
+	/*@ //TODO
 	 */
 	private void handleLossOfConnection() {
 		fatalError("Connection with server was lost");

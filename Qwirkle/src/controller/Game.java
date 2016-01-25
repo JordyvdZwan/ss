@@ -305,6 +305,12 @@ public class Game extends Thread {
 	}
 
 	//TODO
+	/**
+	 * 
+	 * @return
+	 */
+	/*
+	 */
 	private List<Move> waitForNextMove() {
 		List<Move> result;
 		while (!moveAvailable) {
@@ -451,8 +457,6 @@ public class Game extends Thread {
 	/**
 	 * berekent wie de eerste zet mag zetten.
 	 */
-	/*@ 
-	 */
 	private void determineFirstMove() {
 		int[] scores = new int[players.size()];
 		for (Player player : players) {
@@ -462,12 +466,14 @@ public class Game extends Thread {
 
 	
 	/**
-	 * 
-	 * @param blocks
-	 * @return
+	 * kijkt wat je maximale score is bij het begin van het spel, dit gebeurt door te tellen hoeveel je van elke soort hebt.
+	 * @param blocks de lijst met stenen die de speler heeft
+	 * @return het maximale aantal punten
 	 */
-	//@ requires blocks.size() == 6;
-	//TODO
+	/*@ requires blocks.size() == 6;
+	  @ requires (\forall int i; 0 <= i & i < blocks.size(); blocks.get(i) instanceof Block);
+	  @ ensures 0 <= \result & \result <= 12;
+	 */
 	private int maxScore(List<Block> blocks) {
 		int score = 0;
 		int[] points = new int[12];
@@ -509,7 +515,7 @@ public class Game extends Thread {
 	}
 
 	/**
-	 * zegt wie er aan de beurt is.
+	 * zegt wie er aan de beurt is. als er maar 1 speler meedoet laat hij die speler winnen.
 	 */
 	/*@ ensures players.size() == 1 ==> detectWinner() == players.get(0).getNumber();
 	  @ ensures players.size() > 1 ==> turn == (\old(turn + 1 % players.size()));
@@ -619,10 +625,9 @@ public class Game extends Thread {
 		return result;
 	}
 
-	//TODO
 	/**
-	 * 
-	 * @param win
+	 * laat zien wie er gewonnen heeft.
+	 * @param win het nummer van de winnende speler.
 	 */
 	/*@ requires 0 <= win & win < players.size();
 	 */
