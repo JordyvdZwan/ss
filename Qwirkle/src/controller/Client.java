@@ -150,20 +150,16 @@ public class Client extends Observable {
 	
 	private boolean blocksInHand(List<Move> moves, List<Block> hand) {
 		boolean result = true;
-		boolean innerResult = false;
-		for (Move move : moves) {
-			innerResult = false;
+		int counter = 0;
+		outer : for (Move move : moves) {
 			for (Block block : hand) {
 				if (move.getBlock().color == block.color && move.getBlock().shape == block.shape) {
-					result = true;
+					counter++;
+					continue outer;
 				}
 			}
-			if (innerResult == false) {
-				result = false;
-				break;
-			}
 		}
-		return result;
+		return counter == moves.size();
 	}
 	// TODO
 	private void handleNext(String msg) {
@@ -174,6 +170,8 @@ public class Client extends Observable {
 				String move = "";
 				if (isInstanceOfPlayMoves(moves)) {
 					List<PlayMove> playMoves = toPlayMove(moves);
+					System.out.println(board.isLegalMoveList(playMoves));
+					System.out.println(blocksInHand(moves, player.getHand()));
 					if (board.isLegalMoveList(playMoves) && blocksInHand(moves, player.getHand())) {
 						for (PlayMove playMove : playMoves) {
 							move = move.concat(" " + playMove.getBlock().toString() + 

@@ -81,7 +81,7 @@ public class Controller extends Thread {
 			String userName = getUserName();
 			
 			sock = new Socket(address, port);
-			Client client = new Client(ui, sock, new ComputerPlayer(new RetardedStrategy()));
+			Client client = new Client(ui, sock, new ComputerPlayer(userName, new RetardedStrategy()));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
 			chooseServerClient();
