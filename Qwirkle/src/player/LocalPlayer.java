@@ -8,6 +8,5 @@ import model.Move;
 import view.UI;
 
 public interface LocalPlayer extends Player {
-	public List<Move> determineMove(UI ui, Board board, List<Block> hand, 
-					int stackSize, List<Player> opponents);
+	public List<Move> determineMove(UI ui, Board board,	int stackSize, List<Player> opponents, int thinkTime);
 }

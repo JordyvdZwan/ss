@@ -150,8 +150,7 @@ public class Client extends Observable {
 		Scanner reader = new Scanner(msg);
 		try {
 			if (player == getPlayer(Integer.parseInt(reader.next()))) {
-				List<Move> moves = player.determineMove(ui, board, player.getHand(),
-								stackSize, opponents);
+				List<Move> moves = player.determineMove(ui, board, stackSize, opponents, aiThinkTime);
 				String move = "";
 				if (isInstanceOfPlayMoves(moves)) {
 					List<PlayMove> playMoves = toPlayMove(moves);

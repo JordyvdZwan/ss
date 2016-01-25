@@ -526,6 +526,9 @@ public class Game extends Thread {
 		} else if (players.size() == 0) {
 			endGame();
 		} else {
+			if (getPlayer(turn).getHand().isEmpty() && stack.size() == 0) {
+				playerWins(detectWinner());
+			}
 			turn = (turn + 1) % players.size();
 			if (getPlayer(turn) == null) {
 				nextTurn();

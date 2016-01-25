@@ -883,7 +883,7 @@ public class Board {
 	///*@ requires player.getHand().size() > 0;
 	// */
 	public String hint(int stacksize) {
-		return ai.getMove(this, player.getHand(), player, stacksize).toString();
+		return ai.getMove(this, player, stacksize, 5000).toString();
 	}
 
 	/**
