@@ -111,7 +111,10 @@ public class Stack {
 		}
 	}
 	
-	/*@pure*/
+	public void giveBack(Block block) {
+		stack.add(block);
+	}
+	
 	public List<Block> give(int x) {
 		List<Block> hand = new ArrayList<Block>();
 		for (int i = x; i > 0; i--) {

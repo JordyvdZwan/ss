@@ -553,12 +553,24 @@ public class Game extends Thread {
 			}
 			sendMessage(conn, "NEW empty");
 		} else {
-			conn.getPlayer().swapHand(moves, blocks);
-			String blockString = "";
-			for (Block block : blocks) {
-				blockString = blockString.concat(" " + block.toString());
+			if (isInstanceOfPlaymoves(moves)) {
+				conn.getPlayer().swapHand(moves, blocks);
+				String blockString = "";
+				for (Block block : blocks) {
+					blockString = blockString.concat(" " + block.toString());
+				}
+				sendMessage(conn, "NEW" + blockString);
+			} else {
+				conn.getPlayer().swapHand(moves, blocks);
+				String blockString = "";
+				for (Move move : moves) {
+					stack.giveBack(move.getBlock());
+				}
+				for (Block block : blocks) {
+					blockString = blockString.concat(" " + block.toString());
+				}
+				sendMessage(conn, "NEW" + blockString);
 			}
-			sendMessage(conn, "NEW" + blockString);
 		}
 	}
 	
