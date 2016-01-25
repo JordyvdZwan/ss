@@ -253,6 +253,7 @@ public class BoardTest {
 		assertEquals(board.minX(), 89);
 		assertEquals(board.minY(), 89);
 		System.out.print(board.toString());
+		System.out.println(board.toColorString());
 
 	}
 	

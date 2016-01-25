@@ -61,8 +61,9 @@ public class Board {
 	 * @param index de index van de plek
 	 * @return Block
 	 */
-	/*@ requires index <= DIM * DIM;
-	   	ensures \result == this.getBlock()[index / DIM][index % DIM];*/
+	/*@ requires 0 <= index & index <= DIM * DIM;
+	   	ensures \result == this.getBlock()[index / DIM][index % DIM];
+	   	*/
 	/*@pure*/
 	public Block getBlock(int index) {
 		Block result = null;
@@ -173,8 +174,8 @@ public class Board {
 	 * 				de steen die neer gelegd wordt
 	 * @return true als de zet aan alle regels voldoet
 	 */
-	/*@ requires getX(move) < DIM;
-	  @ requires getY(move) < DIM;
+	/*@ requires 0 <= getX(move) & getX(move) < DIM;
+	  @ requires 0 <= getY(move) & getY(move) < DIM;
 	  @ requires getBlock(move) instanceof Block;
 	  @ ensures \result == isLegalXRow(move) && isLegalYRow(move) 
 						   && !isLonelyStone(move) && isEmptyField(getX(move), getY(move));
@@ -880,10 +881,10 @@ public class Board {
 	 * 			de grote van de pot
 	 * @return een hint
 	 */
-	///*@ requires player.getHand().size() > 0;
-	// */
+	/*@ requires player.getHand().size() > 0;
+	 */
 	public String hint(int stacksize) {
-		return ai.getMove(this, player, stacksize, 5000).toString();
+		return ai.getMove(this, player, stacksize, 50000).toString();
 	}
 
 	/**
