@@ -125,7 +125,7 @@ public class Client extends Observable {
 	}
 
 	/**
-	 * TODO
+	 * TODO.
 	 * @param msg
 	 */
 	private void handleNew(String msg) {
@@ -164,7 +164,6 @@ public class Client extends Observable {
 	
 	/*@pure*/
 	private boolean blocksInHand(List<Move> moves, List<Block> hand) {
-		boolean result = true;
 		int counter = 0;
 		outer : for (Move move : moves) {
 			for (Block block : hand) {
@@ -256,7 +255,8 @@ public class Client extends Observable {
 	 * @param msg
 	 */
 	/*@ requires numberOfPlayers > 1;
-	  @ ensures stackSize == stackSize + getPlayer(Integer.parseInt(new Scanner(msg).next())).getHand().size();
+	  @ ensures stackSize == stackSize + getPlayer(Integer.parseInt(new Scanner(msg).next())).
+	  																			getHand().size();
 	  @ ensures numberOfPlayers == (\old(numberOfPlayers - 1));
 	 */
 	private void handleKick(String msg) {

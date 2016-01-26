@@ -5,9 +5,7 @@ import java.net.*;
 
 import player.ComputerPlayer;
 import player.HumanPlayer;
-import strategy.MirandaStrategy;
-import strategy.MultiThreadStrategy;
-import strategy.RetardedStrategy;
+import strategy.*;
 import view.*;
 
 public class Controller extends Thread {	
@@ -81,7 +79,8 @@ public class Controller extends Thread {
 			String userName = getUserName();
 			
 			sock = new Socket(address, port);
-			Client client = new Client(ui, sock, new ComputerPlayer(userName, new MirandaStrategy()));
+			Client client = new Client(ui, sock, new ComputerPlayer(userName, 
+																			new MirandaStrategy()));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
 			chooseServerClient();

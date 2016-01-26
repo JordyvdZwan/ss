@@ -33,7 +33,8 @@ public class MultiThreadStrategy extends Thread implements Strategy, Callable {
 		
 	}
 	
-	public MultiThreadStrategy(MultiThreadStrategy strat, int thinktime, List<Block> hand , Player player, int stackSize, Board b, List<PlayMove> movelist) {
+	public MultiThreadStrategy(MultiThreadStrategy strat, int thinktime, List<Block> hand,
+								Player player, int stackSize, Board b, List<PlayMove> movelist) {
 		setter = strat;
 		this.hand = hand;
 		this.player = player;
@@ -70,7 +71,8 @@ public class MultiThreadStrategy extends Thread implements Strategy, Callable {
 						localHand.addAll(hand);
 						localHand.remove(block);
 						setResult(moveList2);
-						MultiThreadStrategy strategy = new MultiThreadStrategy(setter, thinktime, localHand, player, stackSize, b, moveList2);
+						MultiThreadStrategy strategy = new MultiThreadStrategy(setter, thinktime, 
+														localHand, player, stackSize, b, moveList2);
 						strategy.start();
 					}
 				}
@@ -85,7 +87,8 @@ public class MultiThreadStrategy extends Thread implements Strategy, Callable {
 		this.player = player;
 		this.stackSize = stackSize;
 		hand = player.getHand();
-		MultiThreadStrategy strategy = new MultiThreadStrategy(setter, thinktime, hand, player, stackSize, b, moveList);
+		MultiThreadStrategy strategy = new MultiThreadStrategy(setter, 
+										thinktime, hand, player, stackSize, b, moveList);
 		strategy.start();
 		try {
 			this.sleep(thinktime);
@@ -110,7 +113,7 @@ public class MultiThreadStrategy extends Thread implements Strategy, Callable {
 	}
 	
 	public List<SwapMove> retardedStrategySwap(List<Block> hand, 
-		Player player, Board board, int stackSize) {
+						Player player, Board board, int stackSize) {
 		List<Block> swaphand = new ArrayList<Block>();
 		swaphand.addAll(hand);
 		SwapMove move = null;
@@ -138,5 +141,4 @@ public class MultiThreadStrategy extends Thread implements Strategy, Callable {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

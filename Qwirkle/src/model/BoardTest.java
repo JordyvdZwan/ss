@@ -100,6 +100,26 @@ public class BoardTest {
 	}
 	
 	@Test
+	public void testnoValidMoves() {
+		board.setField(92, 92, new Block(Color.BLUE, Shape.CIRCLE));
+		Block block1 = new Block(Color.GREEN, Shape.CIRCLE); 
+		Block block2 = new Block(Color.YELLOW, Shape.CLOVER); 
+		Block block3 = new Block(Color.GREEN, Shape.DIAMOND);
+		Block block4 = new Block(Color.ORANGE, Shape.DIAMOND); 
+		Block block5 = new Block(Color.PURPLE, Shape.CROSS); 
+		Block block6 = new Block(Color.YELLOW, Shape.SQUARE); 
+		ArrayList<Block> hand = new ArrayList<Block>();
+		hand.add(block2);
+		hand.add(block3);
+		hand.add(block4);
+		hand.add(block5);
+		hand.add(block6);
+		assertTrue(board.noValidMoves(hand));
+		hand.add(block1);
+		assertFalse(board.noValidMoves(hand));
+	}
+	
+	@Test
 	public void testLegally() {
 		PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 
 						34, 65, new NetworkPlayer());
