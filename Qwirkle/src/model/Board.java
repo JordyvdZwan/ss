@@ -306,7 +306,6 @@ public class Board {
 	/*@ requires 0 <= getX(move) & getX(move) < DIM;
 	  @ requires 0 <= getY(move) & getY(move) < DIM;
 	  @ requires getBlock(move) instanceof Block;
-	  @ // TODO
 	 */
 	/*@pure*/
 	public boolean isLegalConnection(PlayMove move) {
@@ -721,7 +720,6 @@ public class Board {
 	  @ requires getBlock(move) instanceof Block;
 	  @ requires isLegalMove(move);
 	  @ ensures 0 <= \result & \result <= 12;
-	  //TODO 
 	/*@pure*/
 	public int xScore(PlayMove move) {
 		int scorex = 0;
@@ -755,7 +753,6 @@ public class Board {
 	  @ requires getBlock(move) instanceof Block;
 	  @ requires isLegalMove(move);
 	  @ ensures 0 <= \result & \result <= 12;
-	  // TODO
 	 */
 	/*@pure*/
 	public int yScore(PlayMove move) {
