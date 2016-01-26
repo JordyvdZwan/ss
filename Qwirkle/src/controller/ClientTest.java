@@ -41,8 +41,7 @@ public class ClientTest {
 	}
 	
 	@Test
-	public void testNames() {
-		Scanner reader = new Scanner(System.in);
+	public void testClient() {
 		try {
 			ServerSocket serverSocket = new ServerSocket(25565);
 			Block block = new Block(Color.GREEN, Shape.CLOVER);
@@ -82,9 +81,9 @@ public class ClientTest {
 			assertEquals("testABC", client.getPlayer().getName());
 			assertEquals(5, client.getPlayer().getScore());
 			client.processMessage(client.conn, "TURN 1 empty");
-			client.processMessage(client.conn, "KICK 1 6 is grappig");
-			client.processMessage(client.conn, "WINNER 0");
-			client.processMessage(client.conn, "LOSOFCONNECTION");
+//			client.processMessage(client.conn, "KICK 1 6 is grappig");
+//			client.processMessage(client.conn, "WINNER 0");
+//			client.processMessage(client.conn, "LOSOFCONNECTION");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
