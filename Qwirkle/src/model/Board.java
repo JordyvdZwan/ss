@@ -756,8 +756,9 @@ public class Board {
      * berekent de index van een veld.
      * @return de index die bij een veld hoort
      */
-    //@ requires 0 <= x & x < DIM;
-    //@ requires 0 <= y & y < DIM;
+    /*@ requires 0 <= x & x < DIM;
+      @ requires 0 <= y & y < DIM;
+     */
     /*@pure*/
 	public int index(int x, int y) {
 		return (x * DIM) + y;

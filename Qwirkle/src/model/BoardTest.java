@@ -101,7 +101,7 @@ public class BoardTest {
 	
 	@Test
 	public void testnoValidMoves() {
-		board.setField(92, 92, new Block(Color.BLUE, Shape.CIRCLE));
+		board.setField(91, 91, new Block(Color.BLUE, Shape.CIRCLE));
 		Block block1 = new Block(Color.GREEN, Shape.CIRCLE); 
 		Block block2 = new Block(Color.YELLOW, Shape.CLOVER); 
 		Block block3 = new Block(Color.GREEN, Shape.DIAMOND);
@@ -117,6 +117,15 @@ public class BoardTest {
 		assertTrue(board.noValidMoves(hand));
 		hand.add(block1);
 		assertFalse(board.noValidMoves(hand));
+	}
+	
+	@Test
+	public void testIllegalConnection() {
+		PlayMove move = new PlayMove(new Block(Color.GREEN, Shape.CIRCLE),
+							91, 92, new NetworkPlayer());
+		board.setField(91, 91, new Block(Color.BLUE, Shape.CIRCLE));
+		board.setField(91, 93, new Block(Color.BLUE, Shape.CIRCLE));
+		assertFalse(board.isLegalMove(move));
 	}
 	
 	@Test
@@ -142,7 +151,7 @@ public class BoardTest {
 		PlayMove move10 = new PlayMove(new Block(Color.GREEN, Shape.DIAMOND), 
 						33, 65, new NetworkPlayer());
 		PlayMove move11 = new PlayMove(new Block(Color.GREEN, Shape.DIAMOND), 
-						92, 92, new NetworkPlayer());
+						91, 91, new NetworkPlayer());
 		PlayMove move12 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 
 						35, 65, new NetworkPlayer());
 		assertFalse(board.isLegalMove(move1));
