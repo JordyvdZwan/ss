@@ -49,7 +49,6 @@ public class MultiThreadStrategy implements Strategy {
 		long start = System.currentTimeMillis();
 		long end = start + thinkTime;
 		for (Block block : hand) {
-			System.out.println("HALLO!!!!!!!!");
 			for (int x = b.minX(); x < b.maxX() && System.currentTimeMillis() < end; x++) {
 				for (int y = b.minY(); y < b.maxY() && System.currentTimeMillis() < end; y++) {
 					PlayMove move = new PlayMove(block, x, y, player);

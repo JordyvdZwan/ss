@@ -6,6 +6,7 @@ import org.junit.Test;
 import model.*;
 import player.*;
 import strategy.*;
+import view.TUI;
 import view.UI;
 
 import static org.junit.Assert.assertEquals;
@@ -23,10 +24,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameTest {
+public class GameTest extends Thread {
 	private Server server;
 	private Socket sock;
-	private UI ui;
+	private UI ui = new TUI(false);
 	private Board board;
 	private Game game;
 	private NetworkPlayer networkplayer = new NetworkPlayer();
@@ -74,9 +75,22 @@ public class GameTest {
 			BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));	
 			game.addConnection(new Connection(game, sock, new NetworkPlayer()));
-			game.processMessage(game.connections.get(0), "WELCOME testABC 0");
-			game.processMessage(game.connections.get(0), "NAMES testABC 0 thijs 1 5000");
-			game.processMessage(game.connections.get(0), "NEW Gc Yc Rc Bc Oc R*");
+			System.out.println(game.connections.size());
+			game.processMessage(game.connections.get(0), "HELLO poep");
+			System.out.println(game.connections.size());
+			game.addConnection(new Connection(game, sock, new NetworkPlayer()));
+			System.out.println(game.connections.size());
+			game.processMessage(game.connections.get(0), "HELLO hallo");
+			System.out.println(game.connections.size());
+			game.start();
+			try {
+				sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			block = game.connections.get(game.getTurn()).getPlayer().getHand().get(0);
+			String test = block.toString();
+			game.processMessage(game.connections.get(0), "MOVE " + test + " 91 91");
 			Board board = new Board();
 			ArrayList<PlayMove> multipleMove = new ArrayList<PlayMove>();
 			PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 
@@ -94,8 +108,7 @@ public class GameTest {
 			multipleMove.add(move2);
 			multipleMove.add(move3);
 			multipleMove.add(move6);
-			game.processMessage(game.connections.get(0), 
-										"TURN 0 Gc 92 92 Yc 92 93 Rc 92 91 Bc 92 94 Oc 92 95");
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

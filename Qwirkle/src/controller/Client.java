@@ -183,8 +183,6 @@ public class Client extends Observable {
 				String move = "";
 				if (isInstanceOfPlayMoves(moves)) {
 					List<PlayMove> playMoves = toPlayMove(moves);
-					System.out.println(board.isLegalMoveList(playMoves));
-					System.out.println(blocksInHand(moves, player.getHand()));
 					if (board.isLegalMoveList(playMoves) && blocksInHand(moves, player.getHand())) {
 						for (PlayMove playMove : playMoves) {
 							move = move.concat(" " + playMove.getBlock().toString() + 

@@ -545,8 +545,6 @@ public class Game extends Thread {
 			endGame();
 		} else {
 			turn = (turn + 1) % players.size();
-			System.out.println(getPlayer(turn).getHand().isEmpty());
-			System.out.println(stack.size());
 			if (getPlayer(turn).getHand().isEmpty() && stack.size() == 0) {
 				playerWins(detectWinner());
 			}
@@ -555,9 +553,6 @@ public class Game extends Thread {
 			}
 			if (!(board.noValidMoves(getPlayer(turn).getHand()) && stack.size() == 0)) {
 				broadcastMessage("NEXT " + getPlayer(turn).getNumber());
-				for (Block block : getPlayer(turn).getHand()) {
-					System.out.println(block.toString());
-				}
 			} else {
 				nextTurn();
 			}
@@ -792,4 +787,8 @@ public class Game extends Thread {
 		return result;
 	}
 
+	//TODO
+	public int getTurn() {
+		return turn;
+	}
 }
