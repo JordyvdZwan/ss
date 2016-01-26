@@ -2,6 +2,7 @@ package strategy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import model.Block;
 import model.Board;
@@ -10,7 +11,7 @@ import model.PlayMove;
 import model.SwapMove;
 import player.Player;
 
-public class MultiThreadStrategy extends Thread implements Strategy {
+public class MultiThreadStrategy extends Thread implements Strategy, Callable {
 	public static final int EDGE = 1;
 	MultiThreadStrategy setter;
 	
@@ -109,25 +110,33 @@ public class MultiThreadStrategy extends Thread implements Strategy {
 	}
 	
 	public List<SwapMove> retardedStrategySwap(List<Block> hand, 
-			Player player, Board board, int stackSize) {
-			List<Block> swaphand = new ArrayList<Block>();
-			swaphand.addAll(hand);
-			SwapMove move = null;
-			List<SwapMove> swapmove = new ArrayList<SwapMove>();
-			if (stackSize > 6) {
-				double j = Math.random() * 6;
-				for (int i = 0; i < j; i++) {
-					move = new SwapMove(swaphand.get(i), player);
-					swapmove.add(move);
-				} 
-			} else {
-				int j = stackSize;
-				for (int i = 0; i < j; i++) {
-					move = new SwapMove(swaphand.get(i), player);
-					swapmove.add(move);
-				}
+		Player player, Board board, int stackSize) {
+		List<Block> swaphand = new ArrayList<Block>();
+		swaphand.addAll(hand);
+		SwapMove move = null;
+		List<SwapMove> swapmove = new ArrayList<SwapMove>();
+		if (stackSize > 6) {
+			double j = Math.random() * 6;
+			for (int i = 0; i < j; i++) {
+				move = new SwapMove(swaphand.get(i), player);
+				swapmove.add(move);
+			} 
+		} else {
+			int j = stackSize;
+			for (int i = 0; i < j; i++) {
+				move = new SwapMove(swaphand.get(i), player);
+				swapmove.add(move);
 			}
-			return swapmove;
 		}
+		return swapmove;
+	}
+
+	
+	
+	@Override
+	public Object call() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
