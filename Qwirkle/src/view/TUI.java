@@ -166,7 +166,8 @@ public class TUI implements UI {
 		System.out.println("5. start local Multi Thread AI     // 6. start Multi Thread AI");
 		System.out.println("7. start local Miranda AI         // 8. start Miranda AI");
 		System.out.println("9. start local Retarded AI       // 10. start Retarded AI");
-		System.out.println("NOTE: the Miranda and Retarded AI do not respect the ThinkTime of the AI");
+		System.out.println("NOTE: the Miranda and Retarded "
+											+ "AI do not respect the ThinkTime of the AI");
 		String input = in.nextLine();
 		String result = "";
 		if (input.equals("1")) {
