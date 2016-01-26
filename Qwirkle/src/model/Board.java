@@ -364,10 +364,10 @@ public class Board {
 	  					0 <= getY(moves.get(i)) & getY(moves.get(i)) < DIM);
 	  @ requires (\forall int i; 0 <= i & i < moves.size();
 	  								getBlock(moves.get(i)) instanceof Block);
-	  @ ensures isOnlyX(moves) ==> ((\max int i; 0 <= i & i < moves.size(); getX(moves.get(i))) - 
+	  @ ensures isOnlyY(moves) ==> ((\max int i; 0 <= i & i < moves.size(); getX(moves.get(i))) - 
 	  							(\min int i; 0 <= i & i < moves.size(); getX(moves.get(i))) <= 6
 	  							==> \result == true);
-  	  @ ensures isOnlyY(moves) ==> ((\max int i; 0 <= i & i < moves.size(); getY(moves.get(i))) - 
+  	  @ ensures isOnlyX(moves) ==> ((\max int i; 0 <= i & i < moves.size(); getY(moves.get(i))) - 
   							(\min int i; 0 <= i & i < moves.size(); getY(moves.get(i))) <= 6
   							==> \result == true);
 	 */
@@ -376,7 +376,7 @@ public class Board {
 		boolean result = true;
 		Board board = deepCopy();
 		board.makeMove(moves);
-		if (isOnlyX(moves)) {
+		if (isOnlyY(moves)) {
 			int min = moves.get(0).x;
 			while (min < DIM && blocks[min][moves.get(0).y] != null) {
 				min--;
