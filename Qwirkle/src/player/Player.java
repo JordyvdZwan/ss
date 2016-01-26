@@ -4,9 +4,7 @@ import java.util.List;
 
 import controller.Connection;
 import model.Block;
-import model.Board;
 import model.Move;
-import view.UI;
 
 public interface Player {
 	
@@ -18,7 +16,6 @@ public interface Player {
 	/*@pure*/
 	public int getScore();
 	public void setScore(int scoreArg);
-	
 	public void setName(String nameArg);
 	/*@pure*/
 	public String getName();

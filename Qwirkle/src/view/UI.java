@@ -3,7 +3,6 @@ package view;
 import model.*;
 import player.Player;
 
-import java.net.InetAddress;
 import java.util.List;
 import java.util.Observer;
 

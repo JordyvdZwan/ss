@@ -5,11 +5,9 @@ import java.util.List;
 
 import controller.Connection;
 import model.Block;
-import model.Board;
 import model.Move;
-import view.UI;
 
-public class NetworkPlayer implements Player{
+public class NetworkPlayer implements Player {
 	private int score;
 	private int number;
 	private String name;

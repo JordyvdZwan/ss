@@ -23,7 +23,7 @@ public class CTUI implements UI {
 	private Scanner in = new Scanner(System.in);
 	private boolean localGame;
 	
-	/**
+	/** 
 	 * returns a list of moves, if a valid input has been given.
 	 */
 	public List<Move> getMove(Board b) {
@@ -93,7 +93,8 @@ public class CTUI implements UI {
 					result = invalidMove(b);
 				}
 			} else if (command.equals("HINT")) {
-				System.out.println(client.getBoard().hint(client.getStackSize(), client.getPlayer()));
+				System.out.println(client.getBoard().
+											hint(client.getStackSize(), client.getPlayer()));
 				result = getMove(b);
 			} else {
 				result = invalidMove(b);

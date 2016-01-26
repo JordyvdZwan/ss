@@ -32,7 +32,8 @@ public class MultiThreadStrategy extends Thread implements Strategy {
 		
 	}
 	
-	public MultiThreadStrategy(MultiThreadStrategy strat, int thinktime, List<Block> hand , Player player, int stackSize, Board b, List<PlayMove> movelist) {
+	public MultiThreadStrategy(MultiThreadStrategy strat, int thinktime, List<Block> hand,
+								Player player, int stackSize, Board b, List<PlayMove> movelist) {
 		setter = strat;
 		this.hand = hand;
 		this.player = player;
@@ -69,7 +70,8 @@ public class MultiThreadStrategy extends Thread implements Strategy {
 						localHand.addAll(hand);
 						localHand.remove(block);
 						setResult(moveList2);
-						MultiThreadStrategy strategy = new MultiThreadStrategy(setter, thinktime, localHand, player, stackSize, b, moveList2);
+						MultiThreadStrategy strategy = new MultiThreadStrategy(setter, thinktime, 
+														localHand, player, stackSize, b, moveList2);
 						strategy.start();
 					}
 				}
@@ -84,7 +86,8 @@ public class MultiThreadStrategy extends Thread implements Strategy {
 		this.player = player;
 		this.stackSize = stackSize;
 		hand = player.getHand();
-		MultiThreadStrategy strategy = new MultiThreadStrategy(setter, thinktime, hand, player, stackSize, b, moveList);
+		MultiThreadStrategy strategy = new MultiThreadStrategy(setter, 
+										thinktime, hand, player, stackSize, b, moveList);
 		strategy.start();
 		try {
 			this.sleep(thinktime);
@@ -109,25 +112,25 @@ public class MultiThreadStrategy extends Thread implements Strategy {
 	}
 	
 	public List<SwapMove> retardedStrategySwap(List<Block> hand, 
-			Player player, Board board, int stackSize) {
-			List<Block> swaphand = new ArrayList<Block>();
-			swaphand.addAll(hand);
-			SwapMove move = null;
-			List<SwapMove> swapmove = new ArrayList<SwapMove>();
-			if (stackSize > 6) {
-				double j = Math.random() * 6;
-				for (int i = 0; i < j; i++) {
-					move = new SwapMove(swaphand.get(i), player);
-					swapmove.add(move);
-				} 
-			} else {
-				int j = stackSize;
-				for (int i = 0; i < j; i++) {
-					move = new SwapMove(swaphand.get(i), player);
-					swapmove.add(move);
-				}
+						Player player, Board board, int stackSize) {
+		List<Block> swaphand = new ArrayList<Block>();
+		swaphand.addAll(hand);
+		SwapMove move = null;
+		List<SwapMove> swapmove = new ArrayList<SwapMove>();
+		if (stackSize > 6) {
+			double j = Math.random() * 6;
+			for (int i = 0; i < j; i++) {
+				move = new SwapMove(swaphand.get(i), player);
+				swapmove.add(move);
+			} 
+		} else {
+			int j = stackSize;
+			for (int i = 0; i < j; i++) {
+				move = new SwapMove(swaphand.get(i), player);
+				swapmove.add(move);
 			}
-			return swapmove;
 		}
+		return swapmove;
+	}
 
 }

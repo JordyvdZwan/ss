@@ -13,7 +13,9 @@ import player.Player;
 public class MirandaStrategy implements Strategy {
 	public static final int EDGE = 1;
 	
-	private List<List<PlayMove>> getMove(Board b, List<Block> hand, Player player, int stackSize, List<List<PlayMove>> moves, List<PlayMove> move) {
+	private List<List<PlayMove>> getMove(Board b, List<Block> hand, 
+									Player player, int stackSize, List<List<PlayMove>> moves, 
+																			List<PlayMove> move) {
 		List<List<PlayMove>> allPossibleMoves = new ArrayList<List<PlayMove>>();
 		allPossibleMoves.addAll(moves);
 		for (Block block : hand) {
@@ -30,7 +32,8 @@ public class MirandaStrategy implements Strategy {
 						List<PlayMove> movelist = new ArrayList<PlayMove>();
 						movelist.addAll(movelist2);
 						allPossibleMoves.add(movelist);
-						allPossibleMoves = getMove(b, localHand, player, stackSize, allPossibleMoves, movelist);
+						allPossibleMoves = getMove(b, localHand, player, stackSize, 
+																	allPossibleMoves, movelist);
 					}
 				}
 			}
@@ -55,7 +58,8 @@ public class MirandaStrategy implements Strategy {
 						List<PlayMove> movelist = new ArrayList<PlayMove>();
 						movelist.add(move);
 						allPossibleMoves.add(movelist);
-						allPossibleMoves = getMove(b, localHand, player, stackSize, allPossibleMoves, movelist);
+						allPossibleMoves = getMove(b, localHand, player, stackSize, 
+																		allPossibleMoves, movelist);
 					}
 				}
 			}
@@ -89,7 +93,7 @@ public class MirandaStrategy implements Strategy {
 	}
 	
 	public List<SwapMove> retardedStrategySwap(List<Block> hand, 
-		Player player, Board board, int stackSize) {
+					Player player, Board board, int stackSize) {
 		List<Block> swaphand = new ArrayList<Block>();
 		swaphand.addAll(hand);
 		SwapMove move = null;

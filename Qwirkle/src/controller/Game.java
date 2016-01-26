@@ -326,7 +326,6 @@ public class Game extends Thread {
 	}
 
 	private boolean blocksInHand(List<Move> moves, List<Block> hand) {
-		boolean result = true;
 		int counter = 0;
 		outer : for (Move move : moves) {
 			for (Block block : hand) {
@@ -351,7 +350,8 @@ public class Game extends Thread {
 	private void handleNextMove(List<Move> moves) {
 		if (isInstanceOfPlaymoves(moves)) {
 			List<PlayMove> playMoves = toPlayMove(moves);
-			if (board.isLegalMoveList(playMoves) && blocksInHand(moves, playMoves.get(0).getPlayer().getHand())) {
+			if (board.isLegalMoveList(playMoves) && 
+									blocksInHand(moves, playMoves.get(0).getPlayer().getHand())) {
 				Player player = playMoves.get(0).getPlayer();
 				player.setScore(player.getScore() + board.legitMoveScore(playMoves));
 				board.makeMove(playMoves);
@@ -364,7 +364,8 @@ public class Game extends Thread {
 			}
 		} else {
 			List<SwapMove> swapMoves = toSwapMove(moves);
-			if (stack.isValidSwap(swapMoves) && blocksInHand(moves, swapMoves.get(0).getPlayer().getHand())) {
+			if (stack.isValidSwap(swapMoves) && 
+									blocksInHand(moves, swapMoves.get(0).getPlayer().getHand())) {
 				swapStones(swapMoves.get(0).getPlayer().getConnection(), moves, swapMoves.size());
 				broadcastSwapMove(swapMoves, swapMoves.get(0).getPlayer().getNumber());
 			} else {

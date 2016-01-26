@@ -8,8 +8,6 @@ import java.util.Scanner;
 import controller.Client;
 import controller.Server;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -93,7 +91,8 @@ public class TUI implements UI {
 					result = invalidMove(b);
 				}
 			} else if (command.equals("HINT")) {
-				System.out.println(client.getBoard().hint(client.getStackSize(), client.getPlayer()));
+				System.out.println(client.getBoard().
+											hint(client.getStackSize(), client.getPlayer()));
 				result = getMove(b);
 			} else {
 				result = invalidMove(b);
