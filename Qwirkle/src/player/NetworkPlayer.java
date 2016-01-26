@@ -21,6 +21,7 @@ public class NetworkPlayer implements Player {
 	public NetworkPlayer(String name, int number) {
 		this.number = number;
 		this.name = name;
+		hand = new ArrayList<Block>();
 	}
 	
 	public void removeFromHand(Move move) {

@@ -161,8 +161,8 @@ public class TUI implements UI {
 	
 	public String getChoiceServerClient() {
 		System.out.println("Do you want to start a server of client? press corresponding number.");
-		System.out.println("1. start Server          			 // 2. start Client");
-		System.out.println("3. start Default Server 			// 4. start local Client");
+		System.out.println("1. start Server                      // 2. start Client");
+		System.out.println("3. start Default Server             // 4. start local Client");
 		System.out.println("5. start local Multi Thread AI     // 6. start Multi Thread AI");
 		System.out.println("7. start local Miranda AI         // 8. start Miranda AI");
 		System.out.println("9. start local Retarded AI       // 10. start Retarded AI");
