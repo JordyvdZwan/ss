@@ -72,8 +72,8 @@ public class GameTest {
 			Socket ssock = serverSocket.accept();
 			serverSocket.close();
 			BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
-																sock.getOutputStream()));		
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));	
+			game.addConnection(new Connection(game, sock, new NetworkPlayer()));
 			game.processMessage(game.connections.get(0), "WELCOME testABC 0");
 			game.processMessage(game.connections.get(0), "NAMES testABC 0 thijs 1 5000");
 			game.processMessage(game.connections.get(0), "NEW Gc Yc Rc Bc Oc R*");

@@ -183,7 +183,7 @@ public class Board {
 	/*@pure*/
 	public boolean isLegalMove(PlayMove move) {
 		return isLegalXRow(move) && isLegalYRow(move) 
-						&& !isLonelyStone(move) && isEmptyField(move.x, move.y);
+						&& !isLonelyStone(move) && isEmptyField(move.x, move.y) && isLegalConnection(move);
 	}
 
 	/**
@@ -274,28 +274,21 @@ public class Board {
 		Board board = deepCopy();
 		List<PlayMove> moves = new ArrayList<PlayMove>();
 		moves.addAll(moveslist);
-		if (moveslist.size() > 0) {
-			if (allConnected(moveslist)) {
-				if (isOnlyX(moveslist) || isOnlyY(moveslist)) {
-					while (moves.size() > 0) {
-						boolean legalmove = false;
-						for (int i = 0; i < moves.size(); i++) {
-							if (board.isLegalMove(moves.get(i))) {
-								board.setField(moves.get(i).x, moves.get(i).y, moves.get(i).block);
-								legalmove = true;
-								moves.remove(i);
-							}
-						}
-						if (!legalmove) {
-							legal = false;
-							break;
-						}
+		if (moveslist.size() > 0 && allConnected(moveslist) && (isOnlyX(moveslist) || 
+											isOnlyY(moveslist)) && isLegalRow(moveslist)) {
+			while (moves.size() > 0) {
+				boolean legalmove = false;
+				for (int i = 0; i < moves.size(); i++) {
+					if (board.isLegalMove(moves.get(i))) {
+						board.setField(moves.get(i).x, moves.get(i).y, moves.get(i).block);
+						legalmove = true;
+						moves.remove(i);
 					}
-				} else {
-					legal = false;
 				}
-			} else {
-				legal = false;
+				if (!legalmove) {
+					legal = false;
+					break;
+				}
 			}
 		} else {
 			legal = false;
@@ -305,18 +298,90 @@ public class Board {
 
 	
 	//TODO
+	public boolean isLegalConnection(PlayMove move) {
+		System.out.println("poep");
+		boolean result = true;
+		Board board = deepCopy();
+		board.setField(move.x, move.y, move.getBlock());
+		List<Block> PlacedXBlocks = new ArrayList<Block>();
+		List<Block> PlacedYBlocks = new ArrayList<Block>();
+			int min = move.x;
+			while (min < DIM && board.getBlock()[min][move.y] != null) {
+				System.out.println(min);
+				min--;
+			}
+			min++;
+			while (min < DIM && board.getBlock()[min][move.y] != null) {
+				System.out.println(min);
+				PlacedXBlocks.add(board.getBlock()[min][move.y]);
+				System.out.println(board.getBlock()[min][move.y]);
+				min++;
+			}
+			min = move.y;
+			while (min < DIM && board.getBlock()[move.x][min] != null) {
+				System.out.println(min);
+				min--;
+			}
+			min++;
+			while (min < DIM && board.getBlock()[move.x][min] != null) {
+				System.out.println(min);
+				PlacedYBlocks.add(board.getBlock()[move.x][min]);
+				System.out.println(board.getBlock()[move.x][min]);
+				min++;
+		}
+		for (Block block : PlacedYBlocks) {
+			for (Block block2 : PlacedYBlocks) {
+				if (block != block2 && block.color == block2.color && block.shape == block2.shape) {
+					System.out.println(block.toString());
+					System.out.println(block2.toString());
+					result = false;
+					break;
+				}
+			}
+		}
+		for (Block block : PlacedXBlocks) {
+			for (Block block2 : PlacedXBlocks) {
+				if (block != block2 && block.color == block2.color && block.shape == block2.shape) {
+					System.out.println(block.toString());
+					System.out.println(block2.toString());
+					result = false;
+					break;
+				}
+			}
+		}
+		return result;
+	}
+	
+	
+	//TODO
 	public boolean isLegalRow(List<PlayMove> moves) {
 		boolean result = true;
-		Board board = new Board(this);
+		Board board = deepCopy();
 		board.makeMove(moves);
 		if (isOnlyX(moves)) {
 			int min = moves.get(0).x;
 			while (min < DIM && blocks[min][moves.get(0).y] != null) {
 				min--;
 			}
-			
+			int max = min;
+			while (max < DIM && blocks[max][moves.get(0).y] != null) {
+				max++;
+			}
+			if (max - min > 6) {
+				result = false;
+			}
 		} else {
-			
+			int min = moves.get(0).y;
+			while (min < DIM && blocks[moves.get(0).x][min] != null) {
+				min--;
+			}
+			int max = min;
+			while (max < DIM && blocks[moves.get(0).x][max] != null) {
+				max++;
+			}
+			if (max - min > 6) {
+				result = false;
+			}
 		}
 		return result;
 	}
