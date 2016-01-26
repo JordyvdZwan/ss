@@ -2,6 +2,7 @@ package strategy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import model.Block;
 import model.Board;
@@ -10,7 +11,7 @@ import model.PlayMove;
 import model.SwapMove;
 import player.Player;
 
-public class MultiThreadStrategy extends Thread implements Strategy {
+public class MultiThreadStrategy extends Thread implements Strategy, Callable {
 	public static final int EDGE = 1;
 	MultiThreadStrategy setter;
 	
@@ -133,4 +134,11 @@ public class MultiThreadStrategy extends Thread implements Strategy {
 		return swapmove;
 	}
 
+	
+	
+	@Override
+	public Object call() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
