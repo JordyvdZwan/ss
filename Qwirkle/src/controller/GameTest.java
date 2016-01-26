@@ -99,6 +99,5 @@ public class GameTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		sock.close();
 	}
 }
