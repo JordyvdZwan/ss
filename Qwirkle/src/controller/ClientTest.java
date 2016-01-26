@@ -41,8 +41,7 @@ public class ClientTest {
 	}
 	
 	@Test
-	public void testNames() {
-		Scanner reader = new Scanner(System.in);
+	public void testClient() {
 		try {
 			ServerSocket serverSocket = new ServerSocket(25565);
 			Block block = new Block(Color.GREEN, Shape.CLOVER);
