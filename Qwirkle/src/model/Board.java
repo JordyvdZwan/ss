@@ -13,7 +13,7 @@ import strategy.*;
 public class Board {
 	private Block[][] blocks;
 	public static final int DIM = 183;
-	public static final int MID = 92;
+	public static final int MID = 91;
 
 	/**
 	 * maakt een nieuw, leeg speelbord.
@@ -315,17 +315,17 @@ public class Board {
 	  @ requires 0 <= getY(move) & getY(move) <= DIM;
 	  @ ensures ((\forall int i; (\forall int j; 0 <= j & j < i; 
 		this.getField(getX(move) + j, getY(move)) != null && getX(move) + j < DIM);
-		(Block.getColor(getField(getX(move) + i, getY(move))) != Block.getColor(getBlock(move))) &&
-		!(Block.getShape(getField(getX(move) + i, getY(move))) != Block.getShape(getBlock(move))) ||
-		!(Block.getColor(getField(getX(move) + i, getY(move))) != Block.getColor(getBlock(move))) &&
-		(Block.getShape(getField(getX(move) + i, getY(move))) != Block.getShape(getBlock(move))) ||
-		i == getX(move))) && ((\forall int i; (\forall int j; 0 <= j & j < i; 
+		getField(getX(move) + i, getY(move)).getColor() != getBlock(move).getColor() &&
+		!(getField(getX(move) + i, getY(move)).getShape() != getBlock(move).getShape()) ||
+		!(getField(getX(move) + i, getY(move)).getColor() != getBlock(move).getColor()) &&
+		getField(getX(move) + i, getY(move)).getShape() != getBlock(move).getShape() ||
+		i == getX(move)) && ((\forall int i; (\forall int j; 0 <= j & j < i; 
 		this.getField(getX(move) - j, getY(move)) != null && getX(move) - j > 0);
-		(Block.getColor(getField(getX(move) - i, getY(move))) != Block.getColor(getBlock(move))) &&
-		!(Block.getShape(getField(getX(move) - i, getY(move))) != Block.getShape(getBlock(move))) ||
-		!(Block.getColor(getField(getX(move) - i, getY(move))) != Block.getColor(getBlock(move))) &&
-		(Block.getShape(getField(getX(move) - i, getY(move))) != Block.getShape(getBlock(move))) ||
-		i == getX(move))) ==> \result == true; 
+		getField(getX(move) - i, getY(move)).getColor() != getBlock(move).getColor() &&
+		!(getField(getX(move) - i, getY(move)).getShape() != getBlock(move).getShape()) ||
+		!(getField(getX(move) - i, getY(move)).getColor() != getBlock(move).getColor()) &&
+		getField(getX(move) - i, getY(move)).getShape() != getBlock(move).getShape() ||
+		i == getX(move))) ==> \result == true); 
 	 */
 	/*@pure*/
 	public boolean isLegalXRow(PlayMove move) {
@@ -390,17 +390,17 @@ public class Board {
 	  @ requires 0 <= getY(move) & getY(move) <= DIM;
 	  @ ensures ((\forall int i; (\forall int j; 0 <= j & j < i; 
 		this.getField(getX(move), getY(move) + j) != null && getY(move) + j < DIM);
-		(Block.getColor(getField(getX(move), getY(move) + i)) != Block.getColor(getBlock(move))) &&
-		!(Block.getShape(getField(getX(move), getY(move) + i)) != Block.getShape(getBlock(move))) ||
-		!(Block.getColor(getField(getX(move), getY(move) + i)) != Block.getColor(getBlock(move))) &&
-		(Block.getShape(getField(getX(move), getY(move) + i)) != Block.getShape(getBlock(move))) ||
-		i == getY(move))) && ((\forall int i; (\forall int j; 0 <= j & j < i; 
+		getField(getX(move), getY(move) + i).getColor() != getBlock(move).getColor() &&
+		!(getField(getX(move), getY(move) + i).getShape() != getBlock(move).getShape()) ||
+		!(getField(getX(move), getY(move) + i).getColor() != getBlock(move).getColor()) &&
+		getField(getX(move), getY(move) + i).getShape() != getBlock(move).getShape() ||
+		i == getY(move)) && ((\forall int i; (\forall int j; 0 <= j & j < i; 
 		this.getField(getX(move), getY(move) - j) != null && getY(move) - j > 0);
-		(Block.getColor(getField(getX(move), getY(move) - i)) != Block.getColor(getBlock(move))) &&
-		!(Block.getShape(getField(getX(move), getY(move) - i)) != Block.getShape(getBlock(move))) ||
-		!(Block.getColor(getField(getX(move), getY(move) - i)) != Block.getColor(getBlock(move))) &&
-		(Block.getShape(getField(getX(move), getY(move) - i)) != Block.getShape(getBlock(move))) ||
-		i == getY(move))) ==> \result == true; 
+		getField(getX(move), getY(move) - i).getColor() != getBlock(move).getColor() &&
+		!(getField(getX(move), getY(move) - i).getShape() != getBlock(move).getShape()) ||
+		!(getField(getX(move), getY(move) - i).getColor() != getBlock(move).getColor()) &&
+		getField(getX(move), getY(move) - i).getShape() != getBlock(move).getShape() ||
+		i == getY(move))) ==> \result == true); 
 	 */
 	/*@pure*/
 	public boolean isLegalYRow(PlayMove move) {

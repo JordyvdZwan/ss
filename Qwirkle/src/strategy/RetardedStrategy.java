@@ -36,10 +36,10 @@ public class RetardedStrategy implements Strategy {
 		List<PlayMove> moves = new ArrayList<PlayMove>();
 		PlayMove move = null;
 		if (movehand.size() > 0) {
-			if (moveboard.isEmptyField(92, 92)) {
-				move = new PlayMove(movehand.get(0), 92, 92, player);
+			if (moveboard.isEmptyField(Board.MID, Board.MID)) {
+				move = new PlayMove(movehand.get(0), Board.MID, Board.MID, player);
 				moves.add(move);
-				moveboard.setField(92, 92, movehand.get(0));
+				moveboard.setField(Board.MID, Board.MID, movehand.get(0));
 				movehand.remove(0);
 			}
 //			for (Block block : movehand) {

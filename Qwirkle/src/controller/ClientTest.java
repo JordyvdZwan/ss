@@ -13,6 +13,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -41,17 +42,20 @@ public class ClientTest {
 	
 	@Test
 	public void testNames() {
+		Scanner reader = new Scanner(System.in);
 		try {
 			ServerSocket serverSocket = new ServerSocket(25565);
+			Block block = new Block(Color.GREEN, Shape.CLOVER);
 			InetAddress address = InetAddress.getByName("localhost");
 			Socket sock = new Socket(address, 25565);
 			Socket ssock = serverSocket.accept();
 			serverSocket.close();
 			BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));			
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
+																sock.getOutputStream()));			
 			client = new Client(ui, sock, new ComputerPlayer("testABC", new RetardedStrategy()));
 			client.processMessage(client.conn, "WELCOME testABC 0");
-			client.processMessage(client.conn, "NAMES testABC 0 poep 1 thijs 2 5000");
+			client.processMessage(client.conn, "NAMES testABC 0 thijs 1 5000");
 			client.processMessage(client.conn, "NEW Gc Yc Rc Bc Oc R*");
 			Board board = new Board();
 			ArrayList<PlayMove> multipleMove = new ArrayList<PlayMove>();
@@ -71,9 +75,16 @@ public class ClientTest {
 			multipleMove.add(move3);
 			multipleMove.add(move6);
 			board.makeMove(multipleMove);
-			client.processMessage(client.conn, "TURN 2 Gc 34 65 Yc 34 66 Rc 34 67 Bc 34 68 Oc 34 64");
-			System.out.println(board.toString());
-			assertTrue(board.getBlock() == client.getBoard().getBlock());
+			client.processMessage(client.conn, 
+										"TURN 0 Gc 92 92 Yc 92 93 Rc 92 91 Bc 92 94 Oc 92 95");
+			assertEquals(block.getColor(), client.getBoard().getField(92, 92).getColor());
+			assertEquals(block.getShape(), client.getBoard().getField(92, 92).getShape());
+			assertEquals("testABC", client.getPlayer().getName());
+			assertEquals(5, client.getPlayer().getScore());
+			client.processMessage(client.conn, "TURN 1 empty");
+			client.processMessage(client.conn, "KICK 1 6 is grappig");
+			client.processMessage(client.conn, "WINNER 0");
+			client.processMessage(client.conn, "LOSOFCONNECTION");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
