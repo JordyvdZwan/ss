@@ -11,10 +11,10 @@ public class AITest {
 	private Board board = new Board();
 	private ComputerPlayer player = new ComputerPlayer("retard", new RetardedStrategy());
 	private ComputerPlayer supremeleader = new ComputerPlayer("alladeen", 
-						new SupremeLeaderStrategy());
+						new RetardedStrategy());
 	private Stack stack;
 	RetardedStrategy retard = new RetardedStrategy();
-	SupremeLeaderStrategy alladeen = new SupremeLeaderStrategy();
+	RetardedStrategy alladeen = new RetardedStrategy();
 	
 	@Before
 	public void setUp() {

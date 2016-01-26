@@ -15,7 +15,7 @@ public class Client extends Observable {
 
 	private int aiThinkTime;
 	private UI ui;
-	private /*@ spec_public @*/ Connection conn;
+	public Connection conn;
 	private /*@ spec_public @*/ LocalPlayer player;
 	private List<Player> opponents = new ArrayList<Player>();
 	private /*@ spec_public @*/ Board board;
