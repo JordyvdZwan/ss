@@ -36,7 +36,7 @@ public class GameTest {
 	private Stack stack;
 	MirandaStrategy miranda = new MirandaStrategy();
 	private Connection conn;	
-	private Client client = new Client(ui, sock, new ComputerPlayer("testABC", new RetardedStrategy()));
+//	private Client client = new Client(ui, sock, new ComputerPlayer("testABC", new RetardedStrategy()));
 	
 	@Before
 	public void setup() {
@@ -74,9 +74,9 @@ public class GameTest {
 			BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
 																sock.getOutputStream()));		
-			client.processMessage(client.conn, "WELCOME testABC 0");
-			client.processMessage(client.conn, "NAMES testABC 0 thijs 1 5000");
-			client.processMessage(client.conn, "NEW Gc Yc Rc Bc Oc R*");
+			game.processMessage(game.connections.get(0), "WELCOME testABC 0");
+			game.processMessage(game.connections.get(0), "NAMES testABC 0 thijs 1 5000");
+			game.processMessage(game.connections.get(0), "NEW Gc Yc Rc Bc Oc R*");
 			Board board = new Board();
 			ArrayList<PlayMove> multipleMove = new ArrayList<PlayMove>();
 			PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 
@@ -94,15 +94,11 @@ public class GameTest {
 			multipleMove.add(move2);
 			multipleMove.add(move3);
 			multipleMove.add(move6);
-			board.makeMove(multipleMove);
+			game.processMessage(game.connections.get(0), 
+										"TURN 0 Gc 92 92 Yc 92 93 Rc 92 91 Bc 92 94 Oc 92 95");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		sock.close();
 	}
-	
-//	@Test
-//	public void testKick() {
-//		game.kickPlayer(conn, 0, player.getHand(), "is grappig");
-//	}
-
 }

@@ -1,7 +1,6 @@
 package controller;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
@@ -28,7 +27,6 @@ import view.TUI;
 import view.UI;
 import player.*;
 import strategy.*;
-import controller.Game;
 
 public class ClientTest {
 	Client client;
@@ -49,9 +47,6 @@ public class ClientTest {
 			Socket sock = new Socket(address, 25565);
 			Socket ssock = serverSocket.accept();
 			serverSocket.close();
-			BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
-																sock.getOutputStream()));			
 			client = new Client(ui, sock, new ComputerPlayer("testABC", new RetardedStrategy()));
 			client.processMessage(client.conn, "WELCOME testABC 0");
 			client.processMessage(client.conn, "NAMES testABC 0 thijs 1 5000");
@@ -81,6 +76,7 @@ public class ClientTest {
 			assertEquals("testABC", client.getPlayer().getName());
 			assertEquals(5, client.getPlayer().getScore());
 			client.processMessage(client.conn, "TURN 1 empty");
+			ssock.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -109,7 +105,7 @@ public class ClientTest {
 			client.processMessage(client.conn, "NEXT 0");
 			assertTrue(client.getPlayer().getHand().size() == 5);
 			client.processMessage(client.conn, "NEXT 0");
-			assertTrue(client.getPlayer().getHand().size() >= 0 );
+			assertTrue(client.getPlayer().getHand().size() >= 0);
 			assertTrue(client.getPlayer().getHand().size() < 5);
 			ssock.close();
 			in.close();
