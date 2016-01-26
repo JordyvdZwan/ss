@@ -2,7 +2,6 @@ package strategy;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import model.Block;
 import model.Board;
@@ -18,10 +17,12 @@ public class MultiThreadStrategy implements Strategy {
 	
 	private void getMove(Board b, List<Block> hand, 
 									Player player, int stackSize, List<List<PlayMove>> moves, 
-																			List<PlayMove> move, long end) {
+																	List<PlayMove> move, long end) {
 		for (Block block : hand) {
-			for (int x = b.minX() - EDGE; x < b.maxX() + EDGE && System.currentTimeMillis() < end; x++) {
-				for (int y = b.minY() - EDGE; y < b.maxY() + EDGE && System.currentTimeMillis() < end; y++) {
+			for (int x = b.minX() - EDGE; 
+									x < b.maxX() + EDGE && System.currentTimeMillis() < end; x++) {
+				for (int y = b.minY() - EDGE; 
+									y < b.maxY() + EDGE && System.currentTimeMillis() < end; y++) {
 					PlayMove move2 = new PlayMove(block, x, y, player);
 					List<PlayMove> movelist2 = new ArrayList<PlayMove>();
 					movelist2.addAll(move);
@@ -60,8 +61,7 @@ public class MultiThreadStrategy implements Strategy {
 						List<PlayMove> movelist = new ArrayList<PlayMove>();
 						movelist.add(move);
 						allPossibleMoves.add(movelist);
-						getMove(b, localHand, player, stackSize, 
-																		allPossibleMoves, movelist, end);
+						getMove(b, localHand, player, stackSize, allPossibleMoves, movelist, end);
 					}
 				}
 			}
@@ -85,12 +85,6 @@ public class MultiThreadStrategy implements Strategy {
 				result.add(move);
 			}
 		}
-		
-		
-		
-		
-
-		
 		return result;
 	}
 	
