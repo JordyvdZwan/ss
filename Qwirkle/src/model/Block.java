@@ -18,13 +18,13 @@ public class Block {
 	}
 	
 	/*@pure*/
-	public static Color getColor(Block block) {
-		return block.color;
+	public Color getColor() {
+		return this.color;
 	}
 	
 	/*@pure*/
-	public static Shape getShape(Block block) {
-		return block.shape;
+	public Shape getShape() {
+		return this.shape;
 	}
 	
 	 //prints out a block
