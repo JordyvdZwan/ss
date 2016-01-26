@@ -14,7 +14,6 @@ public class Board {
 	private Block[][] blocks;
 	public static final int DIM = 183;
 	public static final int MID = 92;
-	RetardedStrategy ai = new RetardedStrategy();
 
 	/**
 	 * maakt een nieuw, leeg speelbord.
@@ -890,7 +889,7 @@ public class Board {
 	///*@ requires player.getHand().size() > 0;
 	// */
 	public String hint(int stacksize, Player player) {
-		List<Move> moves = ai.getMove(this, player, stacksize, 5000);
+		List<Move> moves = (new RetardedStrategy()).getMove(this, player, stacksize, 5000);
 		String result;
 		result = "HINT!!! (loser...) ";
 		for (Move move : moves) {
