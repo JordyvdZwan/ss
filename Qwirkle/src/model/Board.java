@@ -183,7 +183,7 @@ public class Board {
 	/*@pure*/
 	public boolean isLegalMove(PlayMove move) {
 		return isLegalXRow(move) && isLegalYRow(move) 
-						&& !isLonelyStone(move) && isEmptyField(move.x, move.y) && isLegalConnection(move);
+				&& !isLonelyStone(move) && isEmptyField(move.x, move.y) && isLegalConnection(move);
 	}
 
 	/**
@@ -198,7 +198,8 @@ public class Board {
 	  @ requires (\forall int i; 0 <= i & i <= moveslist.size();
 	  											getY(moveslist.get(i)) <= DIM
 	  												& getY(moveslist.get(i)) >= 0);
-	  @ requires (\forall int i; 0 <= i & i <= moveslist.size());
+	  @ requires (\forall int i; 0 <= i & i <= moveslist.size();
+	  								getBlock(moveslist.get(i)) instanceof Block);
 	 */
 	/*@pure*/
 	public boolean allConnected(List<PlayMove> moveslist) {
@@ -297,53 +298,52 @@ public class Board {
 	}
 
 	
-	//TODO
+	/**
+	 * kijkt of deze steen niet 2 rijen met elkaar combineert die niet gecombineert mogen worden.
+	 * @param move de zet
+	 * @return true als er geen problemen zijn gevonden
+	 */
+	/*@ requires 0 <= getX(move) & getX(move) < DIM;
+	  @ requires 0 <= getY(move) & getY(move) < DIM;
+	  @ requires getBlock(move) instanceof Block;
+	  @ // TODO
+	 */
+	/*@pure*/
 	public boolean isLegalConnection(PlayMove move) {
-		System.out.println("poep");
 		boolean result = true;
 		Board board = deepCopy();
 		board.setField(move.x, move.y, move.getBlock());
-		List<Block> PlacedXBlocks = new ArrayList<Block>();
-		List<Block> PlacedYBlocks = new ArrayList<Block>();
-			int min = move.x;
-			while (min < DIM && board.getBlock()[min][move.y] != null) {
-				System.out.println(min);
-				min--;
-			}
-			min++;
-			while (min < DIM && board.getBlock()[min][move.y] != null) {
-				System.out.println(min);
-				PlacedXBlocks.add(board.getBlock()[min][move.y]);
-				System.out.println(board.getBlock()[min][move.y]);
-				min++;
-			}
-			min = move.y;
-			while (min < DIM && board.getBlock()[move.x][min] != null) {
-				System.out.println(min);
-				min--;
-			}
-			min++;
-			while (min < DIM && board.getBlock()[move.x][min] != null) {
-				System.out.println(min);
-				PlacedYBlocks.add(board.getBlock()[move.x][min]);
-				System.out.println(board.getBlock()[move.x][min]);
-				min++;
+		List<Block> placedXBlocks = new ArrayList<Block>();
+		List<Block> placedYBlocks = new ArrayList<Block>();
+		int min = move.x;
+		while (min < DIM && board.getBlock()[min][move.y] != null) {
+			min--;
 		}
-		for (Block block : PlacedYBlocks) {
-			for (Block block2 : PlacedYBlocks) {
+		min++;
+		while (min < DIM && board.getBlock()[min][move.y] != null) {
+			placedXBlocks.add(board.getBlock()[min][move.y]);
+			min++;
+		}
+		min = move.y;
+		while (min < DIM && board.getBlock()[move.x][min] != null) {
+			min--;
+		}
+		min++;
+		while (min < DIM && board.getBlock()[move.x][min] != null) {
+			placedYBlocks.add(board.getBlock()[move.x][min]);
+			min++;
+		}
+		for (Block block : placedYBlocks) {
+			for (Block block2 : placedYBlocks) {
 				if (block != block2 && block.color == block2.color && block.shape == block2.shape) {
-					System.out.println(block.toString());
-					System.out.println(block2.toString());
 					result = false;
 					break;
 				}
 			}
 		}
-		for (Block block : PlacedXBlocks) {
-			for (Block block2 : PlacedXBlocks) {
+		for (Block block : placedXBlocks) {
+			for (Block block2 : placedXBlocks) {
 				if (block != block2 && block.color == block2.color && block.shape == block2.shape) {
-					System.out.println(block.toString());
-					System.out.println(block2.toString());
 					result = false;
 					break;
 				}
@@ -353,7 +353,25 @@ public class Board {
 	}
 	
 	
-	//TODO
+	/**
+	 * kijkt of deze zet niet 2 rijen combineert die samen langer zijn dan 6 stenen.
+	 * @param moves de zet
+	 * @return true als de gecreërde rij niet langer is dan 6
+	 */
+	/*@ requires (\forall int i; 0 <= i & i < moves.size();
+	  					0 <= getX(moves.get(i)) & getX(moves.get(i)) < DIM);
+	  @ requires (\forall int i; 0 <= i & i < moves.size();
+	  					0 <= getY(moves.get(i)) & getY(moves.get(i)) < DIM);
+	  @ requires (\forall int i; 0 <= i & i < moves.size();
+	  								getBlock(moves.get(i)) instanceof Block);
+	  @ ensures isOnlyX(moves) ==> ((\max int i; 0 <= i & i < moves.size(); getX(moves.get(i))) - 
+	  							(\min int i; 0 <= i & i < moves.size(); getX(moves.get(i))) <= 6
+	  							==> \result == true);
+  	  @ ensures isOnlyY(moves) ==> ((\max int i; 0 <= i & i < moves.size(); getY(moves.get(i))) - 
+  							(\min int i; 0 <= i & i < moves.size(); getY(moves.get(i))) <= 6
+  							==> \result == true);
+	 */
+	/*@pure*/
 	public boolean isLegalRow(List<PlayMove> moves) {
 		boolean result = true;
 		Board board = deepCopy();
