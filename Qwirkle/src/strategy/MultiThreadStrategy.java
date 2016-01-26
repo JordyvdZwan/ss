@@ -11,96 +11,72 @@ import model.PlayMove;
 import model.SwapMove;
 import player.Player;
 
-public class MultiThreadStrategy extends Thread implements Strategy, Callable {
-	public static final int EDGE = 1;
-	MultiThreadStrategy setter;
-	
-	
-	Board b;
-	Player player;
-	int stackSize;
-	List<Block> hand;
-	List<PlayMove> moveList = new ArrayList<PlayMove>();
-	
-	
-	int thinktime = 5000;
-	
-	public List<PlayMove> playResult = new ArrayList<PlayMove>();
-	
-	
-	public MultiThreadStrategy() {
-		setter = this;
-		
-	}
-	
-	public MultiThreadStrategy(MultiThreadStrategy strat, int thinktime, List<Block> hand,
-								Player player, int stackSize, Board b, List<PlayMove> movelist) {
-		setter = strat;
-		this.hand = hand;
-		this.player = player;
-		this.thinktime = thinktime;
-		this.stackSize = stackSize;
-		this.b = new Board(b);
-		this.moveList = movelist;
-}
+public class MultiThreadStrategy implements Strategy {
 
-	public void setResult(List<PlayMove> newRes) {
-		synchronized (setter.playResult) {
-			if (b.isLegalMoveList(newRes)) {
-				if (setter.playResult.isEmpty()) {
-					setter.playResult = newRes;
-				} else {
-					if (b.legitMoveScore(newRes) > b.legitMoveScore(setter.playResult)) {
-						setter.playResult = newRes;
-					}
-				}
-			}
-		}
-	}
+	public static final int EDGE = 1;
+	List<List<PlayMove>> allPossibleMoves;
 	
-	public void run() {
+	private void getMove(Board b, List<Block> hand, 
+									Player player, int stackSize, List<List<PlayMove>> moves, 
+																			List<PlayMove> move, long end) {
 		for (Block block : hand) {
-			for (int x = b.minX(); x < b.maxX(); x++) {
-				for (int y = b.minY(); y < b.maxY(); y++) {
-					PlayMove move = new PlayMove(block, x, y, player);
-					List<PlayMove> moveList2 = new ArrayList<PlayMove>();
-					moveList2.addAll(moveList);
-					moveList2.add(move);
-					if (!moveList2.isEmpty() && b.isLegalMoveList(moveList2)) {
+			for (int x = b.minX() - EDGE; x < b.maxX() + EDGE && System.currentTimeMillis() < end; x++) {
+				for (int y = b.minY() - EDGE; y < b.maxY() + EDGE && System.currentTimeMillis() < end; y++) {
+					PlayMove move2 = new PlayMove(block, x, y, player);
+					List<PlayMove> movelist2 = new ArrayList<PlayMove>();
+					movelist2.addAll(move);
+					movelist2.add(move2);
+					if (b.isLegalMoveList(movelist2)) {
 						List<Block> localHand = new ArrayList<Block>();
 						localHand.addAll(hand);
 						localHand.remove(block);
-						setResult(moveList2);
-						MultiThreadStrategy strategy = new MultiThreadStrategy(setter, thinktime, 
-														localHand, player, stackSize, b, moveList2);
-						strategy.start();
+						List<PlayMove> movelist = new ArrayList<PlayMove>();
+						movelist.addAll(movelist2);
+						allPossibleMoves.add(movelist);
+						getMove(b, localHand, player, stackSize, allPossibleMoves, movelist, end);
 					}
 				}
 			}
 		}
 	}
 	
+	
+	
 	@Override
 	public List<Move> getMove(Board b, Player player, int stackSize, int thinkTime) {
-		List<PlayMove> moveList = new ArrayList<PlayMove>();
-		this.b = new Board(b);
-		this.player = player;
-		this.stackSize = stackSize;
-		hand = player.getHand();
-		MultiThreadStrategy strategy = new MultiThreadStrategy(setter, 
-										thinktime, hand, player, stackSize, b, moveList);
-		strategy.start();
-		try {
-			this.sleep(thinktime);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		allPossibleMoves = new ArrayList<List<PlayMove>>();
+		List<Block> hand = player.getHand();
+		long start = System.currentTimeMillis();
+		long end = start + thinkTime;
+		for (Block block : hand) {
+			System.out.println("HALLO!!!!!!!!");
+			for (int x = b.minX(); x < b.maxX() && System.currentTimeMillis() < end; x++) {
+				for (int y = b.minY(); y < b.maxY() && System.currentTimeMillis() < end; y++) {
+					PlayMove move = new PlayMove(block, x, y, player);
+					if (b.isLegalMove(move)) {
+						List<Block> localHand = new ArrayList<Block>();
+						localHand.addAll(hand);
+						localHand.remove(block);
+						List<PlayMove> movelist = new ArrayList<PlayMove>();
+						movelist.add(move);
+						allPossibleMoves.add(movelist);
+						getMove(b, localHand, player, stackSize, 
+																		allPossibleMoves, movelist, end);
+					}
+				}
+			}
 		}
-		
 		List<Move> result = new ArrayList<Move>();
+		List<PlayMove> playresult = new ArrayList<PlayMove>();
 		List<SwapMove> swapresult = new ArrayList<SwapMove>();
-		if (b.isLegalMoveList(playResult)) {
-			for (PlayMove move : playResult) {
+		if (!allPossibleMoves.isEmpty()) {
+			playresult = allPossibleMoves.get(0);
+			for (List<PlayMove> move : allPossibleMoves) {
+				if (b.legitMoveScore(move) > b.legitMoveScore(playresult)) {
+					playresult = move;
+				}
+			}
+			for (PlayMove move : playresult) {
 				result.add(move);
 			}
 		} else {
@@ -109,11 +85,17 @@ public class MultiThreadStrategy extends Thread implements Strategy, Callable {
 				result.add(move);
 			}
 		}
+		
+		
+		
+		
+
+		
 		return result;
 	}
 	
 	public List<SwapMove> retardedStrategySwap(List<Block> hand, 
-						Player player, Board board, int stackSize) {
+					Player player, Board board, int stackSize) {
 		List<Block> swaphand = new ArrayList<Block>();
 		swaphand.addAll(hand);
 		SwapMove move = null;
@@ -132,13 +114,5 @@ public class MultiThreadStrategy extends Thread implements Strategy, Callable {
 			}
 		}
 		return swapmove;
-	}
-
-	
-	
-	@Override
-	public Object call() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

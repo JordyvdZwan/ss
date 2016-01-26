@@ -12,7 +12,7 @@ public class Controller extends Thread {
 	public static final int MAX_PLAYERS = 4;
 	static UI ui = new CTUI(false);
 	public static final int DEFAULT_PORT = 25565;
-	public static final int DEFAULTAITHINKTIME = 10000;
+	public static final int DEFAULTAITHINKTIME = 5000;
 	
 	
 	public static void main(String[] args) {
@@ -29,10 +29,18 @@ public class Controller extends Thread {
 			startLocalClient(DEFAULT_PORT);
 		} else if (choice.equals("DEFAULTSERVER")) {
 			startLocalServer(DEFAULT_PORT);
-		} else if (choice.equals("LOCALAI")) {
-			startLocalAI(DEFAULT_PORT);
-		} else if (choice.equals("AI")) {
-			startAI();
+		} else if (choice.equals("LOCALAIMU")) {
+			startLocalAIMU(DEFAULT_PORT);
+		} else if (choice.equals("AIMU")) {
+			startAIMU();
+		} else if (choice.equals("LOCALAIMI")) {
+			startLocalAIMI(DEFAULT_PORT);
+		} else if (choice.equals("AIMI")) {
+			startAIMI();
+		} else if (choice.equals("LOCALAIR")) {
+			startLocalAIR(DEFAULT_PORT);
+		} else if (choice.equals("AIR")) {
+			startAIR();
 		} else {
 			ui.errorOccured("wrong input");
 			chooseServerClient();
@@ -53,7 +61,7 @@ public class Controller extends Thread {
 	}
 	
 	@SuppressWarnings("unused")
-	public static void startLocalAI(int port) {
+	public static void startLocalAIMU(int port) {
 		try {
 			Socket sock;
 			InetAddress address;
@@ -61,7 +69,7 @@ public class Controller extends Thread {
 			address = InetAddress.getByName("localhost");
 			
 			sock = new Socket(address, port);
-			Client client = new Client(ui, sock, new ComputerPlayer("AI", new MirandaStrategy()));
+			Client client = new Client(ui, sock, new ComputerPlayer("MultiThreadAI", new MultiThreadStrategy()));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
 			chooseServerClient();
@@ -69,7 +77,42 @@ public class Controller extends Thread {
 	}
 	
 	@SuppressWarnings("unused")
-	public static void startAI() {
+	public static void startAIMU() {
+		try {
+			Socket sock;
+			InetAddress address;
+			
+			address = getHost();
+			int port = getPort();
+			String userName = getUserName();
+			
+			sock = new Socket(address, port);
+			Client client = new Client(ui, sock, new ComputerPlayer(userName, 
+																			new MultiThreadStrategy()));
+		} catch (IOException e) {
+			ui.errorOccured("Could not start Client.");
+			chooseServerClient();
+		}
+	}
+	
+	@SuppressWarnings("unused")
+	public static void startLocalAIMI(int port) {
+		try {
+			Socket sock;
+			InetAddress address;
+			
+			address = InetAddress.getByName("localhost");
+			
+			sock = new Socket(address, port);
+			Client client = new Client(ui, sock, new ComputerPlayer("MirandaAI", new MirandaStrategy()));
+		} catch (IOException e) {
+			ui.errorOccured("Could not start Client.");
+			chooseServerClient();
+		}
+	}
+	
+	@SuppressWarnings("unused")
+	public static void startAIMI() {
 		try {
 			Socket sock;
 			InetAddress address;
@@ -81,6 +124,41 @@ public class Controller extends Thread {
 			sock = new Socket(address, port);
 			Client client = new Client(ui, sock, new ComputerPlayer(userName, 
 																			new MirandaStrategy()));
+		} catch (IOException e) {
+			ui.errorOccured("Could not start Client.");
+			chooseServerClient();
+		}
+	}
+	
+	@SuppressWarnings("unused")
+	public static void startLocalAIR(int port) {
+		try {
+			Socket sock;
+			InetAddress address;
+			
+			address = InetAddress.getByName("localhost");
+			
+			sock = new Socket(address, port);
+			Client client = new Client(ui, sock, new ComputerPlayer("RetardedAI", new RetardedStrategy()));
+		} catch (IOException e) {
+			ui.errorOccured("Could not start Client.");
+			chooseServerClient();
+		}
+	}
+	
+	@SuppressWarnings("unused")
+	public static void startAIR() {
+		try {
+			Socket sock;
+			InetAddress address;
+			
+			address = getHost();
+			int port = getPort();
+			String userName = getUserName();
+			
+			sock = new Socket(address, port);
+			Client client = new Client(ui, sock, new ComputerPlayer(userName, 
+																			new RetardedStrategy()));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
 			chooseServerClient();

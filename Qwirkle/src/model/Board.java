@@ -303,6 +303,23 @@ public class Board {
 		return legal;
 	}
 
+	
+	//TODO
+	public boolean isLegalRow(List<PlayMove> moves) {
+		boolean result = true;
+		Board board = new Board(this);
+		board.makeMove(moves);
+		if (isOnlyX(moves)) {
+			int min = moves.get(0).x;
+			while (min < DIM && blocks[min][moves.get(0).y] != null) {
+				min--;
+			}
+			
+		} else {
+			
+		}
+		return result;
+	}
 
 	/**
 	 * kijkt of een zet in deze rij gezet mag worden.

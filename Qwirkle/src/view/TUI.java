@@ -161,9 +161,12 @@ public class TUI implements UI {
 	
 	public String getChoiceServerClient() {
 		System.out.println("Do you want to start a server of client? press corresponding number.");
-		System.out.println("1. start Server          // 2. start Client");
-		System.out.println("3. start Default Server // 4. start local Client");
-		System.out.println("5. start local AI      // 6. start AI");
+		System.out.println("1. start Server          			 // 2. start Client");
+		System.out.println("3. start Default Server 			// 4. start local Client");
+		System.out.println("5. start local Multi Thread AI     // 6. start Multi Thread AI");
+		System.out.println("7. start local Miranda AI         // 8. start Miranda AI");
+		System.out.println("9. start local Retarded AI       // 10. start Retarded AI");
+		System.out.println("NOTE: the Miranda and Retarded AI do not respect the ThinkTime of the AI");
 		String input = in.nextLine();
 		String result = "";
 		if (input.equals("1")) {
@@ -175,9 +178,17 @@ public class TUI implements UI {
 		} else if (input.equals("4")) {
 			result = "LOCALCLIENT";
 		} else if (input.equals("5")) {
-			result = "LOCALAI";
+			result = "LOCALAIMU";
 		} else if (input.equals("6")) {
-			result = "AI";
+			result = "AIMU";
+		} else if (input.equals("7")) {
+			result = "LOCALAIMI";
+		} else if (input.equals("8")) {
+			result = "AIMI";
+		} else if (input.equals("9")) {
+			result = "LOCALAIR";
+		} else if (input.equals("10")) {
+			result = "AIR";
 		} else {
 			System.out.println("Invalid input, please try again.");
 			result = getChoiceServerClient();

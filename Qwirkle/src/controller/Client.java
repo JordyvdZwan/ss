@@ -65,10 +65,10 @@ public class Client extends Observable {
 			} else if (command.equals("LOSSOFCONNECTION")) {
 				handleLossOfConnection();
 			} else {
-				fatalError("invalid command received from connection!");
+				fatalError("invalid command received from connection! " + msg);
 			}
 		} catch (NoSuchElementException e) {
-			fatalError("invalid command received from connection!");
+			fatalError("invalid command received from connection! " + msg);
 		}
 	}
 
@@ -467,9 +467,6 @@ public class Client extends Observable {
 		return player.getHand();
 	}
 	
-	public List<Block> getTempHand() {
-		return tempHand;
-	}
 	
 	/**
 	 * laat zien hoeveel er nog in de pot zit.
