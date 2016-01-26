@@ -56,7 +56,7 @@ public class ClientTest {
 			client = new Client(ui, sock, new ComputerPlayer("testABC", new RetardedStrategy()));
 			client.processMessage(client.conn, "WELCOME testABC 0");
 			client.processMessage(client.conn, "NAMES testABC 0 thijs 1 5000");
-			client.processMessage(client.conn, "NEW Gc Yc Rc Bc Oc R*");
+			client.processMessage(client.conn, "NEW Gc Gc Gc Gc Gc Gc");
 			Board board = new Board();
 			ArrayList<PlayMove> multipleMove = new ArrayList<PlayMove>();
 			PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 
@@ -82,12 +82,43 @@ public class ClientTest {
 			assertEquals("testABC", client.getPlayer().getName());
 			assertEquals(5, client.getPlayer().getScore());
 			client.processMessage(client.conn, "TURN 1 empty");
-			client.processMessage(client.conn, "KICK 1 6 is grappig");
-			client.processMessage(client.conn, "WINNER 0");
-			client.processMessage(client.conn, "LOSOFCONNECTION");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Test
+	public void testNext() {
+		Scanner reader = new Scanner(System.in);
+		try {
+			ServerSocket serverSocket = new ServerSocket(25565);
+			InetAddress address = InetAddress.getByName("localhost");
+			Socket sock = new Socket(address, 25565);
+			Socket ssock = serverSocket.accept();
+			serverSocket.close();
+			BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
+																sock.getOutputStream()));			
+			client = new Client(ui, sock, new ComputerPlayer("testABC", new RetardedStrategy()));
+			client.processMessage(client.conn, "WELCOME testABC 0");
+			client.processMessage(client.conn, "NAMES testABC 0 thijs 1 5000");
+			client.processMessage(client.conn, "NEW Gc Gc Gc Gc Gc Gc");
+			ArrayList<PlayMove> multipleMove = new ArrayList<PlayMove>();
+			PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 
+							91, 91, new NetworkPlayer());
+			multipleMove.add(move1);
+			client.processMessage(client.conn, "NEXT 0");
+			assertTrue(client.getPlayer().getHand().size() == 5);
+			client.processMessage(client.conn, "NEXT 0");
+			assertTrue(client.getPlayer().getHand().size() >= 0 );
+			assertTrue(client.getPlayer().getHand().size() < 5);
+			ssock.close();
+			in.close();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		reader.close();
 	}
 
 }

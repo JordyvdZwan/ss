@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Stack {
 	private List<Block> stack;
-	Board board = new Board();
 	
 	public Stack() {
 		stack = new ArrayList<Block>();
