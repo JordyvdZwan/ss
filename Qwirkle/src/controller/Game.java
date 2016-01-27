@@ -305,8 +305,6 @@ public class Game extends Thread {
 	 * Deze methode wacht totdat er een move is ontvangen van de server.
 	 * @return de lijst met moves die moet worden gehandled
 	 */
-	/*
-	 */
 	private List<Move> waitForNextMove() {
 		List<Move> result;
 		while (!moveAvailable) {
@@ -322,6 +320,19 @@ public class Game extends Thread {
 		return result;
 	}
 
+	/**
+	 * kijkt of alle stenen die gespeeld worden wel in de spelers hand zitten.
+	 * @param moves de zet
+	 * @param hand de hand van de speler
+	 * @return true als alle stenen er in zitten
+	 */
+	/*@ requires hand.size() > 0;
+	  @ requires (\forall int i; 0 <= i & i < moves.size(); 
+	  											Board.getBlock(moves.get(i)) instanceof Block);
+	  @ ensures (\forall int i; 0 <= i & i < moves.size();
+	  				hand.contains(Board.getBlock(moves.get(i))) ==> \result == true);
+	 */
+	/*@pure*/
 	private boolean blocksInHand(List<Move> moves, List<Block> hand) {
 		int counter = 0;
 		outer : for (Move move : moves) {
@@ -601,7 +612,7 @@ public class Game extends Thread {
 	 * @param playerNumber het nummer van de speler
 	 * @return de speler
 	 */
-	/*@ requires 0 <= playerNumber & playerNumber < numberOfPlayers;
+	/*@ requires 0 <= playerNumber & playerNumber <= numberOfPlayers;
 	  @ ensures (\forall int i; 0 <= i & i < players.size(); 
 	  					players.get(i).getNumber() == playerNumber ==> \result == players.get(i));
 	  @ ensures \result.getNumber() == playerNumber;
