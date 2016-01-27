@@ -1062,7 +1062,7 @@ public class Board {
     
 	/**
 	 * gaat vanuit het midden steeds naar rechts tot dat hij een rij tegenkomt die
-	 * helemaal leeg is. deze X waarde retourneert hij
+	 * helemaal leeg is. deze X waarde retourneert hij.
 	 * @return de eerste rij die helemaal leeg is
 	 */
 	/*@ ensures \result >= MID + 1;
@@ -1081,7 +1081,7 @@ public class Board {
     
 	/**
 	 * gaat vanuit het midden steeds naar links tot dat hij een rij tegenkomt die
-	 * helemaal leeg is. deze X waarde retourneert hij
+	 * helemaal leeg is. deze X waarde retourneert hij.
 	 * @return de eerste rij die helemaal leeg is
 	 */
     /*@ ensures \result >= 0;
@@ -1100,7 +1100,7 @@ public class Board {
 
 	/**
 	 * gaat vanuit het midden steeds naar rechts tot dat hij een kolom tegenkomt die
-	 * helemaal leeg is. deze Y waarde retourneert hij
+	 * helemaal leeg is. deze Y waarde retourneert hij.
 	 * @return de eerste kolom die helemaal leeg is
 	 */
     /*@ ensures \result >= MID + 1;
@@ -1119,7 +1119,7 @@ public class Board {
 
 	/**
 	 * gaat vanuit het midden steeds naar links tot dat hij een kolom tegenkomt die
-	 * helemaal leeg is. deze Y waarde retourneert hij
+	 * helemaal leeg is. deze Y waarde retourneert hij.
 	 * @return de eerste kolom die helemaal leeg is
 	 */
     /*@ ensures \result >= 0;
