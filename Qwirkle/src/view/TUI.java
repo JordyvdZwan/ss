@@ -104,39 +104,66 @@ public class TUI implements UI {
 		return result;
 	}
 
+	/**
+	 * asks on which host address you would like to play.
+	 * it reads the next line and uses that as address.
+	 */
 	public String getHost() {
 		System.out.println("Please enter a valid host address.");
 		return in.nextLine();
 	}
 
+	/**
+	 * asks on which port you would like to play.
+	 * it reads the next line and uses that as port.
+	 */
 	public String getPort() {
 		System.out.println("Please enter a valid port.");
 		return in.nextLine();
 	}
 
+	/**
+	 * asks what your name is.
+	 */
 	public String getUserName() {
 		System.out.println("Please enter a valid username (a-z, A-Z (max 16 characters))");
 		return in.nextLine();
 	}
 
+	/**
+	 * asks how long the AI can think.
+	 */
 	@Override
 	public String getAIThinkTime() { 
 		System.out.println("Please enter a valid AI think time.");
 		return in.nextLine();
 	}
 
+	/**
+	 * sets a client.
+	 */
 	public void setClient(Client client) {
 		this.client = client;
 	}
 
+	/**
+	 * sets a servercontoller.
+	 */
 	public void setServerController(Server control) {
 		servercontroller = control;
 	}
 	
+	/**
+	 * TODO.
+	 * @param local
+	 */
 	public TUI(boolean local) {
 		this.localGame = local;
 	}
 	
+	/**
+	 * wacht op start/stop input van de server.
+	 */
 	public void run() {
 		boolean running = true;
 		while (running) {
@@ -149,6 +176,10 @@ public class TUI implements UI {
 		}
 	}
 	
+	/**
+	 * print de hand van een speler.
+	 * @param de hand van de speler
+	 */
 	public void displayHand(List<Block> hand) {
 		String handString = "Your hand is:";
 		for (Block block : hand) {
@@ -157,10 +188,17 @@ public class TUI implements UI {
 		System.out.println(handString);
 	}
 	
+	/**
+	 * print een foutmelding.
+	 * @param msg de foutmelding
+	 */
 	public void errorOccured(String msg) {
 		System.out.println("ERROR: " + msg);
 	}
 	
+	/**
+	 * dit is het beginmenu waar je kan kiezen wat je wil doen.
+	 */
 	public String getChoiceServerClient() {
 		System.out.println("Qwirkle version 1.0 by Reinier Stribos and Jordy van der Zwan");
 		System.out.println("Do you want to start a server of client? press corresponding number.");
@@ -202,10 +240,19 @@ public class TUI implements UI {
 		return result;
 	}
 	
+	/**
+	 * print het speelbord uit.
+	 * @param board het speelbord
+	 */
 	public void displayBoard(Board board) {
 		System.out.println(board.toString());
 	} 
 	
+	/**
+	 * print de score (op volgorde van hoeveelheid punten die iedereen heeft).
+	 * @param player de speler zelf
+	 * @param opponents de lijst met tegenstanders
+	 */
 	public void displayScore(Player player, List<Player> opponents) {
 		System.out.println("Scores:");
 		Map<Player, Integer> scores = new HashMap<Player, Integer>();
@@ -223,6 +270,11 @@ public class TUI implements UI {
 		}
 	}
 	
+	/**
+	 * kijk wie er de hoogste score heeft.
+	 * @param scores een map met daarin iedere speler gelinkt aan zijn puntenaantal
+	 * @return de speler met de hoogste score
+	 */
 	private Player highestPlayer(Map<Player, Integer> scores) {
 		Player result = null;
 		Integer score = 0;
@@ -235,6 +287,11 @@ public class TUI implements UI {
 		return result;
 	}
 	
+	/**
+	 * zet een lijst met moves om in een lijst met playmoves.
+	 * @param moves de lijst met moves
+	 * @return de lijst met playmoves
+	 */
 	public List<PlayMove> toPlayMove(List<Move> moves) {
 		List<PlayMove> result = new ArrayList<PlayMove>();
 		for (Move move : moves) {
@@ -243,6 +300,11 @@ public class TUI implements UI {
 		return result;
 	}
 	
+	/**
+	 * zet een lijst met moves om in een lijst met swapmoves.
+	 * @param moves de lijst met moves
+	 * @return de lijst met swapmoves
+	 */
 	public List<SwapMove> toSwapMove(List<Move> moves) {
 		List<SwapMove> result = new ArrayList<SwapMove>();
 		for (Move move : moves) {
@@ -251,18 +313,30 @@ public class TUI implements UI {
 		return result;
 	}
 	
-	
+	/**
+	 * geeft een foutmelding als je een foutieve zet doorgeeft.
+	 * @param b het speelbord
+	 * @return de foutieve zet
+	 */
 	private List<Move> invalidMove(Board b) {
 		System.out.println("Invalid Move please try again.");
 		return getMove(b);
 	}
 	
+	/**
+	 * print een foutmelding van de server.
+	 * @param msg de foutmelding
+	 */
 	public void displayServerMessage(String msg) {
 		if (!localGame) {
 			System.out.println(msg);
 		}
 	}
 	
+	/**
+	 * vraagt of je een nieuwe game wil starten.
+	 * @return true als je nog een game wil starten.
+	 */
 	@Override
 	public boolean newGame() {
 		System.out.println("Do you want to start a new game? (y/n)");
@@ -279,11 +353,20 @@ public class TUI implements UI {
 		return result;
 	}
 
+	/**
+	 * print uit dat iemand gekickt is en waarom.
+	 * @param player de gekickte speler
+	 * @param reason de reden waarom hij gekickt is
+	 */
 	@Override
 	public void displayKick(Player player, String reason) {
 		System.out.println("Player " + player.getName() + " has been kicked! Reason: " + reason);
 	}
 
+	/**
+	 * laat zien wie er gewonnen heeft.
+	 * @param de winnaar
+	 */
 	@Override
 	public void displayWinner(Player player) {
 		System.out.println("The winner is: " + 
@@ -291,11 +374,18 @@ public class TUI implements UI {
 	}
 
 
+	/**
+	 * print een foutmelding wanneer die ervoor zorgt dat de connectie wordt verbroken.
+	 * @param msg de foutmelding
+	 */
 	@Override
 	public void displayFatalError(String msg) {
 		System.out.println("[FATAL ERROR]: " + msg);
 	}
 
+	/**
+	 * print elke keer het nieuwe boord en de nieuwe scores uit.
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		if (arg.equals("BOARD")) {
@@ -306,11 +396,17 @@ public class TUI implements UI {
 		}		
 	}
 
+	/**
+	 * leest in wat de speler wil doen.
+	 */
 	@Override
 	public String getCommand() {
 		return in.nextLine();
 	}
 
+	/**
+	 * print uit hoe groot de pot nog is.
+	 */
 	@Override
 	public void displayStackSize(int stackSize) {
 		System.out.println("StackSize: " + stackSize);
