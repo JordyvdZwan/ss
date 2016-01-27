@@ -11,8 +11,19 @@ import player.*;
 import strategy.*;
 
 public class Board {
+	/**
+	 * Matrix with blocks representing the board.
+	 */
 	private Block[][] blocks;
+	
+	/**
+	 * Dimension of the board.
+	 */
 	public static final int DIM = 183;
+	
+	/**
+	 * Middle of the board.
+	 */
 	public static final int MID = 91;
 
 	/**

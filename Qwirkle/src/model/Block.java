@@ -27,6 +27,10 @@ public class Block {
 		return this.shape;
 	}
 	
+	/**
+	 * @return the String representation of a block as described in the Group Protocol,
+	 * With ANSI color codes.
+	 */
 	 //prints out a block
     public String toColorString() {
     	String localcolor = "";
@@ -70,7 +74,9 @@ public class Block {
     	return localcolor + localshape + BLACK;
     }
 	
-	 //prints out a block
+    /**
+     * @return the String representation of a block as described in the Group Protocol.
+     */
     public String toString() {
     	char localcolor = 'E';
     	char localshape = 'E';
@@ -113,6 +119,11 @@ public class Block {
     	return localcolor + "" + localshape;
     }
 
+    /**
+     * Checks if the given String is a valid blockSting.
+     * @param blockString String to be tested.
+     * @return true if it is a valid blockString.
+     */
 	public static boolean isValidBlockString(String blockString) {
 		boolean result = true;
 		char[] chars = blockString.toCharArray();
@@ -140,6 +151,11 @@ public class Block {
 		return result;
 	}
 	
+	/**
+	 * Creates a Block given two chars.
+	 * @param color Color char.
+	 * @param shape Shape char.
+	 */
 	public Block(char color, char shape) {
 		if (color == 'R') {
 			this.color = Color.RED;
