@@ -11,8 +11,22 @@ import model.SwapMove;
 import player.Player;
 
 public class MirandaStrategy implements Strategy {
+	/**
+	 * het aantal extra plaatsen die rondom een put worden bekeken.
+	 */
 	public static final int EDGE = 1;
 	
+	/**
+	 * deze methode krijgt al een zet mee, 
+	 * hij kijkt dan rondom die zet of daar nog meer stenen bij kunnen.
+	 * @param b het bord
+	 * @param hand de hand
+	 * @param player de speler
+	 * @param stackSize de grootte van de pot
+	 * @param moves een lijst met verschillende zetten.
+	 * @param move een zet
+	 * @param end de tijd die de AI maximaal mag denken
+	 */
 	private List<List<PlayMove>> getMove(Board b, List<Block> hand, 
 									Player player, int stackSize, List<List<PlayMove>> moves, 
 																			List<PlayMove> move) {
@@ -41,8 +55,16 @@ public class MirandaStrategy implements Strategy {
 		return allPossibleMoves;
 	}
 	
-	
-	
+	/**
+	 * berekent de zet die de meeste punten oplevert.
+	 * dit gebeurt door eerst een lijst te maken met alle mogelijke zetten.
+	 * hier wordt dan de zet uitgehaald met die de meeste punten geeft.
+	 * @param b het bord
+	 * @param player de speler
+	 * @param stackSize de grootte van de pot
+	 * @param thinkTime de maximale tijd dat de AI mag denken.
+	 * @return de zet die de meeste punten oplevert
+	 */
 	@Override
 	public List<Move> getMove(Board b, Player player, int stackSize, int thinkTime) {
 		List<List<PlayMove>> allPossibleMoves = new ArrayList<List<PlayMove>>();
@@ -92,6 +114,16 @@ public class MirandaStrategy implements Strategy {
 		return result;
 	}
 	
+	/**
+	 * kijkt hoe groot de pot is,
+	 * als de pot kleiner is dan 6 dan ruilt hij het aantal stenen dat nog in de pot zit.
+	 * anders ruilt hij een random aantal tussen 1 en 6.
+	 * @param hand de hand
+	 * @param player de speler
+	 * @param board het bord
+	 * @param stackSize de grootte van de pot
+	 * @return de stenen die worden geruild.
+	 */
 	public List<SwapMove> retardedStrategySwap(List<Block> hand, 
 					Player player, Board board, int stackSize) {
 		List<Block> swaphand = new ArrayList<Block>();
