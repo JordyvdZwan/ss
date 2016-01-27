@@ -11,21 +11,50 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 
 public class Game extends Thread {
-	
+	/**
+	 * list of connections related to this game.
+	 */
 	public List<Connection> connections;
+	
+	/**
+	 * list of players in the game.
+	 */
 	private List<NetworkPlayer> players;
+	
+	/**
+	 * Parent of this game.
+	 */
 	private Server server;
 	
+	/**
+	 * playernumber of whose turn it is.
+	 */
 	private int turn;
+	
+	/**
+	 * Number of players (speaks for itself...).
+	 */
 	private /*@ spec_public @*/ int numberOfPlayers;
+	private UI ui;	
 	private int aiThinkTime;
 	private Board board;
 	private /*@ spec_public @*/ Stack stack;
+	
+	/**
+	 * Used in the waiting mechanism in the game.
+	 */
 	private CountDownLatch nextMoveAvailable = new CountDownLatch(1);
 	
+	/**
+	 * Indicates if a next move is available.
+	 */
 	private boolean moveAvailable = false;
+	
+	/**
+	 * Queue with the next move in it.
+	 */
 	private Queue<List<Move>> nextMove = new ArrayBlockingQueue<List<Move>>(1);
-	private UI ui;
+
 	
 	
 	//@private invariant board != null;

@@ -22,6 +22,9 @@ public class Server {
 		connector = new Connector(ui, game, portArg);
 	}
 	
+	/**
+	 * Creates a new game for the connector and starts the current one.
+	 */
 	public void nextGame() {
 		(gameList.get(gameList.size() - 1)).start();
 		Game game = new Game(this, aiThinkTime, ui);
@@ -29,11 +32,10 @@ public class Server {
 		gameList.add(game);
 	}
 	
-	public void waitForInput() {
-		String command = ui.getCommand();
-		handleInput(command);		
-	}
-	
+	/**
+	 * Is used to handle input received from the ui.
+	 * @param command String received from UI.
+	 */
 	public void handleInput(String command) {
 		if (command.equals("start")) {
 			nextGame();

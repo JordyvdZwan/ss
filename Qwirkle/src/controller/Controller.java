@@ -14,7 +14,6 @@ public class Controller extends Thread {
 	public static final int DEFAULT_PORT = 25565;
 	public static final int DEFAULTAITHINKTIME = 5000;
 	
-	
 	public static void main(String[] args) {
 		chooseServerClient();
 	}
@@ -96,7 +95,7 @@ public class Controller extends Thread {
 			
 			sock = new Socket(address, port);
 			Client client = new Client(ui, sock, new ComputerPlayer("MultiThreadAI", 
-																		new MStrat()));
+																		new MultiThreadStrategy()));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
 			chooseServerClient();
@@ -115,7 +114,7 @@ public class Controller extends Thread {
 			
 			sock = new Socket(address, port);
 			Client client = new Client(ui, sock, new ComputerPlayer(userName, 
-																		new MStrat()));
+																		new MultiThreadStrategy()));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
 			chooseServerClient();
