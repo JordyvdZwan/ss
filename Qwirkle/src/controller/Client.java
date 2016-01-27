@@ -95,8 +95,9 @@ public class Client extends Observable {
 
 	
 	/**
-	 * TODO
-	 * @param msg
+	 * Maakt een lijst aan met opponents, met de namen en nummers van players.
+	 * Ook zet de methode de aiThinkTime naar de gegeven think time op het einde van dit command.
+	 * @param msg is de message die mee wordt gegeven vanaf de server zonder eerste command woord.
 	 */
 	/*@ requires msg != null;
 	  @ ensures stackSize == 108 - (6 * (opponents.size() + 1)); 
@@ -124,8 +125,8 @@ public class Client extends Observable {
 	}
 
 	/**
-	 * TODO.
-	 * @param msg
+	 * Alle stenen die hier worden gestuurd door de server worden in de hand van de player gezet.
+	 * @param msg is de message die mee wordt gegeven vanaf de server zonder eerste command woord.
 	 */
 	private void handleNew(String msg) {
 		Scanner reader = new Scanner(msg);
@@ -174,7 +175,12 @@ public class Client extends Observable {
 		}
 		return counter == moves.size();
 	}
-	// TODO
+
+
+	/**
+	 * Als het de beurt is van de client, zal deze methode een move sturen naar de server.
+	 * @param msg is de message die mee wordt gegeven vanaf de server zonder eerste command woord.
+	 */
 	private void handleNext(String msg) {
 		Scanner reader = new Scanner(msg);
 		try {
@@ -216,7 +222,11 @@ public class Client extends Observable {
 		reader.close();
 	}
 
-	// TODO
+	/**
+	 * Legt de move neer op het bord die door de server gegeven word.
+	 * De move wordt niet meer lokaal gecheckt.
+	 * @param msg is de message die mee wordt gegeven vanaf de server zonder eerste command woord.
+	 */
 	private void handleTurn(String msg) {
 		Scanner reader = new Scanner(msg);
 		try {
@@ -334,7 +344,6 @@ public class Client extends Observable {
 		conn.stopConnection();
 	}
 
-	// TODO
 	/**
 	 * beëndigt het spel.
 	 */

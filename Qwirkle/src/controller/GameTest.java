@@ -25,11 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameTest extends Thread {
-	private Server server;
 	private Socket sock;
-	private UI ui = new TUI(false);
+	private UI ui = new TUI(true);
 	private Board board;
 	private Game game;
+	private Server server = new Server(25566, ui, 5000);
 	private NetworkPlayer networkplayer = new NetworkPlayer();
 	private ComputerPlayer player = new ComputerPlayer("retard", new RetardedStrategy());
 	private ComputerPlayer zeventien = new ComputerPlayer("miranda", 
@@ -78,6 +78,11 @@ public class GameTest extends Thread {
 			System.out.println(game.connections.size());
 			game.processMessage(game.connections.get(0), "HELLO poep");
 			System.out.println(game.connections.size());
+			try {
+				sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			game.addConnection(new Connection(game, sock, new NetworkPlayer()));
 			System.out.println(game.connections.size());
 			game.processMessage(game.connections.get(0), "HELLO hallo");
@@ -88,9 +93,13 @@ public class GameTest extends Thread {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			System.out.println(game.connections.size());
 			block = game.connections.get(game.getTurn()).getPlayer().getHand().get(0);
+			System.out.println(game.connections.size());
 			String test = block.toString();
-			game.processMessage(game.connections.get(0), "MOVE " + test + " 91 91");
+			System.out.println(game.connections.size());
+			game.processMessage(game.connections.get(1), "MOVE " + test + " 91 91");
+			System.out.println(game.connections.size());
 			Board board = new Board();
 			ArrayList<PlayMove> multipleMove = new ArrayList<PlayMove>();
 			PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 
@@ -108,7 +117,11 @@ public class GameTest extends Thread {
 			multipleMove.add(move2);
 			multipleMove.add(move3);
 			multipleMove.add(move6);
-			
+			System.out.println(game.connections.size());
+			server.handleInput("stop");
+//			game.endGame();
+//			game = null;
+//			System.out.println(game.interrupted());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

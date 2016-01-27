@@ -37,6 +37,8 @@ public class Server {
 	public void handleInput(String command) {
 		if (command.equals("start")) {
 			nextGame();
+		} else if (command.equals("stop")) {
+			System.exit(1);
 		} else {
 			ui.errorOccured("no valid input.");
 		}

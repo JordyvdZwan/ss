@@ -65,21 +65,34 @@ public class Connection extends Thread {
 					sendStringToParent(command);
 				}
 			} catch (IOException e) {
-				stopConnection();
+				if (active) {
+					lossOfConnection();
+				}
 			}
 		}
 	}
 	
+	public void lossOfConnection() {
+		stopConnection();
+		sendStringToParent("LOSSOFCONNECTION");
+	}
+	
 	public void stopConnection() {
 		try {
+			System.out.println("Hoi");
 			active = false;
+			this.interrupt();
+			System.out.println("Hoi");
 			in.close();
+			System.out.println("Hoi");
 			out.close();
+			System.out.println("Hoi");
 			sock.close();
+			System.out.println("Hoi");
 		} catch (IOException e) {
+			System.out.println("Hoi");
 			System.out.println(e.getMessage());
 		}
-		sendStringToParent("LOSSOFCONNECTION");
 	}
 	
 	/*@pure*/

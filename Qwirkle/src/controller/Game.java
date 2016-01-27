@@ -26,6 +26,7 @@ public class Game extends Thread {
 	private boolean moveAvailable = false;
 	private Queue<List<Move>> nextMove = new ArrayBlockingQueue<List<Move>>(1);
 	private UI ui;
+	private volatile boolean isRunning = true;
 	
 	
 	//@private invariant board != null;
@@ -200,8 +201,6 @@ public class Game extends Thread {
 	 */
 	private void readSwap(Connection conn, Scanner reader) {
 		if (!moveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
-			
-			
 			List<Move> moves = new ArrayList<Move>();
 			while (reader.hasNext()) {
 				String blockString = reader.next();
@@ -239,7 +238,6 @@ public class Game extends Thread {
 	  @ requires conn != null;
 	  @ ensures moveAvailable || !reader.hasNext() || conn.getPlayer().getNumber() != turn ==> 
 													numberOfPlayers == (\old(numberOfPlayers) - 1); 
-	  
 	 */
 	private void readMove(Connection conn, Scanner reader) {
 		if (!moveAvailable && reader.hasNext() && conn.getPlayer().getNumber() == turn) {
@@ -303,10 +301,10 @@ public class Game extends Thread {
 		}
 	}
 
-	//TODO
+
 	/**
-	 * 
-	 * @return
+	 * Deze methode wacht totdat er een move is ontvangen van de server.
+	 * @return de lijst met moves die moet worden gehandled
 	 */
 	/*
 	 */
@@ -316,7 +314,7 @@ public class Game extends Thread {
 			try {
 				nextMoveAvailable.await();
 			} catch (InterruptedException e) {
-				//TODO dont know what to do...
+				this.interrupt();
 			}
 		}
 		result = nextMove.remove();
@@ -651,7 +649,7 @@ public class Game extends Thread {
 	/*@ requires 0 <= win & win < players.size();
 	 */
 	private void playerWins(int win) {
-		if (win >= 0) {
+		if (connections.size() > 0) {
 			broadcastWinner(win);
 			endGame();
 		} else {
@@ -680,19 +678,22 @@ public class Game extends Thread {
 	 */
 	/*@ ensures connections.size() == 0;
 	 */
-	private void endGame() {
-		for (int i = 0; i < connections.size(); i++) {
+	public void endGame() {
+		System.out.println("h");
+		for (int i = connections.size() - 1; i >= 0; i--) {
+			System.out.println("h");
 			connections.get(i).stopConnection();
+			connections.remove(i);
 		}
+		System.out.println(connections.size());
+		System.out.println("h");
 		this.interrupt();
+		System.out.println("h");
 	}
 
 	/**
 	 * kijkt welke speler heeft gewonnen
 	 * @return de speler met de meeste punten.
-	 */
-	/*@ ensures \result == playerOfScore((\max int i; 0 <= i & i < players.size(); 
-	  													players.get(i).getScore())); 
 	 */
 	/*@pure*/
 	private int detectWinner() {
@@ -711,24 +712,6 @@ public class Game extends Thread {
 		return result;
 	}
 	
-	/**
-	 * kijkt welke speler bij deze score hoort
-	 * @param score de score
-	 * @return de speler
-	 */
-	/*@ ensures getPlayer(\result).getScore() == score;
-	 */
-	/*@pure*/
-	private int playerOfScore(int score) {
-		int result = 0;
-		for (Player player : players) {
-			if (player.getScore() == score) {
-				result = player.getNumber();
-			}
-		}
-		return result;
-	}
-
 	/**
 	 * laat zien of een lijst met Moves enkel bestaat uit PlayMoves.
 	 * @param moves de lijst met moves

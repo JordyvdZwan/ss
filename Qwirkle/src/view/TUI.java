@@ -143,6 +143,8 @@ public class TUI implements UI {
 			String txt = in.nextLine();
 			if (txt.equals("start")) {
 				servercontroller.handleInput(txt);
+			} else if (txt.equals("stop")) {
+				servercontroller.handleInput(txt);
 			}
 		}
 	}
