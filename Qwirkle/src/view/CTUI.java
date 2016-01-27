@@ -298,12 +298,20 @@ public class CTUI implements UI {
 	@Override
 	public void update(Observable o, Object arg) {
 		if (arg.equals("BOARD")) {
+			System.out.println("\n==========================================="
+								+ "============================================================\n");
 			displayBoard(client.getBoard());
+			displayScore(client.getPlayer(), client.getOpponents());
 		}		
 	}
 
 	@Override
 	public String getCommand() {
 		return in.nextLine();
+	}
+
+	@Override
+	public void displayStackSize(int stackSize) {
+		System.out.println("StackSize: " + stackSize);
 	}
 }

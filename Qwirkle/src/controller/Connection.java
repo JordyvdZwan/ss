@@ -79,18 +79,12 @@ public class Connection extends Thread {
 	
 	public void stopConnection() {
 		try {
-			System.out.println("Hoi");
 			active = false;
 			this.interrupt();
-			System.out.println("Hoi");
 			in.close();
-			System.out.println("Hoi");
 			out.close();
-			System.out.println("Hoi");
 			sock.close();
-			System.out.println("Hoi");
 		} catch (IOException e) {
-			System.out.println("Hoi");
 			System.out.println(e.getMessage());
 		}
 	}

@@ -689,16 +689,11 @@ public class Game extends Thread {
 	/*@ ensures connections.size() == 0;
 	 */
 	public void endGame() {
-		System.out.println("h");
 		for (int i = connections.size() - 1; i >= 0; i--) {
-			System.out.println("h");
 			connections.get(i).stopConnection();
 			connections.remove(i);
 		}
-		System.out.println(connections.size());
-		System.out.println("h");
 		this.interrupt();
-		System.out.println("h");
 	}
 
 	/**

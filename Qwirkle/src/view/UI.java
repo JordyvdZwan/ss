@@ -16,6 +16,7 @@ public interface UI extends Runnable, Observer {
 	public void displayKick(Player player, String reason);
 	public void displayWinner(Player player);
 	public void displayServerMessage(String msg);
+	public void displayStackSize(int stackSize);
 	
 	public String getUserName();
 	public String getChoiceServerClient();

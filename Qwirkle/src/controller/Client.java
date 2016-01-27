@@ -482,4 +482,9 @@ public class Client extends Observable {
 	public int getStackSize() {
 		return stackSize;
 	}
+	
+	//TODO
+	public List<Player> getOpponents() {
+		return opponents;
+	}
 }
