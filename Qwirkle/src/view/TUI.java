@@ -162,6 +162,7 @@ public class TUI implements UI {
 	}
 	
 	public String getChoiceServerClient() {
+		System.out.println("Qwirkle version 1.0 by Reinier Stribos and Jordy van der Zwan");
 		System.out.println("Do you want to start a server of client? press corresponding number.");
 		System.out.println("1. start Server                      // 2. start Client");
 		System.out.println("3. start Default Server             // 4. start local Client");
