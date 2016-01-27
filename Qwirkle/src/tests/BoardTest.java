@@ -19,11 +19,17 @@ import java.util.ArrayList;
 public class BoardTest {
     private Board board;
 
+    /**
+     * maakt een nieuw spel aan.
+     */
     @Before
 	public void setup() {
 		board = new Board();
 	}
 	
+    /**
+     * test of de methodes werken die stenen op het bord zetten en er af halen.
+     */
 	@Test
 	public void testMove() {
 		Block block = new Block(Color.BLUE, Shape.DIAMOND);
@@ -35,6 +41,9 @@ public class BoardTest {
 		assertTrue(board.isEmptyField(3, 4));
 	}
 	
+	/**
+	 * test of de methode werkt die de score bepaalt als alleen een rij wordt aangelegd.
+	 */
 	@Test
 	public void testScore() { 
 		PlayMove move1 = new PlayMove(new Block(Color.ORANGE, Shape.CROSS),
@@ -53,6 +62,10 @@ public class BoardTest {
 		assertEquals(board.moveScore(move3), 2); 
 	}
 	
+	/**
+	 * test of de score goed wordt uitgerekent in alle richtingen,
+	 * en test of dan de extra punten goed worden gegeven.
+	 */
 	@Test
 	public void testMaxScore() {
 		PlayMove move = new PlayMove(new Block(Color.PURPLE, Shape.STAR), 
@@ -70,6 +83,9 @@ public class BoardTest {
 		assertEquals(board.moveScore(move), 24);
 	}
 	
+	/**
+	 * test of de score goed wordt berekend als er meerdere stenen tegelijk worden neergelegd.
+	 */
 	@Test
 	public void testMultipeScore() {
 		ArrayList<PlayMove> multipleMove = new ArrayList<PlayMove>();
@@ -104,6 +120,9 @@ public class BoardTest {
 		assertEquals(2, board.legitMoveScore(singleMove));
 	}
 	
+	/**
+	 * test of de methode werkt die kijkt of iemand nog iets kan spelen.
+	 */
 	@Test
 	public void testnoValidMoves() {
 		board.setField(91, 91, new Block(Color.BLUE, Shape.CIRCLE));
@@ -124,6 +143,10 @@ public class BoardTest {
 		assertFalse(board.noValidMoves(hand));
 	}
 	
+	/**
+	 * deze test kijkt of er een foutmelding wordt gegeven als je 2 rijen met elkaar combineert,
+	 * en deze rijen hebben dezelfde steen.
+	 */
 	@Test
 	public void testIllegalConnection() {
 		PlayMove move = new PlayMove(new Block(Color.GREEN, Shape.CIRCLE),
@@ -133,6 +156,9 @@ public class BoardTest {
 		assertFalse(board.isLegalMove(move));
 	}
 	
+	/**
+	 * test of er bij een zet goed wordt bekeken of hij volgens de regels is.
+	 */
 	@Test
 	public void testLegally() {
 		PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 
@@ -175,6 +201,9 @@ public class BoardTest {
 		assertFalse(board.isLegalMove(move12));
 	}
 	
+	/**
+	 * test of er bij een zet met meerde stenen goed wordt bekeken of hij volgens de regels is.
+	 */
 	@Test
 	public void testLegallyMoves() {
 		ArrayList<PlayMove> multipleMove = new ArrayList<PlayMove>();
@@ -209,6 +238,9 @@ public class BoardTest {
 		assertTrue(board.isLegalMoveList(multipleMove));
 	}
 	
+	/**
+	 * test of de methodes nog werken als de stenen niet aan elkaar grenzen.
+	 */
 	@Test
 	public void testLegalMovesNotConected() {
 		ArrayList<PlayMove> multipleMove = new ArrayList<PlayMove>();
@@ -222,6 +254,9 @@ public class BoardTest {
 		assertTrue(board.isLegalMoveList(multipleMove));
 	}
 	
+	/**
+	 * test of de index goed wordt berekent.
+	 */
 	@Test
 	public void testIndex() {
 		assertEquals(board.index(0, 1), 1);
@@ -229,6 +264,9 @@ public class BoardTest {
 		assertEquals(board.index(185, 185), 34040);
 	}
 	
+	/**
+	 * test of de methode die kijkt of het veld op het bord ligt goed werkt.
+	 */
 	@Test
 	public void testIsField() {
 		assertTrue(board.isField(156, 46));
@@ -239,6 +277,9 @@ public class BoardTest {
 		assertFalse(board.isField(666, 5));
 	}
 	
+	/**
+	 * test of de methode goed werkt die kijkt of de steen wordt omringd door andere stenen.
+	 */
 	@Test
 	public void testIsLonely() {
 		PlayMove move = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 
@@ -261,15 +302,21 @@ public class BoardTest {
 //		assertTrue(board.noValidMoves(hand));
 //	}
 //	
+	/**
+	 * test of de methodes werken die kijken of een rij/kolom helemaal leeg is.
+	 */
 	@Test
 	public void testEmptyRow() {
-		assertTrue(board.emptyXRow(42));
-		assertTrue(board.emptyYRow(90));
+		assertTrue(board.emptyXRow(50));
+		assertTrue(board.emptyYRow(46));
 		board.setField(50, 46, new Block(Color.PURPLE, Shape.SQUARE));
 		assertFalse(board.emptyXRow(50));
 		assertFalse(board.emptyYRow(46));
 	}
 	
+	/**
+	 * deze test is om te kijken of de toStrings het goed doen.
+	 */
 	@Test
 	public void testBoard() {
 		board.setField(92, 92, new Block(Color.PURPLE, Shape.CIRCLE));
@@ -291,7 +338,9 @@ public class BoardTest {
 
 	}
 	
-	
+	/**
+	 * deze test is om te kijken of de toString van een Block werkt.
+	 */
 	@Test
 	public void testBlockToString() {
 		Block block1 = new Block(Color.RED, Shape.SQUARE);
