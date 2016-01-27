@@ -629,7 +629,7 @@ public class Game extends Thread {
 	}
 	
 	/**
-	 * checkt of een naam aan de regels voldoet
+	 * checkt of een naam aan de regels voldoet.
 	 * @param name de naam 
 	 * @return true als hij aan alle regels voldoet
 	 */
