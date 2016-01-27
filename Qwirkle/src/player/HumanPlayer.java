@@ -21,6 +21,15 @@ public class HumanPlayer implements LocalPlayer {
 		this.name = name;
 	}
 	
+	/**
+	 * bedenkt een zet.
+	 * @param ui de UI
+	 * @param board het bord
+	 * @param stackSize de grootte van het bord
+	 * @param opponents de tegenstanders
+	 * @param thinkTime de maximale denktijd
+	 * @return  een zet.
+	 */
 	@Override
 	public List<Move> determineMove(UI ui, Board board,	int stackSize, 
 													List<Player> opponents, int thinkTime) {
@@ -34,6 +43,10 @@ public class HumanPlayer implements LocalPlayer {
 		this.name = name;
 	}
 	
+	/**
+	 * haalt stenen uit je hand.
+	 * @param move de stenen die weg moeten
+	 */
 	public void removeFromHand(Move move) {
 		Block deleteBlock = null;
 		for (Block block : hand) {
@@ -44,6 +57,12 @@ public class HumanPlayer implements LocalPlayer {
 		hand.remove(deleteBlock);
 	}
 	
+	/**
+	 * haalt eerst de stenen uit de hand van de speler
+	 * en geeft hem vervolgens stenen terug.
+	 * @param moves de stenen die geruilt worden,
+	 * @param blocks de stenen die de speler terug krijgt
+	 */
 	public void swapHand(List<Move> moves, List<Block> blocks) {
 		outer : for (Move move : moves) {
 			for (Block block : hand) {
