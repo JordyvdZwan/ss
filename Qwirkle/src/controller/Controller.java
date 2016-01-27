@@ -252,7 +252,7 @@ public class Controller extends Thread {
 		}
 		char[] chars = name.toCharArray();
 		for (char c : chars) {
-			if (!Character.isLetterOrDigit(c)) {
+			if (!Character.isLetter(c)) {
 				result = false;
 			}
 		}
