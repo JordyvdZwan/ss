@@ -645,7 +645,7 @@ public class Game extends Thread {
 		}
 		char[] chars = name.toCharArray();
 		for (char c : chars) {
-			if (!Character.isLetterOrDigit(c)) {
+			if (!Character.isLetter(c)) {
 				result = false;
 			}
 		}
