@@ -296,8 +296,8 @@ public class TUI implements UI {
 	@Override
 	public void update(Observable o, Object arg) {
 		if (arg.equals("BOARD")) {
-			System.out.println("\n=========================="
-					+ "==============================================================\n");
+			System.out.println("\n==========================================="
+							+ "============================================================\n");
 			displayBoard(client.getBoard());
 			displayScore(client.getPlayer(), client.getOpponents());
 		}		
