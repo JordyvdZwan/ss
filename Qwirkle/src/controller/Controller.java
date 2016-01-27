@@ -69,7 +69,8 @@ public class Controller extends Thread {
 			address = InetAddress.getByName("localhost");
 			
 			sock = new Socket(address, port);
-			Client client = new Client(ui, sock, new ComputerPlayer("MultiThreadAI", new MultiThreadStrategy()));
+			Client client = new Client(ui, sock, new ComputerPlayer("MultiThreadAI", 
+																		new MultiThreadStrategy()));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
 			chooseServerClient();
@@ -88,7 +89,7 @@ public class Controller extends Thread {
 			
 			sock = new Socket(address, port);
 			Client client = new Client(ui, sock, new ComputerPlayer(userName, 
-																			new MultiThreadStrategy()));
+																		new MultiThreadStrategy()));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
 			chooseServerClient();
@@ -104,7 +105,8 @@ public class Controller extends Thread {
 			address = InetAddress.getByName("localhost");
 			
 			sock = new Socket(address, port);
-			Client client = new Client(ui, sock, new ComputerPlayer("MirandaAI", new MirandaStrategy()));
+			Client client = new Client(ui, sock, new ComputerPlayer("MirandaAI", 
+																	new MirandaStrategy()));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
 			chooseServerClient();
@@ -139,7 +141,8 @@ public class Controller extends Thread {
 			address = InetAddress.getByName("localhost");
 			
 			sock = new Socket(address, port);
-			Client client = new Client(ui, sock, new ComputerPlayer("RetardedAI", new RetardedStrategy()));
+			Client client = new Client(ui, sock, new ComputerPlayer("RetardedAI", 
+																		new RetardedStrategy()));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
 			chooseServerClient();
@@ -158,7 +161,7 @@ public class Controller extends Thread {
 			
 			sock = new Socket(address, port);
 			Client client = new Client(ui, sock, new ComputerPlayer(userName, 
-																			new RetardedStrategy()));
+																		new RetardedStrategy()));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
 			chooseServerClient();

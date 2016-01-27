@@ -770,7 +770,11 @@ public class Game extends Thread {
 		return result;
 	}
 
-	//TODO
+	/**
+	 * laat zien wie er aan de beurt is.
+	 * @return het nummer van de speler die aan de beurt is
+	 */
+	/*@pure*/
 	public int getTurn() {
 		return turn;
 	}

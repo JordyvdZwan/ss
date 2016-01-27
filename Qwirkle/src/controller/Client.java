@@ -79,7 +79,6 @@ public class Client extends Observable {
 	 * @param msg
 	 */
 	/*@ requires msg != null;
-	  @ ensures player.getNumber() == Integer.parseInt(new Scanner(msg).next());
 	 */
 	private void handleWelcome(String msg) {
 		Scanner reader = new Scanner(msg);
@@ -185,7 +184,8 @@ public class Client extends Observable {
 		Scanner reader = new Scanner(msg);
 		try {
 			if (player == getPlayer(Integer.parseInt(reader.next()))) {
-				List<Move> moves = player.determineMove(ui, board, stackSize, opponents, aiThinkTime);
+				List<Move> moves = 
+								player.determineMove(ui, board, stackSize, opponents, aiThinkTime);
 				String move = "";
 				if (isInstanceOfPlayMoves(moves)) {
 					List<PlayMove> playMoves = toPlayMove(moves);
@@ -258,11 +258,8 @@ public class Client extends Observable {
 	}
 	
 	/**
-	 * kickt een speler uit de server
+	 * kickt een speler uit de server.
 	 * @param msg
-	 */
-	/*@ ensures stackSize == stackSize + getPlayer(Integer.parseInt(new Scanner(msg).next())).
-	  																			getHand().size();
 	 */
 	private void handleKick(String msg) {
 		Scanner reader = new Scanner(msg);
