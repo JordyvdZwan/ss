@@ -7,6 +7,9 @@ import java.util.List;
 public class Stack {
 	private List<Block> stack;
 	
+	/**
+	 * Hardcoded creation of the stack.
+	 */
 	public Stack() {
 		stack = new ArrayList<Block>();
 		Block block1 = new Block(Color.RED, Shape.CIRCLE);
@@ -91,6 +94,10 @@ public class Stack {
 		return stack.size();
 	}
 	
+	/**
+	 * @param swaps List of swaps that you want to do.
+	 * @return true if you can swap.
+	 */
 	/*@pure*/
 	public boolean isValidSwap(List<SwapMove> swaps) {
 		boolean result = true;
@@ -100,20 +107,36 @@ public class Stack {
 		return result;
 	}
 	
+	/**
+	 * Shuffles the stack.
+	 */
 	public void shuffleStack() {
 		Collections.shuffle(stack);
 	}
 	
+	/**
+	 * returns the given blocks to the stack.
+	 * @param blocks list of blocks you want to give back to the stack.
+	 */
 	public void giveBack(List<Block> blocks) {
 		for (int i = 0; i < blocks.size(); i++) {
 			stack.add(blocks.get(i));
 		}
 	}
 	
+	/**
+	 * returns the given blocks to the stack.
+	 * @param block you want to give back to the stack.
+	 */
 	public void giveBack(Block block) {
 		stack.add(block);
 	}
 	
+	/**
+	 * gives stones from the stack.
+	 * @param x amount of blocks you want.
+	 * @return the list of blocks gotten from the stack.
+	 */
 	public List<Block> give(int x) {
 		List<Block> hand = new ArrayList<Block>();
 		for (int i = x - 1; i >= 0; i--) {
