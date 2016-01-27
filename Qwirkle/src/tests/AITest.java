@@ -1,9 +1,10 @@
-package player;
+package tests;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import model.*;
+import player.ComputerPlayer;
 import strategy.*;
 
 

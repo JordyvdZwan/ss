@@ -1,8 +1,13 @@
-package model;
+package tests;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import model.Block;
+import model.Board;
+import model.Color;
+import model.PlayMove;
+import model.Shape;
 import player.NetworkPlayer;
 
 import static org.junit.Assert.assertEquals;

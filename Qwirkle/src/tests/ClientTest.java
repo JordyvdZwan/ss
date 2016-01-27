@@ -1,4 +1,4 @@
-package controller;
+package tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -17,6 +17,8 @@ import java.util.Scanner;
 import org.junit.Before;
 import org.junit.Test;
 
+import controller.Client;
+import controller.Connection;
 import model.Block;
 import model.Board;
 import model.Color;

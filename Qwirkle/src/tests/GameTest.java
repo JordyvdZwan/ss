@@ -1,8 +1,11 @@
-package controller;
+package tests;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import controller.Connection;
+import controller.Game;
+import controller.Server;
 import model.*;
 import player.*;
 import strategy.*;
