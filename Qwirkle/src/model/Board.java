@@ -68,7 +68,7 @@ public class Board {
 		for (int x = 0; x < DIM; x++) {
 			for (int y = 0; y < DIM; y++) {
 				if (index == y + (DIM * x)) {
-					result = blocks[x][y];
+					result = blocks[x][y]; 
 				}
 			}
 		}
@@ -962,13 +962,13 @@ public class Board {
 	/*@ requires (\forall int i; 0 <= i & i <= moves.size();
 													getX(moves.get(i)) <= DIM
 														& getX(moves.get(i)) >= 0);
-		@ requires (\forall int i; 0 <= i & i <= moves.size();
+	  @ requires (\forall int i; 0 <= i & i <= moves.size();
 													getY(moves.get(i)) <= DIM
 														& getY(moves.get(i)) >= 0);
-		@ requires (\forall int i; 0 <= i & i <= moves.size();
+	  @ requires (\forall int i; 0 <= i & i <= moves.size();
 													getBlock(moves.get(i)) instanceof Block);
-		@ requires isLegalMoveList(moves);
-		@ ensures (\forall int i; 0 <= i & i <= moves.size();
+	  @ requires isLegalMoveList(moves);
+	  @ ensures (\forall int i; 0 <= i & i <= moves.size();
 												getField(getX(moves.get(i)), getY(moves.get(i)))
 													== getBlock(moves.get(i)));
 	 */
@@ -1060,6 +1060,11 @@ public class Board {
 		return index + "\n" + swag + "\n" + colum;
     }
     
+	/**
+	 * gaat vanuit het midden steeds naar rechts tot dat hij een rij tegenkomt die
+	 * helemaal leeg is. deze X waarde retourneert hij.
+	 * @return de eerste rij die helemaal leeg is
+	 */
 	/*@ ensures \result >= MID + 1;
       @ ensures \result <= MID + MID;
       @*/	
@@ -1073,7 +1078,12 @@ public class Board {
     	}
     	return maxX;
     }
-    	
+    
+	/**
+	 * gaat vanuit het midden steeds naar links tot dat hij een rij tegenkomt die
+	 * helemaal leeg is. deze X waarde retourneert hij.
+	 * @return de eerste rij die helemaal leeg is
+	 */
     /*@ ensures \result >= 0;
       @ ensures \result <= MID - 1;
       @*/
@@ -1088,6 +1098,11 @@ public class Board {
         return minX;
     }
 
+	/**
+	 * gaat vanuit het midden steeds naar rechts tot dat hij een kolom tegenkomt die
+	 * helemaal leeg is. deze Y waarde retourneert hij.
+	 * @return de eerste kolom die helemaal leeg is
+	 */
     /*@ ensures \result >= MID + 1;
       @ ensures \result <= MID + MID;
       @*/	
@@ -1102,6 +1117,11 @@ public class Board {
     	return maxY;
     }
 
+	/**
+	 * gaat vanuit het midden steeds naar links tot dat hij een kolom tegenkomt die
+	 * helemaal leeg is. deze Y waarde retourneert hij.
+	 * @return de eerste kolom die helemaal leeg is
+	 */
     /*@ ensures \result >= 0;
       @ ensures \result <= MID - 1;
       @*/
