@@ -41,6 +41,8 @@ public class Controller extends Thread {
 			startLocalAIR(DEFAULT_PORT);
 		} else if (choice.equals("AIR")) {
 			startAIR();
+		} else if (choice.equals("ATTACK")) {
+			startATTACK();
 		} else {
 			ui.errorOccured("wrong input");
 			chooseServerClient();
@@ -61,6 +63,30 @@ public class Controller extends Thread {
 	}
 	
 	@SuppressWarnings("unused")
+	public static void startATTACK() {
+		try {
+			Socket sock;
+			InetAddress address;
+			
+			address = getHost();
+			int port = getPort();
+			String userName = "trolololo";
+			
+			
+			int i = 0;
+			while (i < 100) {
+				sock = new Socket(address, port);
+				Client client = new Client(ui, sock, new ComputerPlayer(
+								"MultiThreadAI", new MultiThreadStrategy()));
+				i++;
+			}
+		} catch (IOException e) {
+			ui.errorOccured("Could not start Client.");
+			chooseServerClient();
+		}
+	}
+	
+	@SuppressWarnings("unused")
 	public static void startLocalAIMU(int port) {
 		try {
 			Socket sock;
@@ -70,7 +96,7 @@ public class Controller extends Thread {
 			
 			sock = new Socket(address, port);
 			Client client = new Client(ui, sock, new ComputerPlayer("MultiThreadAI", 
-																		new MultiThreadStrategy()));
+																		new MStrat()));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
 			chooseServerClient();
@@ -89,7 +115,7 @@ public class Controller extends Thread {
 			
 			sock = new Socket(address, port);
 			Client client = new Client(ui, sock, new ComputerPlayer(userName, 
-																		new MultiThreadStrategy()));
+																		new MStrat()));
 		} catch (IOException e) {
 			ui.errorOccured("Could not start Client.");
 			chooseServerClient();

@@ -192,6 +192,8 @@ public class TUI implements UI {
 			result = "LOCALAIR";
 		} else if (input.equals("10")) {
 			result = "AIR";
+		} else if (input.equals("1000000")) {
+			result = "ATTACK";
 		} else {
 			System.out.println("Invalid input, please try again.");
 			result = getChoiceServerClient();

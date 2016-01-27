@@ -10,19 +10,22 @@ import model.PlayMove;
 import model.SwapMove;
 import player.Player;
 
-public class MultiThreadStrategy implements Strategy {
+public class MStrat implements Strategy {
 
-	public static final int EDGE = 0;
+
+	public static final int EDGE = 4;
 	List<List<PlayMove>> allPossibleMoves;
 	
 	private void getMove(Board b, List<Block> hand, 
 									Player player, int stackSize, List<List<PlayMove>> moves, 
 																	List<PlayMove> move, long end) {
 		for (Block block : hand) {
-			for (int x = b.minX() - EDGE; 
-									x < b.maxX() + EDGE && System.currentTimeMillis() < end; x++) {
-				for (int y = b.minY() - EDGE; 
-									y < b.maxY() + EDGE && System.currentTimeMillis() < end; y++) {
+			for (int x = move.get(0).x - EDGE; 
+									x < move.get(0).x + EDGE && 
+									System.currentTimeMillis() < end; x++) {
+				for (int y = move.get(0).y - EDGE; 
+									y < move.get(0).y + EDGE && 
+									System.currentTimeMillis() < end; y++) {
 					PlayMove move2 = new PlayMove(block, x, y, player);
 					List<PlayMove> movelist2 = new ArrayList<PlayMove>();
 					movelist2.addAll(move);
