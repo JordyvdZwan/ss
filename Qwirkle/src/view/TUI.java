@@ -258,7 +258,7 @@ public class TUI implements UI {
 	}
 	
 	public void displayServerMessage(String msg) {
-		if (localGame) {
+		if (!localGame) {
 			System.out.println(msg);
 		}
 	}

@@ -10,7 +10,7 @@ import view.*;
 
 public class Controller extends Thread {	
 	public static final int MAX_PLAYERS = 4;
-	static UI ui = new CTUI(false);
+	static UI ui = new TUI(false);
 	public static final int DEFAULT_PORT = 25565;
 	public static final int DEFAULTAITHINKTIME = 5000;
 	
