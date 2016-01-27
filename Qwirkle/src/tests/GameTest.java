@@ -12,8 +12,6 @@ import strategy.*;
 import view.TUI;
 import view.UI;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
@@ -28,26 +26,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameTest extends Thread {
-	private Socket sock;
 	private UI ui = new TUI(true);
-	private Board board;
 	private Game game;
 	private Server server = new Server(25566, ui, 5000);
-	private NetworkPlayer networkplayer = new NetworkPlayer();
-	private ComputerPlayer player = new ComputerPlayer("retard", new RetardedStrategy());
-	private ComputerPlayer zeventien = new ComputerPlayer("miranda", 
-						new MirandaStrategy());
-	private Stack stack;
 	MirandaStrategy miranda = new MirandaStrategy();
-	private Connection conn;	
-//	private Client client = new Client(ui, sock, new ComputerPlayer("testABC", new RetardedStrategy()));
 	
 	@Before
 	public void setup() {
-		board = new Board();
-		stack = new Stack();
 		game = new Game(server, 1000, ui);
-		RetardedStrategy retard = new RetardedStrategy();
 
 	}
 	
@@ -76,7 +62,8 @@ public class GameTest extends Thread {
 			Socket ssock = serverSocket.accept();
 			serverSocket.close();
 			BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));	
+			BufferedWriter out = new BufferedWriter(
+												new OutputStreamWriter(sock.getOutputStream()));	
 			game.addConnection(new Connection(game, sock, new NetworkPlayer()));
 			System.out.println(game.connections.size());
 			game.processMessage(game.connections.get(0), "HELLO poep");
@@ -103,7 +90,6 @@ public class GameTest extends Thread {
 			System.out.println(game.connections.size());
 			game.processMessage(game.connections.get(1), "MOVE " + test + " 91 91");
 			System.out.println(game.connections.size());
-			Board board = new Board();
 			ArrayList<PlayMove> multipleMove = new ArrayList<PlayMove>();
 			PlayMove move1 = new PlayMove(new Block(Color.GREEN, Shape.CLOVER), 
 							34, 65, new NetworkPlayer());
@@ -122,9 +108,9 @@ public class GameTest extends Thread {
 			multipleMove.add(move6);
 			System.out.println(game.connections.size());
 			server.handleInput("stop");
-//			game.endGame();
-//			game = null;
-//			System.out.println(game.interrupted());
+			out.close();
+			in.close();
+			ssock.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

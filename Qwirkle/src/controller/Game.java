@@ -26,7 +26,6 @@ public class Game extends Thread {
 	private boolean moveAvailable = false;
 	private Queue<List<Move>> nextMove = new ArrayBlockingQueue<List<Move>>(1);
 	private UI ui;
-	private volatile boolean isRunning = true;
 	
 	
 	//@private invariant board != null;
@@ -778,4 +777,15 @@ public class Game extends Thread {
 	public int getTurn() {
 		return turn;
 	}
-}
+	
+	/**
+	 * laat zien hoeveel mensen er meedoen.
+	 * @return aantal spelers
+	 */
+	/*@ ensures \result == numberOfPlayers;
+	 */
+	/*@pure*/
+	public int getNumberOfPlayer() {
+		return numberOfPlayers;
+	}
+} 
