@@ -483,7 +483,11 @@ public class Client extends Observable {
 		return stackSize;
 	}
 	
-	//TODO
+	/**
+	 * laat alle tegenstanders zien.
+	 * @return een lijst met alle tegenstanders
+	 */
+	/*@pure*/
 	public List<Player> getOpponents() {
 		return opponents;
 	}

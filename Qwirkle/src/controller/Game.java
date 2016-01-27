@@ -629,13 +629,13 @@ public class Game extends Thread {
 	}
 	
 	/**
-	 * checkt of een naam aan de regels voldoet
+	 * checkt of een naam aan de regels voldoet.
 	 * @param name de naam 
 	 * @return true als hij aan alle regels voldoet
 	 */
 	/*@ requires name != null;
 	  @ ensures name.length() <= 16 ==> (\forall int i; 0 <= i & i < name.length();
-	  							Character.isLetterOrDigit(name.charAt(i)) ==> \result == true);
+	  							Character.isLetter(name.charAt(i)) ==> \result == true);
 	 */
 	/*@pure*/
 	private boolean isValidName(String name) {
