@@ -14,7 +14,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import controller.Client;
@@ -33,13 +32,16 @@ import strategy.*;
 public class ClientTest {
 	Client client;
 	Connection serverConnection;
+	/**
+	 * de TUI.
+	 */
 	UI ui = new TUI(true);
-	
-	@Before
-	public void setup() {
 
-	}
-	
+	/**
+	 * simuleert een server, doet dan alsof hij berichten stuurt naar de client.
+	 * we testen hier of deze berichten goed zijn overgekomen.
+	 * dit doen we door te kijken of de veranderingen zijn gemaakt.
+	 */
 	@Test
 	public void testClient() {
 		try {
@@ -84,6 +86,9 @@ public class ClientTest {
 		}
 	}
 	
+	/**
+	 * hier doen we precies hetzelfde als bij de andere test maar dan met andere commando's.
+	 */
 	@Test
 	public void testNext() {
 		Scanner reader = new Scanner(System.in);

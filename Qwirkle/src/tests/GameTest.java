@@ -26,17 +26,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameTest extends Thread {
+	/**
+	 * de TUI.
+	 */
 	private UI ui = new TUI(true);
+	/**
+	 * de game.
+	 */
 	private Game game;
+	/**
+	 * de server.
+	 */
 	private Server server = new Server(25566, ui, 5000);
+	/**
+	 * een AI.
+	 */
 	MirandaStrategy miranda = new MirandaStrategy();
 	
+	/**
+	 * start een nieuwe game.
+	 */
 	@Before
 	public void setup() {
 		game = new Game(server, 1000, ui);
 
 	}
 	
+	/**
+	 * test of de methode goed werkt die kijkt of een lijst met moves bestaat uit playmoves.
+	 */
 	@Test
 	public void testInstanceOfPlayMoves() {
 		List<Move> moves = new ArrayList<Move>();
@@ -52,6 +70,9 @@ public class GameTest extends Thread {
 		assertTrue(game.isInstanceOfPlaymoves(moves));
 	}
 	
+	/**
+	 * start een game, simuleert een paar commando's en sluit hem dan af.
+	 */
 	@Test
 	public void testRun() {
 		try {
